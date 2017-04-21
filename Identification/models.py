@@ -25,13 +25,32 @@ class Employe(models.Model):
 
     def __unicode__(self): return self.nom_emplye
 
+class PieceId(models.Model):
+
+    PIECE = (
+            ('passeport','passeport'),
+            ('cni','CNI'),
+            ('recepisse','recepisse'),
+            ('autre','autre carte'),
+            )
+    typePiece = models.CharField(max_length=15,choices=PIECE)
+    date_expiration = models.DateField(blank=True)
+    code = models.CharField(\
+            "Numéro ou code de la pièce",max_length=60,default=0,\
+            help_text="Pour autre,laisser '0'")
+
+    def __unicode__(self):
+        return 'Piece: %s | id: %s ' % (self.typePiece, self.code)
+
 #un usager peut se rendre dans un ou plusieurs services
 #un service peut recvoir un ou plusieurs usagers
 class Usager(models.Model):
+    SEXE = (('H','homme'),('F','femme'),)
     nom_usgr = models.CharField("Nom & Prenom", max_length=50)
-    CNI = models.IntegerField()
-    email = models.EmailField()
-    telephone = models.IntegerField()
+    sexe = models.CharField(max_length=5,choices=SEXE,default='H')
+    piece = models.ForeignKey(PieceId)
+    email = models.EmailField(blank=True)
+    telephone = models.IntegerField(blank=True,null=True)
 
     services = models.ManyToManyField(Service, through='Visite')
 
@@ -43,11 +62,10 @@ class Usager(models.Model):
 class Visite(models.Model):
     date_jour = models.DateField('Date du Jour', auto_now=True)
     heur_arr = models.TimeField('Heure Arrivée')
-    heur_deprt = models.DateTimeField('Heure Depart')
+    heur_deprt = models.DateTimeField('Heure Depart',blank=True)
     type_visit = models.CharField('Objet de la Visite', max_length=20)
     service = models.ForeignKey(Service)
     usager = models.ForeignKey(Usager)
-    nbre = models.IntegerField(default=0)
     
        
     def __unicode__(self):

@@ -9,7 +9,7 @@ class ConnexionForm(forms.Form):
 #formulaire enregistrement usager et une visite ..... inachevé
 class ContactForm(forms.Form):
     nom_usgr = forms.CharField(max_length=50)
-    CNI = forms.IntegerField()
+    piece = forms.IntegerField()
     email = forms.EmailField()
     telephone = forms.IntegerField()
     services = forms.ModelMultipleChoiceField(queryset=Service.objects.all())

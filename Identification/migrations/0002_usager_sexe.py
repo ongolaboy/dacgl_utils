@@ -11,10 +11,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='usager',
-            name='email',
-            field=models.EmailField(max_length=75),
+            name='sexe',
+            field=models.CharField(default=b'H', max_length=5, choices=[(b'H', b'homme'), (b'F', b'femme')]),
             preserve_default=True,
         ),
     ]
