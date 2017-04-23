@@ -1,0 +1,21 @@
+{% extends "id2/base.html" %}
+
+{% block content %}
+<div align="center">
+	<h3> Connexion à l'interface de gestion des visites</h3>
+	<table>
+		{% comment %}
+  <form action="/ident/login/verification" method="post">
+		{% endcomment %}
+		<form action="{% url 'entreeVerification' %}" method="post">
+	  {% csrf_token %}
+	  <tr><th><label for"id_identifiant">Identifiant:</label></th><td><input id="id_identifiant" maxlength="40" name="identifiant" type="text" /></td></tr>
+	  <tr><th><label for"id_password">Mot de passe:</label></th><td><input id="id_password" maxlength="90" name="password" type="password" /></td></tr>
+	  <tr><td></td>
+		  <td><input value="Connexion" type="submit" /></td>
+	  </tr>
+  </form>
+	</table> ;)
+</div>
+
+{% endblock %}
