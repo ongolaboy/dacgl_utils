@@ -8,5 +8,6 @@ urlpatterns = patterns('',
         url(r'^$',views.index,name='index'),
         url(r'login/$',views.entree,name='entree'),
         url(r'login/verification/$',views.entreeVerification,name='entreeVerification'),
-        url(r'insertion/$',views.insertion, name='insertion'),
+        url(r'inscription/$',views.inscription, name='inscription'),
+        url(r'inscription/traitement/$',views.inscription, name='inscriptionTraitement'),
         )

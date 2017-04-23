@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 
+from id2.forms import InscriptionForm
+
 def index(request):
     
     contexte = {}
@@ -22,12 +24,18 @@ def entreeVerification(request):
         if user is not None:
             if user.is_active:
                 login(request,user)
-                return HttpResponseRedirect('/ident/insertion/')
+                return HttpResponseRedirect('/ident/inscription/')
             else :
                 # compte désactivé
                 return HttpResponseForbidden('/ident/')
 
     return HttpResponseRedirect('/ident/login/')
 
-def insertion(request):
-    pass
+def inscription(request):
+    """
+    Saisie des informations relatives au passage d'un usager
+    """
+
+    form = InscriptionForm()
+
+    return render(request,'id2/inscription.html',{'form':form})
