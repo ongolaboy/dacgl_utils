@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 from django import forms
-from .models import Usager, Visite, Profil, Service
+from Identification.models import Usager, Visite, Profil, Service
 #formulaire de connexion
 class ConnexionForm(forms.Form):
     username = forms.CharField(label="Nom d'utilisateur", max_length=30)

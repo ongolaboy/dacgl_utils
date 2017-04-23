@@ -17,13 +17,6 @@ class Service(models.Model):
 
     def __unicode__(self): return self.nom_serv
 
-# unemployé existe dans un service uniquement
-class Employe(models.Model):
-    nom_emplye = models.CharField("Nom & Prenom", max_length=30)
-    fonction = models.CharField(max_length=30)
-    service = models.ForeignKey(Service)
-
-    def __unicode__(self): return self.nom_emplye
 
 class PieceId(models.Model):
 
@@ -71,8 +64,8 @@ class Visite(models.Model):
     usager = models.ForeignKey(Usager)
     
        
-#    def __unicode__(self):
-#        return "{0} s'est rendu au {1}".format(self.usager, self.service)
+    def __unicode__(self):
+        return "{0} s'est rendu au {1}".format(self.usager, self.service)
 
 #formulaire pour enregistrement d'une visite
 class ContactForm(ModelForm):

@@ -2,13 +2,13 @@
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
-from .forms import ConnexionForm, ContactForm
+from Identification.forms import ConnexionForm, ContactForm
 
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 
-from Identification.models import Service, Employe, Visite, Usager
+from Identification.models import Service, Visite, Usager
 
 from django.contrib.auth import authenticate, login
 
@@ -29,6 +29,7 @@ def connexion(request):
                  #context = { 'username': username,
                              #'visites': visites }
                  login(request, user)# nous connectons l'utilisateur
+                 context = {}
                  return render_to_response('identification/home.html', context)
             else: # sinon une erreur sera affichée
                 error = True
