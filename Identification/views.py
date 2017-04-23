@@ -29,13 +29,13 @@ def connexion(request):
                  #context = { 'username': username,
                              #'visites': visites }
                  login(request, user)# nous connectons l'utilisateur
-                 return render_to_response('Identification/home.html', context)
+                 return render_to_response('identification/home.html', context)
             else: # sinon une erreur sera affichée
                 error = True
     else:
         form = ConnexionForm()
         #Bien preciser le chemin pour acceder au templates.
-    return render(request, 'Identification/connexion.html', locals())
+    return render(request, 'identification/connexion.html', locals())
  
  #vue correspondant a la deconnexion d'un utilisateur   
 def deconnexion(request):
@@ -45,7 +45,7 @@ def deconnexion(request):
  #vue correspondant a la page d'accuiel   
 def home(request):
     visites = Visite.objects.all()
-    return render_to_response('Identification/home.html', {'visites': visites})
+    return render_to_response('identification/home.html', {'visites': visites})
  
 #vue correspondant a enregistrement une visite et un usager .... inachevée
 def visiteusager(request):

@@ -71,8 +71,8 @@ class Visite(models.Model):
     usager = models.ForeignKey(Usager)
     
        
-    def __unicode__(self):
-        return "{0} s'est rendu au {1}".format(self.usager, self.service)     
+#    def __unicode__(self):
+#        return "{0} s'est rendu au {1}".format(self.usager, self.service)
 
 #formulaire pour enregistrement d'une visite
 class ContactForm(ModelForm):
