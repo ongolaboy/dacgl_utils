@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
-import datetime
+from datetime import datetime
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.utils import timezone
@@ -34,7 +34,7 @@ class PieceId(models.Model):
             ('autre','autre carte'),
             )
     typePiece = models.CharField(max_length=15,choices=PIECE)
-    date_expiration = models.DateField(blank=True)
+    date_expiration = models.DateField(blank=True,null=True)
     code = models.CharField(\
             "Numéro ou code de la pièce",max_length=60,default=0,\
             help_text="Pour autre,laisser '0'")
@@ -60,10 +60,13 @@ class Usager(models.Model):
 # une visite peut correspondre a un ou plusieurs services
 #on devrait pourvoir faire les statistiques des visites par usager et par service
 class Visite(models.Model):
-    date_jour = models.DateField('Date du Jour', auto_now=True)
-    heur_arr = models.TimeField('Heure Arrivée')
-    heur_deprt = models.DateTimeField('Heure Depart',blank=True)
-    type_visit = models.CharField('Objet de la Visite', max_length=20)
+    #TODO changer heur_arr par dateArrivee
+    heur_arr = models.DateTimeField('Heure Arrivée',\
+            default=datetime.now())
+    heur_deprt = models.DateTimeField('Heure Depart',blank=True,null=True)
+#            default=datetime.today().replace(year=datetime.today().hour+1)
+    type_visit = models.TextField('Objet de la Visite', default='AUF'
+            )
     service = models.ForeignKey(Service)
     usager = models.ForeignKey(Usager)
     
