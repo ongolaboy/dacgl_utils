@@ -5,6 +5,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 
 from id2.forms import InscriptionForm
+from id2.models import Usager,PieceId
 
 def index(request):
     
@@ -39,3 +40,43 @@ def inscription(request):
     form = InscriptionForm()
 
     return render(request,'id2/inscription.html',{'form':form})
+
+def inscriptionTraitement(request):
+
+    contexte = {}
+    if request.method == 'POST':
+        form = InscriptionForm(request.POST)
+        if form.is_valid():
+            n = form.cleaned_data['nom']
+            p = form.cleaned_data['prenom']
+            s = form.cleaned_data['sexe']
+            piece = form.cleaned_data['typePiece']
+            code = form.cleaned_data['code']
+            date_expiration = form.cleaned_data['date_expiration']
+            email = form.cleaned_data['email']
+            telephone = form.cleaned_data['telephone']
+
+            #on passe aux vérifications AVANT de vouloir save
+            try :
+                u = Usager.objects.get(nom=n,prenom=p)
+            except Usager.DoesNotExist:
+                try :
+                    piece0 = PieceId.objects.get(typePiece=piece)
+                #on va d'abord enregistrer la pièce
+                except PieceId.DoesNotExist :
+                    piece0 =\
+                    PieceId(typePiece=piece,
+                            date_expiration=date_expiration,
+                            code=code,
+                            )
+                    piece0.save()
+                u = Usager(nom=n,sexe=s,prenom=p,
+                        typePiece=(piece0.pk),
+                        email=email,
+                        telephone=telephone)
+                return render(request,
+                        'id2/',contexte)
+
+def sortie(request):
+    logout(request)
+    return HttpResponseRedirect('/ident/')

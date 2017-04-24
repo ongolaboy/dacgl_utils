@@ -22,7 +22,8 @@ class PieceId(models.Model):
     date_expiration = models.DateField(blank=True,null=True)
     code = models.CharField(\
             "Numéro ou code de la pièce",max_length=60,default=0,\
-            help_text="Pour autre,laisser '0'")
+            help_text="Pour autre,laisser '0'",
+            unique=True)
 
     def __unicode__(self):
         return 'Piece: %s | id: %s ' % (self.typePiece, self.code)
@@ -47,6 +48,9 @@ class Usager(models.Model):
     services = models.ManyToManyField(Service, through='Visite')
 
     def __unicode__(self): return self.nom
+
+    class Meta:
+        unique_together = (('nom','prenom'),) #absolument
 
 #une visite correspond a un usager qui vient et part a une date  et heure precise 
 # une visite peut correspondre a un ou plusieurs services
