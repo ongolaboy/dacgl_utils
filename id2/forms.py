@@ -17,8 +17,8 @@ class InscriptionForm(forms.Form):
             )
 
     nom = forms.CharField(max_length=50)
-    sexe = forms.ChoiceField(choices=SEXE)
     prenom = forms.CharField(max_length=150,required=False)
+    sexe = forms.ChoiceField(choices=SEXE)
     typePiece = forms.ChoiceField(label='Type de piece',choices=PIECE)
     code = forms.CharField(max_length=60,
             help_text=u"Numero ou identifiant de la piece.")

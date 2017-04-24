@@ -34,7 +34,7 @@ def entreeVerification(request):
 
 def inscription(request):
     """
-    Saisie des informations relatives au passage d'un usager
+    Saisie des informations relatives au passage d'un NOUVEL usager
     """
 
     form = InscriptionForm()
@@ -71,11 +71,28 @@ def inscriptionTraitement(request):
                             )
                     piece0.save()
                 u = Usager(nom=n,sexe=s,prenom=p,
-                        typePiece=(piece0.pk),
+                        typePiece=(piece0),
                         email=email,
                         telephone=telephone)
-                return render(request,
-                        'id2/',contexte)
+                contexte = {'message': 'Inscription effectuée'}
+
+            #tout est ok, on revient sur un formulaire vierge
+            return HttpResponseRedirect('/id2/inscription/')
+
+        #si le formulaire a des points non valides
+        else :
+            contexte = {'message': 'Veuillez revérifier votre saisie',
+                    'form': form,
+                    }
+            return render(request,
+                    'id2/inscription.html',
+                    contexte,status=303) #lire rfc2616
+
+    #si la méthode n'est pas de type POST
+    else :
+        form = InscriptionForm()
+        contexte['message'] = 'Veuillez recommencer svp'
+        return render(request,'id2/inscription.html',contexte)
 
 def sortie(request):
     logout(request)
