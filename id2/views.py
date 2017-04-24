@@ -38,8 +38,11 @@ def inscription(request):
     """
 
     form = InscriptionForm()
+    u = Usager.objects.latest('pk')
+    message = "%s %s" % (u.nom,u.prenom)
+    contexte = {'message': message,'form':form}
 
-    return render(request,'id2/inscription.html',{'form':form})
+    return render(request,'id2/inscription.html',contexte)
 
 def inscriptionTraitement(request):
 
