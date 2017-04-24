@@ -10,8 +10,8 @@ class InscriptionForm(forms.Form):
     SEXE = (('H',u'homme'),('F',u'femme'),)
 
     PIECE = (
-            ('passeport',u'passeport'),
             ('cni',u'CNI'),
+            ('passeport',u'passeport'),
             ('recepisse',u'recepisse'),
             ('autre',u'autre carte'),
             )

@@ -51,33 +51,34 @@ def inscriptionTraitement(request):
             p = form.cleaned_data['prenom']
             s = form.cleaned_data['sexe']
             piece = form.cleaned_data['typePiece']
-            code = form.cleaned_data['code']
+            cod = form.cleaned_data['code']
             date_expiration = form.cleaned_data['date_expiration']
-            email = form.cleaned_data['email']
-            telephone = form.cleaned_data['telephone']
+            em = form.cleaned_data['email']
+            tel = form.cleaned_data['telephone']
 
             #on passe aux vérifications AVANT de vouloir save
             try :
                 u = Usager.objects.get(nom=n,prenom=p)
             except Usager.DoesNotExist:
                 try :
-                    piece0 = PieceId.objects.get(typePiece=piece)
+                    piece0 = PieceId.objects.get(code=cod)
                 #on va d'abord enregistrer la pièce
                 except PieceId.DoesNotExist :
                     piece0 =\
                     PieceId(typePiece=piece,
                             date_expiration=date_expiration,
-                            code=code,
+                            code=cod,
                             )
                     piece0.save()
                 u = Usager(nom=n,sexe=s,prenom=p,
-                        typePiece=(piece0),
-                        email=email,
-                        telephone=telephone)
+                        piece=piece0,
+                        email=em,
+                        telephone=tel)
+                u.save()
                 contexte = {'message': 'Inscription effectuée'}
 
             #tout est ok, on revient sur un formulaire vierge
-            return HttpResponseRedirect('/id2/inscription/')
+            return HttpResponseRedirect('/ident/inscription/')
 
         #si le formulaire a des points non valides
         else :
