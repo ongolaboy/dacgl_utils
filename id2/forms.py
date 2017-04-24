@@ -23,8 +23,9 @@ class InscriptionForm(forms.Form):
     code = forms.CharField(max_length=60,
             help_text=u"Numero ou identifiant de la piece.")
     date_expiration=forms.DateField(label=u"Date d'expiration",
-            required=False,help_text="Format<br>YYYY/MM/DD",
-            input_formats = ['%Y/%m/%d'])
+            required=False,
+            help_text="Format<br>DD/MM/YYYY",
+            )
     email = forms.EmailField(label=u"Adresse electronique",
             required=False)
     telephone = forms.IntegerField(help_text=u"Num de telephone",\
