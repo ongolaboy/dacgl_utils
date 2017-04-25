@@ -1,0 +1,17 @@
+
+{% extends "id2/base.html" %}
+
+{% block content %}
+
+<form action="{% url 'visite-traitement' %}" method="post">
+	<table>
+		{% csrf_token %}
+		{{ form.as_table }}
+		<tr>
+			<td></td>
+			<td><input type="submit" value="Consigner" /></td>
+		</tr>
+	</table>
+</form>
+
+{% endblock %}

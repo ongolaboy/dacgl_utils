@@ -106,12 +106,14 @@ def visite(request,usager_id):
 
     try :
         u = Usager.objects.get(pk=usager_id)
-        form = VisiteForm(nom=u.nom,
-                prenom = u.prenom)
+        data = {'nom': u.nom, 'prenom': u.prenom}
+        #on lie les données au formulaire
+        form = VisiteForm(data)
 
-        contexte = {'message':message,
+        contexte = {
                 'form': form,
                 }
+        return render(request,'id2/visite.html',contexte)
     except Usager.DoesNotExist:
         message = 'Veuillez enregistrer cet usager au préalable'
         form = InscriptionForm()
@@ -122,7 +124,6 @@ def visite(request,usager_id):
                 contexte,status=302)
 
 
-    return render(request,'id2/visite.html',contexte)
 
 
 

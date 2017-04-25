@@ -45,5 +45,5 @@ class VisiteForm(forms.Form):
 
     nom = forms.CharField()
     prenom = forms.CharField()
-#    service = forms.CharField(choices=SERVICE)
-#    motif = forms.CharField(widget=forms.TextArea)
+    service = forms.ChoiceField(choices=SERVICE)
+    motif = forms.CharField()
