@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 
-from id2.forms import InscriptionForm
+from id2.forms import InscriptionForm,VisiteForm
 from id2.models import Usager,PieceId
 
 def index(request):
@@ -97,6 +97,37 @@ def inscriptionTraitement(request):
         form = InscriptionForm()
         contexte['message'] = 'Veuillez recommencer svp'
         return render(request,'id2/inscription.html',contexte)
+
+def visite(request,usager_id):
+    """
+    A travers cette vue on va consigner l'heure d'arrivée
+    d'un usager
+    """
+
+    try :
+        u = Usager.objects.get(pk=usager_id)
+        form = VisiteForm(nom=u.nom,
+                prenom = u.prenom)
+
+        contexte = {'message':message,
+                'form': form,
+                }
+    except Usager.DoesNotExist:
+        message = 'Veuillez enregistrer cet usager au préalable'
+        form = InscriptionForm()
+        contexte = {'form': form,
+                'error_message': message,
+                }
+        return render(request,'id2/inscription.html',
+                contexte,status=302)
+
+
+    return render(request,'id2/visite.html',contexte)
+
+
+
+def visiteTraitement(request):
+    pass
 
 def sortie(request):
     logout(request)

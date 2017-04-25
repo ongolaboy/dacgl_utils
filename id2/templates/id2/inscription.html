@@ -4,6 +4,7 @@
 
 {% if user.is_authenticated %}
 
+ {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <h3> Formulaire d'inscription de nouveaux usagers</h3>
 Dernière inscription : {{nom}} <br />
 <p><strong> {{ message }}</strong></p> <br />

@@ -11,4 +11,6 @@ urlpatterns = patterns('',
         url(r'login/verification/$',views.entreeVerification,name='entreeVerification'),
         url(r'inscription/$',views.inscription, name='inscription'),
         url(r'inscription/traitement/$',views.inscriptionTraitement, name='inscriptionTraitement'),
+        url(r'visite/(?P<usager_id>\d+)/$',views.visite,name='visite'),
+        url(r'visite/traitement/$',views.visiteTraitement, name='visite-traitement'),
         )

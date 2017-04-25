@@ -30,3 +30,20 @@ class InscriptionForm(forms.Form):
             required=False)
     telephone = forms.IntegerField(help_text=u"Num de telephone",\
             required=False)
+
+class VisiteForm(forms.Form):
+    """
+    Enregistrement des visites d'usager
+    """
+
+    SERVICE = (
+            ('fablab',u'Fablab'),
+            ('cnfy',u'CNFY'),
+            ('direction',u'Directionregionale'),
+            ('courrier',u'Courrier'),
+            )
+
+    nom = forms.CharField()
+    prenom = forms.CharField()
+#    service = forms.CharField(choices=SERVICE)
+#    motif = forms.CharField(widget=forms.TextArea)
