@@ -1,9 +1,9 @@
 {% extends  "id2/base.html" %}
 
 {% block content %}
-<form method="get" action="{% url 'recherche-traitement' %}">
+<form action="{% url 'recherche-traitement' %}" method="get">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Recherchera" />
+    <input type="submit" value="Rechercher" />
 </form>
 {% endblock %}

@@ -49,5 +49,4 @@ class VisiteForm(forms.Form):
     motif = forms.CharField()
 
 class RechercheForm(forms.Form):
-    terme = forms.CharField(label="Nom à rechercher",
-            max_length=200)
+    terme = forms.CharField()
