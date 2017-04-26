@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 
-from id2.forms import InscriptionForm,VisiteForm
+from id2.forms import InscriptionForm,VisiteForm,RechercheForm
 from id2.models import Usager,PieceId
 
 def index(request):
@@ -97,6 +97,35 @@ def inscriptionTraitement(request):
         form = InscriptionForm()
         contexte['message'] = 'Veuillez recommencer svp'
         return render(request,'id2/inscription.html',contexte)
+
+def recherche(request):
+    form = RechercheForm()
+    return render(request,'id2/recherche.html',{'form':form})
+
+def rechercheTraitement(request):
+    contexte = {}
+    if request.method == 'GET':
+        form = RechercheForm(request.GET)
+        if form.is_valid():
+            terme = form.cleaned_data['terme']
+            resultat = Usager.objects.filter(nom__contains=terme)
+            contexte = {'resultat': resultat,
+                    'terme': terme,
+                    }
+
+            return render(request,
+                    'id2/resultat.html',
+                   contexte,
+                    status=302
+                    )
+        else:
+            message = 'Veuillez vérifier votre saisie'
+            contexte = {'error_message':message,
+                    'form':form}
+            return render(request,'id2/recherche.html',contexte)
+    else:
+        form = RechercheForm()
+        return HttpResponseRedirect('/ident/recherche/')
 
 def visite(request,usager_id):
     """

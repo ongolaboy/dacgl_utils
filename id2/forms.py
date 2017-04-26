@@ -47,3 +47,7 @@ class VisiteForm(forms.Form):
     prenom = forms.CharField()
     service = forms.ChoiceField(choices=SERVICE)
     motif = forms.CharField()
+
+class RechercheForm(forms.Form):
+    terme = forms.CharField(label="Nom à rechercher",
+            max_length=200)

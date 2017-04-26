@@ -1,0 +1,9 @@
+{% extends  "id2/base.html" %}
+
+{% block content %}
+<form method="get" action="{% url 'recherche-traitement' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Recherchera" />
+</form>
+{% endblock %}

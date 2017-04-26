@@ -36,9 +36,8 @@
 
 	   <hr>
            <a href="/ident/">Accueil</a> |<a
-              href="/ident/infoabonne/">Adresses inscrites</a> | 
-            <a href="/ident/infousager/">Usagers repertoriés</a> 
-            | <a href="/ident/recherche/">Effectuez une recherche</a> | <a href="/admin/">Administration</a>
+	      href="{% url 'inscription' %}"> Inscription</a> | 
+	     <a href="{% url 'recherche' %}">Effectuez une recherche</a>
 	 
 	  {% endblock %}
   </body>

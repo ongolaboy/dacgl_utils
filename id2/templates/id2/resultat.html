@@ -1,0 +1,27 @@
+{% extends  "id2/base.html" %}
+
+{% block content %}
+<p>Le terme recherché était {{ terme }}.</p>
+{% if resultat %}
+	<p>{{ resultat.count }} usager(s) correspond(ent) à la recherche</p>
+	<table border="1">
+		<tr>
+			<th>NOM</th>
+			<th>PRENOM</th>
+			<th>SEXE</th>
+		</tr>
+			{% for l in resultat %}
+		<tr>
+			<td>{{ l.nom }}</td>
+			<td>{{ l.prenom }}</td>
+			<td>{{ l.sexe }}</td>
+		</tr>
+			{% endfor %}
+	</table>
+{% else %}
+	<strong>{{ message }}</strong>
+{% endif %}
+
+<br />
+<p>Effectuez une <a href="{%url 'recherche' %}">nouvelle recherche</a>
+{% endblock %}
