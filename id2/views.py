@@ -6,7 +6,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 
 from id2.forms import InscriptionForm,VisiteForm,RechercheForm
-from id2.models import Usager,PieceId
+from id2.models import Usager,PieceId,Visite,Service
 
 def index(request):
     
@@ -131,8 +131,8 @@ def rechercheTraitement(request):
 @login_required(login_url='/ident/')
 def visite(request,usager_id):
     """
-    A travers cette vue on va consigner l'heure d'arrivée
-    d'un usager
+    A travers cette vue on va consigner automatiquement
+    l'heure d'arrivée d'un usager.
     """
 
     try :
@@ -159,7 +159,39 @@ def visite(request,usager_id):
 
 
 def visiteTraitement(request):
-    pass
+    contexte = {}
+    if request.method == 'POST':
+        form = VisiteForm(request.POST)
+        if form.is_valid():
+            n = form.cleaned_data['nom']
+            p = form.cleaned_data['prenom']
+            s = form.cleaned_data['service']
+            m = form.cleaned_data['motif']
+
+            try:
+                u = Usager.objects.get(nom=n,prenom=p)
+                v = Visite(usager=u,
+                        service=Service.objects.get(nom_serv=s),
+                        type_visit=m)
+                v.save()
+                return render(request,'id2/visiteur-enregistre.html',\
+                        status=302)
+
+            except Usager.DoesNotExist:
+                # faut trouver un usager qui existe dans la base
+                return HttpResponseRedirect('/ident/recherche')
+        else:
+            contexte = {'message': 'Veuillez revérifier votre saisie',
+                    'form': form,
+                    }
+            return render(request,
+                    'id2/visite.html',
+                    contexte,status=303)
+
+    #la méthode n'était pas de type POST
+    else:
+        form = VisiteForm()
+        return render(request,'id2/visite.html',{'form':form})
 
 def sortie(request):
     logout(request)
