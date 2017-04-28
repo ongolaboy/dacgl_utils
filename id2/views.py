@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 
@@ -127,6 +128,7 @@ def rechercheTraitement(request):
         form = RechercheForm()
         return HttpResponseRedirect('/ident/recherche/')
 
+@login_required(login_url='/ident/')
 def visite(request,usager_id):
     """
     A travers cette vue on va consigner l'heure d'arrivée
