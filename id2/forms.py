@@ -46,7 +46,7 @@ class VisiteForm(forms.Form):
     nom = forms.CharField()
     prenom = forms.CharField()
     service = forms.ChoiceField(choices=SERVICE)
-    motif = forms.CharField()
+    motif = forms.CharField(widget=forms.Textarea)
 
 class RechercheForm(forms.Form):
     terme = forms.CharField()

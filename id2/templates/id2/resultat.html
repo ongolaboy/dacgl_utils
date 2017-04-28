@@ -12,7 +12,7 @@
 		</tr>
 			{% for l in resultat %}
 		<tr>
-			<td>{{ l.nom }}</td>
+			<td><a href="/ident/visite/{{l.id}}">{{ l.nom }}</a></td>
 			<td>{{ l.prenom }}</td>
 			<td>{{ l.sexe }}</td>
 		</tr>
@@ -22,6 +22,7 @@
 	<strong>{{ message }}</strong>
 {% endif %}
 
+<br />
 <br />
 <p>Effectuez une <a href="{%url 'recherche' %}">nouvelle recherche</a>
 {% endblock %}
