@@ -1,5 +1,7 @@
 #-*- coding: utf-8 -*-
 
+from datetime import date
+
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
@@ -11,6 +13,20 @@ from id2.models import Usager,PieceId,Visite,Service
 def index(request):
     
     contexte = {}
+    u = Usager.objects.all().count()
+    last_visit = Visite.objects.all().order_by('-date_arrivee')[:10]
+    last_inscrit = Usager.objects.all().order_by('-id')[:10]
+    #mois en cours
+    m = date.today().month
+    nbr_visit_current_month =\
+            Visite.objects.filter(date_arrivee__month=m).count()
+
+    contexte = {
+            'usager':u,
+            'derniereVisite': last_visit,
+            'dernierInscrit': last_inscrit,
+            'nVisitCeMois' : nbr_visit_current_month,
+            }
 
     return render(request,'id2/index.html',contexte)
 

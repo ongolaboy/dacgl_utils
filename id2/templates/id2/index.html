@@ -1,5 +1,44 @@
 {% extends "id2/base.html" %}
 
 {% block content %}
-hi :)
+
+ <h2>Sommaire</h2>
+ <ul>
+	 <li><a href="#lastvisit">Les dernières visites</a></li>
+	 <li><a href="#lastsubscribed">Les dernières inscriptions</a></li>
+	 <li><a href="#récap">Récapitulatif</a></li>
+ </ul>
+
+	 {% if derniereVisite %}
+	 <h3> <a name="lastvisit">Les 10 dernières visites</a> </h3>
+	 <table>
+		 <tr><th>Nom</th><th>Lieu</th><th>Motif</th><th>Heure d'arrivée</th></tr>
+		 {% for visite in derniereVisite %}
+		 <tr><td>{{ visite.usager }}</td>
+			 <td>{{ visite.service }}</td>
+			 <td>{{ visite.type_visit }}</td>
+			 <td>{{ visite.date_arrivee }}</td>
+		 </tr>
+		 {% endfor %}
+	 </table>
+	 {% endif %}
+ <br />
+ <br />
+
+	 {% if dernierInscrit %}
+	 <h3> <a name="lastsubscribed">Les 10 derniers usagers enregistrés</a> </h3>
+	 <table>
+		 <tr><th>Nom</th><th>Prénom</th></tr>
+		 {% for inscrit in dernierInscrit %}
+		 <tr><td>{{ inscrit.nom }}</td><td>{{ inscrit.prenom }}</td></tr>
+		 {% endfor %}
+	 </table>
+	 {% endif %}
+	 <h3> <a name="récap">Récapitulatif</a></h3>
+	 <table>
+		 <tr><td>Nombre d'usagers enregistrés</td><td> {{ usager }}</td></tr>
+                 <tr><td>Nombre de visite ce mois</td><td>{{ nVisitCeMois }}</td></tr>
+		 <tr><td>Nombre de visite cette semaine</td><td></td></tr>
+	 </table>
+
 {% endblock %}

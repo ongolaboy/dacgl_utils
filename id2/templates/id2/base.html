@@ -7,7 +7,7 @@
   <link rel="stylesheet"  type="text/css" href="{% static 'id2/css/base.css' %}">
 
   <body>
-          <div id="side">
+          <div id="side" align="right">
                   {% block sidebar %}
 
                   <ul>
@@ -34,10 +34,12 @@
           </div>
           {% block piedDePage %}
 
+	  <div align="center" id="piedDePage">
 	   <hr>
            <a href="/ident/">Accueil</a> |<a
 	      href="{% url 'inscription' %}"> Inscription</a> | 
 	     <a href="{% url 'recherche' %}">Effectuez une recherche</a>
+	  </div>
 	 
 	  {% endblock %}
   </body>
