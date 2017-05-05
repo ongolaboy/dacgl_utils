@@ -9,7 +9,17 @@ body {
     /*font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif; */
     font-family: "Open Sans", sans-serif;
     color: #333;
-    background: #fff;
+    background: #f9bf3d  no-repeat;
+}
+
+/* Custom DACGL */
+
+div.gauche {
+	float: left;
+}
+
+div.droite {
+	float: right;
 }
 
 /* LINKS */
