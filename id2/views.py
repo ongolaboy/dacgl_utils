@@ -55,11 +55,16 @@ def inscription(request):
     """
 
     form = InscriptionForm()
-    u = Usager.objects.latest('pk')
-    message = "%s %s" % (u.nom,u.prenom)
-    contexte = {'message': message,'form':form}
-
-    return render(request,'id2/inscription.html',contexte)
+    message = ''
+    contexte = {}
+    try:
+        u = Usager.objects.latest('pk')
+        message = "%s %s" % (u.nom,u.prenom)
+        contexte = {'message': message,'form':form}
+        return render(request,'id2/inscription.html',contexte)
+    except Usager.DoesNotExist:
+        contexte = {'message': message, 'form':form}
+        return render(request,'id2/inscription.html',contexte)
 
 def inscriptionTraitement(request):
 
@@ -190,8 +195,11 @@ def visiteTraitement(request):
                         service=Service.objects.get(nom_serv=s),
                         type_visit=m)
                 v.save()
+                contexte = {'nom':u.nom,
+                        'num':v.id,
+                        }
                 return render(request,'id2/visiteur-enregistre.html',\
-                        status=302)
+                        contexte,status=302)
 
             except Usager.DoesNotExist:
                 # faut trouver un usager qui existe dans la base
