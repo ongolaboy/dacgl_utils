@@ -130,7 +130,7 @@ def rechercheTraitement(request):
         form = RechercheForm(request.GET)
         if form.is_valid():
             terme = form.cleaned_data['terme']
-            resultat = Usager.objects.filter(nom__contains=terme)
+            resultat = Usager.objects.filter(nom__icontains=terme)
             contexte = {'resultat': resultat,
                     'terme': terme,
                     }
