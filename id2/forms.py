@@ -2,6 +2,8 @@
 
 from django import forms
 
+from id2.models import Service
+
 class InscriptionForm(forms.Form):
     """
     Ce formulaire s'occupe des inscriptions dans le système.
@@ -36,16 +38,9 @@ class VisiteForm(forms.Form):
     Enregistrement des visites d'usager
     """
 
-    SERVICE = (
-            ('fablab',u'Fablab'),
-            ('cnfy',u'CNFY'),
-            ('direction',u'Directionregionale'),
-            ('courrier',u'Courrier'),
-            )
-
     nom = forms.CharField()
     prenom = forms.CharField()
-    service = forms.ChoiceField(choices=SERVICE)
+    service = forms.ModelChoiceField(queryset=Service.objects.all())
     motif = forms.CharField(widget=forms.Textarea,
             initial=u"visite")
 
