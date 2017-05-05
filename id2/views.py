@@ -1,14 +1,17 @@
 #-*- coding: utf-8 -*-
 
 from datetime import date,datetime
+from pytz import timezone
 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 
+from dacgl.settings import TIME_ZONE
 from id2.forms import InscriptionForm,VisiteForm,RechercheForm
 from id2.models import Usager,PieceId,Visite,Service
+
 
 def index(request):
     
@@ -246,7 +249,7 @@ def consigneTraitement(request,visite_id):
             #TODO songer à un meilleur contrôle
             return HttpResponseRedirect('/ident')
         else:
-            c.date_deprt = datetime.now()
+            c.date_deprt = datetime.now(timezone(TIME_ZONE))
             c.save(update_fields=['date_deprt'])
             return HttpResponseRedirect('/ident/')
     elif etat == 'Non':
