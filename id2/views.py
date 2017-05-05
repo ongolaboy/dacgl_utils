@@ -1,11 +1,11 @@
 #-*- coding: utf-8 -*-
 
-from datetime import date
+from datetime import date,datetime
 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 
 from id2.forms import InscriptionForm,VisiteForm,RechercheForm
 from id2.models import Usager,PieceId,Visite,Service
@@ -216,6 +216,42 @@ def visiteTraitement(request):
     else:
         form = VisiteForm()
         return render(request,'id2/visite.html',{'form':form})
+
+@login_required(login_url='/ident/')
+def consignerDepart(request,visite_id):
+    try :
+        v = Visite.objects.get(pk=visite_id)
+        u= Usager.objects.get(pk=v.usager_id)
+        data = {'nom': u.nom,
+                'prenom': u.prenom,
+                'service': v.service,
+                'motif': v.type_visit,
+                'arrivee':v.date_arrivee,
+                'visite_id':v.id,
+                }
+        return render(request,'id2/retour.html',data)
+
+    except Visite.DoesNotExist:
+        message = "Cette visite n'existe pas dans la base de données"
+        return HttpResponseRedirect('/ident')
+
+def consigneTraitement(request,visite_id):
+    c = get_object_or_404(Visite, pk=visite_id)
+    etat = request.POST['DepartAUF']
+
+    if etat == 'Oui':
+        if c.date_deprt != None:
+            #quelque chose a déjà été enregistré et par conséquence
+            # on n'ajoute plus rien
+            #TODO songer à un meilleur contrôle
+            return HttpResponseRedirect('/ident')
+        else:
+            c.date_deprt = datetime.now()
+            c.save(update_fields=['date_deprt'])
+            return HttpResponseRedirect('/ident/')
+    elif etat == 'Non':
+        #rien à faire on revient à l'accueil
+        return HttpResponseRedirect('/ident/')
 
 def sortie(request):
     logout(request)

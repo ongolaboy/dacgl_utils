@@ -16,4 +16,7 @@ urlpatterns = patterns('',
             name='recherche-traitement'),
         url(r'visite/(?P<usager_id>\d+)/$',views.visite,name='visite'),
         url(r'visite/traitement/$',views.visiteTraitement, name='visite-traitement'),
+        url(r'consigne/(?P<visite_id>\d+)/$',views.consignerDepart),
+        url(r'consigne/traitement/(?P<visite_id>\d+)/$',views.consigneTraitement,\
+                name="consigne-traitement"),
         )

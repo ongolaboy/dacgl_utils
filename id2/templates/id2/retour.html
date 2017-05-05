@@ -1,0 +1,31 @@
+{% extends "id2/base.html" %}
+
+{% block content %}
+<div align="center">
+<h2> Fermeture du ticket</h2>
+	<p>Vérifiez les informations ci-dessous avant confirmation svp</p>
+	<table border=0>
+		<tr>
+			<td>Usager</td>
+			<td>{{nom}} {{prenom}}</td>
+		</tr>
+		<tr>
+			<td>Service</td>
+			<td>{{service}}</td>
+		</tr>
+		<tr>
+			<td>Date arrivée</td>
+			<td>{{arrivee}}</td>
+		</tr>
+	</table>
+	<br />
+	<p>Est-ce que l'usage ci-dessus est-il déjà parti ?</p>
+	<form action="{% url 'consigne-traitement' visite_id %}" method="post">
+		{% csrf_token %}
+		<p><input type="hidden" name="visite" value="{{visite_id}}" />
+		<p><input type="radio" name="DepartAUF" value="Oui" />OUI
+		<input type="radio" checked name="DepartAUF" value="Non" />NON</p>
+		<p><input type="submit" value="Confirmer" /></p>
+	</form>
+</div>
+{% endblock %}

@@ -14,7 +14,7 @@
 	 <table>
 		 <tr><th>Nom</th><th>Lieu</th><th>Motif</th><th>Heure d'arrivée</th></tr>
 		 {% for visite in derniereVisite %}
-		 <tr><td>{{ visite.usager }}</td>
+		 <tr><td><a href="/ident/consigne/{{visite.id}}">{{ visite.usager }}</a></td>
 			 <td>{{ visite.service }}</td>
 			 <td>{{ visite.type_visit }}</td>
 			 <td>{{ visite.date_arrivee }}</td>
