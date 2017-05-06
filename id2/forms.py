@@ -40,7 +40,8 @@ class VisiteForm(forms.Form):
 
     nom = forms.CharField()
     prenom = forms.CharField()
-    service = forms.ModelChoiceField(queryset=Service.objects.all())
+    service = forms.ModelChoiceField(\
+            queryset=Service.objects.all().order_by('nom_serv'))
     motif = forms.CharField(widget=forms.Textarea,
             initial=u"visite")
 
