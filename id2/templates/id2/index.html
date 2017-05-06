@@ -12,12 +12,13 @@
 	 {% if derniereVisite %}
 	 <h3> <a name="lastvisit">Les 10 dernières visites</a> </h3>
 	 <table>
-		 <tr><th>Nom</th><th>Lieu</th><th>Motif</th><th>Heure d'arrivée</th></tr>
+		 <tr><th>Nom</th><th>Lieu</th><th>Motif</th><th>Heure d'arrivée</th><th>Heure de départ</th></tr>
 		 {% for visite in derniereVisite %}
 		 <tr><td><a href="/ident/consigne/{{visite.id}}">{{ visite.usager }}</a></td>
 			 <td>{{ visite.service }}</td>
 			 <td>{{ visite.type_visit }}</td>
 			 <td>{{ visite.date_arrivee }}</td>
+			 <td>{{ visite.date_deprt }}</td>
 		 </tr>
 		 {% endfor %}
 	 </table>

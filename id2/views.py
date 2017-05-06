@@ -45,7 +45,7 @@ def entreeVerification(request):
         if user is not None:
             if user.is_active:
                 login(request,user)
-                return HttpResponseRedirect('/ident/inscription/')
+                return HttpResponseRedirect('/ident/')
             else :
                 # compte désactivé
                 return HttpResponseForbidden('/ident/')
@@ -220,7 +220,7 @@ def visiteTraitement(request):
         form = VisiteForm()
         return render(request,'id2/visite.html',{'form':form})
 
-@login_required(login_url='/ident/')
+@login_required(login_url='/ident/login/')
 def consignerDepart(request,visite_id):
     try :
         v = Visite.objects.get(pk=visite_id)
