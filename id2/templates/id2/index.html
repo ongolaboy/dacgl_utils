@@ -38,8 +38,8 @@
 	 <h3> <a name="récap">Récapitulatif</a></h3>
 	 <table>
 		 <tr><td>Nombre d'usagers enregistrés</td><td> {{ usager }}</td></tr>
-                 <tr><td>Nombre de visite ce mois</td><td>{{ nVisitCeMois }}</td></tr>
-		 <tr><td>Nombre de visite cette semaine</td><td></td></tr>
+                 <tr><td>Nombre de visite ce mois</td><td>{{ visitCeMois | length }}</td></tr>
+		 <tr><td>Nombre de visite cette semaine</td><td>{{ visitSemaine | length }}</td></tr>
 	 </table>
 
 {% endblock %}

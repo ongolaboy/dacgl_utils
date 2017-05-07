@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 
-from datetime import date,datetime
+from datetime import date,datetime,timedelta
 from pytz import timezone
 
 from django.contrib.auth import authenticate,login,logout
@@ -19,16 +19,26 @@ def index(request):
     u = Usager.objects.all().count()
     last_visit = Visite.objects.all().order_by('-date_arrivee')[:10]
     last_inscrit = Usager.objects.all().order_by('-id')[:10]
+    fuseau = timezone(TIME_ZONE)
+    t = datetime.now(fuseau)
     #mois en cours
-    m = date.today().month
-    nbr_visit_current_month =\
-            Visite.objects.filter(date_arrivee__month=m).count()
+    visitCeMois =\
+            Visite.objects.filter(date_arrivee__month=t.month)
+    #détermination semaine
+    # on cherche à avoir la date du premier jour de la semaine
+    #et on revient au lundi après 0h00 et qques secondes
+    debutSemaine = (t - timedelta(days=t.weekday())).replace(
+            hour=0,minute=0)
+    visitSemaine = Visite.objects.filter(
+            date_arrivee__gte=debutSemaine
+            )
 
     contexte = {
             'usager':u,
             'derniereVisite': last_visit,
             'dernierInscrit': last_inscrit,
-            'nVisitCeMois' : nbr_visit_current_month,
+            'visitCeMois' : visitCeMois,
+            'visitSemaine': visitSemaine,
             }
 
     return render(request,'id2/index.html',contexte)
