@@ -9,7 +9,7 @@ body {
     /*font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif; */
     font-family: "Open Sans", sans-serif;
     color: #333;
-    background: #fad687;
+    background: #fad687 no-repeat top/10% url("../img/logo_AUF_RVB.png");
 }
 
 /* Custom DACGL */
@@ -21,6 +21,11 @@ div.gauche {
 div.droite {
 	float: right;
 }
+/*
+#piedDePage {
+	background: url("../img/pied_logo2017.jpg");
+}
+	*/
 
 /* LINKS */
 

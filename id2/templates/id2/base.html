@@ -9,6 +9,13 @@
 	</head>
 
   <body>
+	  <div id"menu0" align="left" float="left">
+	   <p>
+           <a href="/ident/">Accueil</a> |<a
+	      href="{% url 'inscription' %}"> Inscription</a> | 
+	     <a href="{% url 'recherche' %}">Effectuez une recherche</a>
+	   </p>
+	  </div>
           <div id="side" align="right">
                   {% block sidebar %}
 
@@ -38,9 +45,11 @@
 
 	  <div align="center" id="piedDePage">
 	   <hr>
+	   <p>
            <a href="/ident/">Accueil</a> |<a
 	      href="{% url 'inscription' %}"> Inscription</a> | 
 	     <a href="{% url 'recherche' %}">Effectuez une recherche</a>
+	   </p>
 	  </div>
 	 
 	  {% endblock %}
