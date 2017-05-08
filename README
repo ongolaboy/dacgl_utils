@@ -1,5 +1,10 @@
 DACGL - Utils
 
 
-0n va s'atteler à contrôler les entrées à la direction
-On emploie pour le moment l'app _id2_.
+Objectifs
+
+* Enregistrer les usagers qui se présentent à l'entrée du bâtiment
+ * Infos : nom,prénom,sexe,tel,courriel (les 3 premières obligatoires)
+* Consigner chaque visite en indiquant le lieu,le motif et bien sur l'heure
+ * Pas obligatoire mais on peut également consigner l'heure de départ
+* Confectionner de petites stats

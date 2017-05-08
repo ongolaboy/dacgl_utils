@@ -17,7 +17,7 @@ def index(request):
     
     contexte = {}
     u = Usager.objects.all().count()
-    last_visit = Visite.objects.all().order_by('-date_arrivee')[:10]
+    last_visit = Visite.objects.all().order_by('-date_arrivee')[:20]
     last_inscrit = Usager.objects.all().order_by('-id')[:10]
     fuseau = timezone(TIME_ZONE)
     t = datetime.now(fuseau)

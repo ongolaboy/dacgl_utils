@@ -9,7 +9,8 @@
 	</head>
 
   <body>
-	  <div id"menu0" align="left" float="left">
+	  <div>
+	  <div id"menu0" float="left">
 	   <p>
            <a href="/ident/">Accueil</a> |<a
 	      href="{% url 'inscription' %}"> Inscription</a> | 
@@ -37,6 +38,7 @@
 
 		{% endblock %}
                 </div>
+	  </div>
 
           <div id="content">
                   {% block content %}{% endblock %}
