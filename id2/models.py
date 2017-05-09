@@ -1,8 +1,10 @@
 #-*- coding: utf-8 -*-
 
 from datetime import datetime
+from pytz import timezone
 
 from django.db import models
+from dacgl.settings import TIME_ZONE
 
 class Service(models.Model):
     nom_serv = models.CharField("Service", max_length=30)
@@ -57,7 +59,8 @@ class Usager(models.Model):
 #on devrait pourvoir faire les statistiques des visites par usager et par service
 class Visite(models.Model):
     date_arrivee = models.DateTimeField('Heure Arrivée',\
-            auto_now_add=True)
+            default=datetime.now(timezone(TIME_ZONE)),
+                auto_now_add=True)
     date_deprt = models.DateTimeField('Heure Depart',blank=True,null=True)
 #            default=datetime.today().replace(year=datetime.today().hour+1)
     type_visit = models.TextField('Objet de la Visite', default='AUF'
