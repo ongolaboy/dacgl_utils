@@ -143,11 +143,13 @@ def rechercheTraitement(request):
         form = RechercheForm(request.GET)
         if form.is_valid():
             terme = form.cleaned_data['terme']
-            resultat = Usager.objects.filter(nom__icontains=terme)
+            resultat = Usager.objects.filter(nom__icontains=terme).\
+                    order_by('nom')
             #on cherche les départs dont les dates ne sont pas
             #encore consignés
             res_depart = Visite.objects.filter(\
-                    usager__nom__icontains=terme).filter(date_deprt=None)
+                    usager__nom__icontains=terme).filter(date_deprt=None).\
+                    order_by('usager','date_arrivee')
             contexte = {'resultat': resultat,
                     'res_depart': res_depart,
                     'terme': terme,
