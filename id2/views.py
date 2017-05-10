@@ -144,12 +144,17 @@ def rechercheTraitement(request):
         if form.is_valid():
             terme = form.cleaned_data['terme']
             resultat = Usager.objects.filter(nom__icontains=terme)
+            #on cherche les départs dont les dates ne sont pas
+            #encore consignés
+            res_depart = Visite.objects.filter(\
+                    usager__nom__icontains=terme).filter(date_deprt=None)
             contexte = {'resultat': resultat,
+                    'res_depart': res_depart,
                     'terme': terme,
                     }
 
             return render(request,
-                    'id2/resultat.html',
+                    'id2/resultat2.html',
                    contexte,
                     status=302
                     )
