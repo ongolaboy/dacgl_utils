@@ -1,14 +1,13 @@
 #-*- coding: utf-8 -*-
 
 from datetime import date,datetime,timedelta
-from pytz import timezone
 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
+from django.utils import timezone
 
-from dacgl.settings import TIME_ZONE
 from id2.forms import InscriptionForm,VisiteForm,RechercheForm
 from id2.models import Usager,PieceId,Visite,Service
 
@@ -19,8 +18,7 @@ def index(request):
     u = Usager.objects.all().count()
     last_visit = Visite.objects.all().order_by('-date_arrivee')[:20]
     last_inscrit = Usager.objects.all().order_by('-id')[:10]
-    fuseau = timezone(TIME_ZONE)
-    t = datetime.now(fuseau)
+    t = timezone.now()
     #mois en cours
     visitCeMois =\
             Visite.objects.filter(date_arrivee__month=t.month)
@@ -266,12 +264,27 @@ def consigneTraitement(request,visite_id):
             #TODO songer à un meilleur contrôle
             return HttpResponseRedirect('/ident')
         else:
-            c.date_deprt = datetime.now(timezone(TIME_ZONE))
+            c.date_deprt = timezone.now()
             c.save(update_fields=['date_deprt'])
             return HttpResponseRedirect('/ident/')
     elif etat == 'Non':
         #rien à faire on revient à l'accueil
         return HttpResponseRedirect('/ident/')
+
+def serviceRecherche(request,service_id):
+    form = RechercheForm()
+    #on collecte tous les usagers qui se sont déjà rendus
+    #au moins 1 fois dans 1 service donné
+    visite = Visite.objects.filter(service=service_id).\
+            order_by('-date_arrivee','usager__nom')
+    svce_nom = Service.objects.get(pk=service_id).nom_serv
+    contexte = {'service_nom': svce_nom,
+            'visite':visite,
+            'form':form,}
+    return render(request,'id2/service-recherche.html',contexte)
+
+def serviceAbonneAjout(request,service_id,abonne_id):
+    pass
 
 def sortie(request):
     logout(request)

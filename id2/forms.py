@@ -46,4 +46,4 @@ class VisiteForm(forms.Form):
             initial=u"visite")
 
 class RechercheForm(forms.Form):
-    terme = forms.CharField()
+    nom = forms.CharField()

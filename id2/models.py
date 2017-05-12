@@ -1,11 +1,9 @@
 #-*- coding: utf-8 -*-
 
 from datetime import datetime
-from pytz import timezone
 
 from django.db import models
-from django.utils import timezone as dj_timezone
-from dacgl.settings import TIME_ZONE
+from django.utils import timezone
 
 class Service(models.Model):
     nom_serv = models.CharField("Service", max_length=30)
@@ -60,7 +58,7 @@ class Usager(models.Model):
 #on devrait pourvoir faire les statistiques des visites par usager et par service
 class Visite(models.Model):
     date_arrivee = models.DateTimeField('Heure Arrivée',\
-            default=datetime.now(timezone(TIME_ZONE)),
+            default=timezone.now(),
                 auto_now_add=True)
     date_deprt = models.DateTimeField('Heure Depart',blank=True,null=True)
 #            default=datetime.today().replace(year=datetime.today().hour+1)
@@ -83,10 +81,10 @@ class Abonne(models.Model):
     photo = models.ImageField(upload_to="id2/photos/%Y/%m/%d",
             null=True,blank=True,
             )
-    inscription = models.DateTimeField(default=dj_timezone.now(),
+    inscription = models.DateTimeField(default=timezone.now(),
             auto_now_add=True)
     expiration = models.DateField(blank=True, null=True)
-    derniere_modif = models.DateTimeField(default=dj_timezone.now(),
+    derniere_modif = models.DateTimeField(default=timezone.now(),
             auto_now=True)
 
     class Meta:

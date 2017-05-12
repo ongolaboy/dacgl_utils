@@ -1,0 +1,32 @@
+{% extends  "id2/base.html" %}
+
+{% block content %}
+<div align="center">
+	<form action="{% url 'recherche-traitement' %}" method="get">
+	    {% csrf_token %}
+	    {{ form.as_p }}
+	    <input type="submit" value="Rechercher" />
+	</form>
+</div>
+<hr />
+<div>
+	{% if visite %}
+	<p> Au total {{ visite.count }} pour le {{ service_nom }}
+	<table>
+		<tr>
+			<th>NOM</th>
+			<th>Date arrivée</th>
+			<th>Date départ</th>
+		</tr>
+		{% for v in visite %}
+		<tr>
+			<td><a href="{{v.id}}">{{v.usager}}</a></td>
+			<td>{{v.date_arrivee}}</td>
+			<td>{{v.date_deprt}}</td>
+		{% endfor %}
+	</table>
+
+	{% endif %}
+</div>
+
+{% endblock %}
