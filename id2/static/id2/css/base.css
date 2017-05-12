@@ -3,13 +3,13 @@
 */
 
 body {
-    margin: 0;
+    margin: 1em;
     padding: 0;
     font-size: 12px;
     /*font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif; */
     font-family: "Open Sans", sans-serif;
     color: #333;
-    background: #fad687 no-repeat top/10% url("../img/logo_AUF_RVB.png");
+    background: #fad687 no-repeat top/6% url("../img/logo_AUF_RVB.png");
 }
 
 /* Custom DACGL */
