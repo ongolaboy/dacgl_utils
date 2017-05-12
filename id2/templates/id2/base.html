@@ -14,8 +14,18 @@
 	   <p>
            <a href="/ident/">Accueil</a> |<a
 	      href="{% url 'inscription' %}"> Inscription</a> | 
-	     <a href="{% url 'recherche' %}">Effectuez une recherche</a>
-	   </p>
+	     <a href="{% url 'recherche' %}">Recherche</a>
+	   </p><br />
+	   {% if user.is_staff %}
+	    {% if service %}
+	    <p>
+	    Les services:
+	    {% for s in service %}
+	    <a href="/ident/service/{{s.id}}/recherche/">{{s.nom_serv}}</a> |
+	    {% endfor %}
+	    </p>
+	    {% endif %}
+	   {% endif %}
 	  </div>
           <div id="side" align="right">
                   {% block sidebar %}

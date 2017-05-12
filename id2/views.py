@@ -15,6 +15,7 @@ from id2.models import Usager,PieceId,Visite,Service
 def index(request):
     
     contexte = {}
+    svce = Service.objects.all().order_by('nom_serv')
     u = Usager.objects.all().count()
     last_visit = Visite.objects.all().order_by('-date_arrivee')[:20]
     last_inscrit = Usager.objects.all().order_by('-id')[:10]
@@ -33,6 +34,7 @@ def index(request):
 
     contexte = {
             'usager':u,
+            'service':svce,
             'derniereVisite': last_visit,
             'dernierInscrit': last_inscrit,
             'visitCeMois' : visitCeMois,
@@ -140,17 +142,17 @@ def rechercheTraitement(request):
     if request.method == 'GET':
         form = RechercheForm(request.GET)
         if form.is_valid():
-            terme = form.cleaned_data['terme']
-            resultat = Usager.objects.filter(nom__icontains=terme).\
+            nom = form.cleaned_data['nom']
+            resultat = Usager.objects.filter(nom__icontains=nom).\
                     order_by('nom')
             #on cherche les départs dont les dates ne sont pas
             #encore consignés
             res_depart = Visite.objects.filter(\
-                    usager__nom__icontains=terme).filter(date_deprt=None).\
+                    usager__nom__icontains=nom).filter(date_deprt=None).\
                     order_by('usager','date_arrivee')
             contexte = {'resultat': resultat,
                     'res_depart': res_depart,
-                    'terme': terme,
+                    'terme': nom,
                     }
 
             return render(request,
@@ -279,9 +281,13 @@ def serviceRecherche(request,service_id):
             order_by('-date_arrivee','usager__nom')
     svce_nom = Service.objects.get(pk=service_id).nom_serv
     contexte = {'service_nom': svce_nom,
+            'service_id':service_id,
             'visite':visite,
             'form':form,}
     return render(request,'id2/service-recherche.html',contexte)
+
+def serviceRechercheTraitement(request):
+    pass
 
 def serviceAbonneAjout(request,service_id,abonne_id):
     pass

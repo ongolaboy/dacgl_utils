@@ -2,29 +2,40 @@
 
 {% block content %}
 <div align="center">
-	<form action="{% url 'recherche-traitement' %}" method="get">
+	{% if message_erreur %}
+	<p><strong> {{ message_erreur }} </strong></p>
+	{% endif %}
+{% comment 'TODO comprendre ce qui ne va pas' %}
+	<form action="{% url 'recherche-traitement' %}" method="GET">
 	    {% csrf_token %}
 	    {{ form.as_p }}
+    	    <input type="hidden" name="service_id" value="{{service_id}}">
 	    <input type="submit" value="Rechercher" />
 	</form>
+	    {% endcomment %}
 </div>
 <hr />
 <div>
 	{% if visite %}
-	<p> Au total {{ visite.count }} pour le {{ service_nom }}
+	<p> Au total {{ visite.count }} visite(s) pour le {{ service_nom }}.
 	<table>
 		<tr>
 			<th>NOM</th>
+			<th>Motif</th>
 			<th>Date arrivée</th>
 			<th>Date départ</th>
 		</tr>
 		{% for v in visite %}
 		<tr>
-			<td><a href="{{v.id}}">{{v.usager}}</a></td>
+			<td>{{v.usager}}</td>
+			<td>{{v.type_visit}}</td>
 			<td>{{v.date_arrivee}}</td>
 			<td>{{v.date_deprt}}</td>
 		{% endfor %}
 	</table>
+
+	{% else %}
+	<p> Pas de résultats! </p>
 
 	{% endif %}
 </div>
