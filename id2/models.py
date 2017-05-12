@@ -4,6 +4,7 @@ from datetime import datetime
 from pytz import timezone
 
 from django.db import models
+from django.utils import timezone as dj_timezone
 from dacgl.settings import TIME_ZONE
 
 class Service(models.Model):
@@ -71,3 +72,26 @@ class Visite(models.Model):
        
     def __unicode__(self):
         return "{0} s'est rendu au {1}".format(self.usager, self.service)
+
+class Abonne(models.Model):
+    usager = models.ForeignKey(Usager)
+    service = models.ForeignKey(Service)
+    matricule = models.CharField(\
+            u"Identifiant de l'abonné",max_length=60,default=0,\
+            help_text=u"Code généré suivant les règles du service",
+            unique=True)
+    photo = models.ImageField(upload_to="id2/photos/%Y/%m/%d",
+            null=True,blank=True,
+            )
+    inscription = models.DateTimeField(default=dj_timezone.now(),
+            auto_now_add=True)
+    expiration = models.DateField(blank=True, null=True)
+    derniere_modif = models.DateTimeField(default=dj_timezone.now(),
+            auto_now=True)
+
+    class Meta:
+        unique_together = (('usager','service'),) #absolument
+
+    def __unicode__(self):
+        return "Matricule: %s |Date Inscription: %s" % \
+                (self.matricule,self.inscription)
