@@ -19,9 +19,9 @@
 	   {% if user.is_staff %}
 	    {% if service %}
 	    <p>
-	    Les services:
+	    Les services:<br />
 	    {% for s in service %}
-	    <a href="/ident/service/{{s.id}}/recherche/">{{s.nom_serv}}</a> |
+	    <a href="/ident/service/{{s.id}}/">{{s.nom_serv}}</a> |
 	    {% endfor %}
 	    </p>
 	    {% endif %}

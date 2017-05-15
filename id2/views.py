@@ -273,6 +273,19 @@ def consigneTraitement(request,visite_id):
         #rien à faire on revient à l'accueil
         return HttpResponseRedirect('/ident/')
 
+def serviceIndex(request,service_id):
+    form = RechercheForm()
+    #on collecte tous les usagers qui se sont déjà rendus
+    #au moins 1 fois dans 1 service donné
+    visite = Visite.objects.filter(service=service_id).\
+            order_by('-date_arrivee','usager__nom')
+    svce_nom = Service.objects.get(pk=service_id).nom_serv
+    contexte = {'service_nom': svce_nom,
+            'service_id':service_id,
+            'visite':visite,
+            'form':form,}
+    return render(request,'id2/service-index.html',contexte)
+
 def serviceRecherche(request,service_id):
     form = RechercheForm()
     #on collecte tous les usagers qui se sont déjà rendus
@@ -289,8 +302,34 @@ def serviceRecherche(request,service_id):
 def serviceRechercheTraitement(request):
     pass
 
-def serviceAbonneAjout(request,service_id,abonne_id):
-    pass
+def serviceAbonnement(request):
+    if request.method == 'GET':
+        form = RechercheForm(request.GET)
+        if form.is_valid():
+            nom = form.cleaned_data['nom']
+            usager_visit = Usager.objects.filter(nom__icontains=nom)
+            if len(usager_visit) == 0:
+                message = u"Aucun usager enregistré à ce nom"
+                contexte = {'message_erreur': message,
+                        'form': form}
+                return render(request,'id2/service-index.html',contexte)
+            else:
+                svce = request.GET['service_id']
+                usager_service = \
+                        usager_visit.filter(visite__service_id=svce)
+                if len(usager_service) == 0:
+                    # pas d'usager avec ce nom s'étant rendu au service x
+                    return render(request,'id2/service-index.html')
+                else:
+                    contexte = {'usager_service': usager_service,
+                            'service_id': svce,
+                            }
+                    return render(request,'id2/service-abonnement.html',
+                            contexte)
+
+        return HttpResponseRedirect('/ident/')
+    else:
+        return HttpResponseRedirect('/ident/')
 
 def sortie(request):
     logout(request)
