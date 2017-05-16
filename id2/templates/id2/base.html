@@ -17,10 +17,10 @@
 	     <a href="{% url 'recherche' %}">Recherche</a>
 	   </p><br />
 	   {% if user.is_staff %}
-	    {% if service %}
+	    {% if services %}
 	    <p>
 	    Les services:<br />
-	    {% for s in service %}
+	    {% for s in services %}
 	    <a href="/ident/service/{{s.id}}/">{{s.nom_serv}}</a> |
 	    {% endfor %}
 	    </p>

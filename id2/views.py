@@ -36,7 +36,7 @@ def index(request):
 
     contexte = {
             'usager':u,
-            'service':svce,
+            'services':svce,
             'derniereVisite': last_visit,
             'dernierInscrit': last_inscrit,
             'visitCeMois' : visitCeMois,
