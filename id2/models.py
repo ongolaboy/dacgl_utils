@@ -71,6 +71,8 @@ class Visite(models.Model):
     def __unicode__(self):
         return "{0} s'est rendu au {1}".format(self.usager, self.service)
 
+#TODO créer une classe abstraite pour les abonnés
+# et disposer d'une classe d'abonné CNF et une autre fablab
 class Abonne(models.Model):
     usager = models.ForeignKey(Usager)
     service = models.ForeignKey(Service)

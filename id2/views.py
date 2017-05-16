@@ -343,9 +343,18 @@ def serviceAbonneAjout(request,service_id,usager_id):
 
     u = Usager.objects.get(pk=usager_id)
     service = Service.objects.get(pk=service_id)
-    form = AbonnementForm(initial={'nom':u.nom,
-        'prenom':u.prenom,
-        })
+    try:
+        a = Abonne.objects.get(usager_id=u.id,
+                service_id=service.id)
+        form = AbonnementForm(initial={'nom':u.nom,
+            'prenom':u.prenom,
+            'matricule':a.matricule,
+            })
+    except Abonne.DoesNotExist:
+        form = AbonnementForm(initial={'nom':u.nom,
+            'prenom':u.prenom,
+            })
+
     contexte = {'form':form,
         'serviceX':service,
         'usager_id':usager_id,
@@ -371,21 +380,33 @@ def serviceAbonnementTraitement(request):
             try:
                 abo = Abonne.objects.get(usager_id=usager_id,\
                         service_id=service_id)
+                abo.expiration = expir
             except Abonne.DoesNotExist:
                 abo = Abonne(usager_id=usager_id,
                         service_id=service_id,
                         matricule = mat,
                         photo = photo,
-                        #expiration = XXX,
+                        expiration = expir,
                         )
                 abo.save()
+                retour = '/ident/service/%s/' % service_id
+                return  HttpResponseRedirect(retour)
 
-            #TODO mettre à jour les infos d'abonné existant
+            abo.save(update_fields=['expiration','photo'])
             retour = '/ident/service/%s/' % service_id
             return  HttpResponseRedirect(retour)
 
         else:
-            return HttpResponseRedirect('/ident/')
+            contexte = {
+                    'form':form,
+                    'message_erreur':u'formulaire non valide',
+                    }
+            #return HttpResponseRedirect('/ident/')
+            return render(request,
+                    'id2/service-abonnement-ajout.html',
+                    contexte,
+                    status=303,
+                    )
     else:
         return HttpResponseRedirect(reverse('index'))
 
