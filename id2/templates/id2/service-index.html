@@ -17,7 +17,30 @@
 </div>
 <hr />
 <div>
+	{% if abonne %}
+	<h2>Etat des abonnements</h2>
+	<p> Au total {{abonne.count}}</p>
+	<table>
+		<tr>
+			<th>NOM</th>
+			<th>MATRICULE</th>
+			<th>Date d'inscription</th>
+			<th>Expiration</th>
+			<th>Dernière modification</th>
+		</tr>
+		{% for a in abonne %}
+		<tr>
+			<td><a href="/ident/service/{{service_id}}/abonne/{{a.id}}/">{{a.usager}}</a></td>
+			<td>{{a.matricule}}</td>
+			<td>{{a.inscription}}</td>
+			<td>{{a.expiration}}</td>
+			<td>{{a.derniere_modif}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	{% endif %}
 	{% if visite %}
+	<h2>Etat des visites</h2>
 	<p> Au total {{ visite.count }} visite(s) pour le {{ service_nom }}.
 	<table>
 		<tr>

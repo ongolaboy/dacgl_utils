@@ -2,6 +2,7 @@
 
 from datetime import date,datetime,timedelta
 
+from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
@@ -9,7 +10,8 @@ from django.shortcuts import render,get_object_or_404
 from django.utils import timezone
 
 from id2.forms import InscriptionForm,VisiteForm,RechercheForm
-from id2.models import Usager,PieceId,Visite,Service
+from id2.forms import AbonnementForm
+from id2.models import Usager,PieceId,Visite,Service,Abonne
 
 
 def index(request):
@@ -280,10 +282,14 @@ def serviceIndex(request,service_id):
     visite = Visite.objects.filter(service=service_id).\
             order_by('-date_arrivee','usager__nom')
     svce_nom = Service.objects.get(pk=service_id).nom_serv
+    abonne = Abonne.objects.filter(service=service_id).\
+            order_by('-derniere_modif')
     contexte = {'service_nom': svce_nom,
             'service_id':service_id,
             'visite':visite,
-            'form':form,}
+            'form':form,
+            'abonne':abonne,
+            }
     return render(request,'id2/service-index.html',contexte)
 
 def serviceRecherche(request,service_id):
@@ -330,6 +336,58 @@ def serviceAbonnement(request):
         return HttpResponseRedirect('/ident/')
     else:
         return HttpResponseRedirect('/ident/')
+
+def serviceAbonneAjout(request,service_id,usager_id):
+    """Nouvel abonnement ou mise à jour
+    """
+
+    u = Usager.objects.get(pk=usager_id)
+    service = Service.objects.get(pk=service_id)
+    form = AbonnementForm(initial={'nom':u.nom,
+        'prenom':u.prenom,
+        })
+    contexte = {'form':form,
+        'serviceX':service,
+        'usager_id':usager_id,
+        }
+
+    return render(request,
+            'id2/service-abonnement-ajout.html',
+            contexte,
+            )
+
+def serviceAbonnementTraitement(request):
+    if request.method == 'POST':
+        form = AbonnementForm(request.POST,request.FILES)
+        if form.is_valid():
+            n = form.cleaned_data['nom']
+            p = form.cleaned_data['prenom']
+            mat = form.cleaned_data['matricule']
+            expir = form.cleaned_data['expiration']
+            photo = form.cleaned_data['photo']
+            usager_id = request.POST['usager_id']
+            service_id = request.POST['service_id']
+
+            try:
+                abo = Abonne.objects.get(usager_id=usager_id,\
+                        service_id=service_id)
+            except Abonne.DoesNotExist:
+                abo = Abonne(usager_id=usager_id,
+                        service_id=service_id,
+                        matricule = mat,
+                        photo = photo,
+                        #expiration = XXX,
+                        )
+                abo.save()
+
+            #TODO mettre à jour les infos d'abonné existant
+            retour = '/ident/service/%s/' % service_id
+            return  HttpResponseRedirect(retour)
+
+        else:
+            return HttpResponseRedirect('/ident/')
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
 def sortie(request):
     logout(request)

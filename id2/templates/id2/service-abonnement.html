@@ -12,9 +12,10 @@
 	{% for u in usager_service %}
 	<tr>
 		<td><a href="/ident/service/{{service_id}}/abonnement/{{u.id}}/">{{u.nom}}</a></td>
+		<td>{{u.prenom}}</td>
+		<td>{{u.sexe}}</td>
 	</tr>
 	{% endfor %}
 </table>
 {% endif %}
-Got it ! djigga.
 {% endblock %}

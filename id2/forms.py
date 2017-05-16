@@ -47,3 +47,13 @@ class VisiteForm(forms.Form):
 
 class RechercheForm(forms.Form):
     nom = forms.CharField()
+
+class AbonnementForm(forms.Form):
+    nom = forms.CharField()
+    prenom = forms.CharField()
+    matricule = forms.CharField(max_length=60,
+            #FIXME : pourquoi avec les accents ça génère une erreur ?
+            #(unicode error) 'utf8' codec can't decode byte 0xe9 ...
+            help_text=u"Code genere suivants les regles du service")
+    photo = forms.ImageField(required=False)
+    expiration = forms.DateField()

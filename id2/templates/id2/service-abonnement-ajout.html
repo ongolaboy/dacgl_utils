@@ -1,0 +1,12 @@
+{% extends  "id2/base.html" %}
+
+{% block content %}
+<h1> {{service.nom_serv}} </h1>
+<form method="POST" action="{% url 'service-abonnement-traitement' %}" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="hidden" name="service_id" value="{{serviceX.id}}">
+	<input type="hidden" name="usager_id" value="{{usager_id}}">
+	<input type="submit" value="Mettre à jour">
+</form>
+{% endblock %}
