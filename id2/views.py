@@ -21,10 +21,12 @@ def index(request):
     u = Usager.objects.all().count()
     last_visit = Visite.objects.all().order_by('-date_arrivee')[:20]
     last_inscrit = Usager.objects.all().order_by('-id')[:10]
-    t = timezone.now()
     #mois en cours
+    fus = timezone.get_current_timezone()
+    moment = datetime.now(fus)
+    debut_mois = moment.replace(day=1,hour=0,minute=0)
     visitCeMois =\
-            Visite.objects.filter(date_arrivee__month=t.month)
+            Visite.objects.filter(date_arrivee__gte=debut_mois)
     #détermination semaine
     # on cherche à avoir la date du premier jour de la semaine
     #et on revient au lundi après 0h00 et qques secondes
