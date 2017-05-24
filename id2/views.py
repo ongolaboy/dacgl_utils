@@ -30,7 +30,7 @@ def index(request):
     #détermination semaine
     # on cherche à avoir la date du premier jour de la semaine
     #et on revient au lundi après 0h00 et qques secondes
-    debutSemaine = (t - timedelta(days=t.weekday())).replace(
+    debutSemaine = (moment - timedelta(days=moment.weekday())).replace(
             hour=0,minute=0)
     visitSemaine = Visite.objects.filter(
             date_arrivee__gte=debutSemaine
