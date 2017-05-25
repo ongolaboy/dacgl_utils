@@ -14,7 +14,7 @@ class UsagerAdmin(admin.ModelAdmin):
 class VisiteAdmin(admin.ModelAdmin):
     list_display = ('usager','date_arrivee','date_deprt',
             'service','type_visit')
-    search_fields = ['usager']
+    search_fields = ['usager__nom']
     list_filter = ['service','date_arrivee','date_deprt',
             ]
 

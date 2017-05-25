@@ -18,7 +18,7 @@ def index(request):
     
     contexte = {}
     svce = Service.objects.all().order_by('nom_serv')
-    u = Usager.objects.all().count()
+    u = Usager.objects.count()
     last_visit = Visite.objects.all().order_by('-date_arrivee')[:20]
     last_inscrit = Usager.objects.all().order_by('-id')[:10]
     #mois en cours

@@ -44,7 +44,7 @@ visit_service = {}
 for svce in service:
     visit_service[svce] = visit_semaine.filter(service__nom_serv=svce)
 
-usager_total = Usager.objects.all().count()
+usager_total = Usager.objects.count()
 
 # section envoi courriel
 
