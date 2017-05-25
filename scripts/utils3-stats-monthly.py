@@ -47,34 +47,43 @@ def collecte():
     Le script sera lancé le 1er jour du mois suivant.
     """
 
-    dacgl_stats = {}
+    from django.db.models import Count
+
+    dacgl_stats = []
 
 
-    debut0 = datetime.now(tz=timezone.get_current_timezone())
-    debut = debut0.replace(month=debut0.month-1,
+    t_actuel = datetime.now(tz=timezone.get_current_timezone())
+    t_debut_mois_prec = t_actuel.replace(month=t_actuel.month-1,
             day = 1,
             hour = 0,
             minute = 0,
             )
     #pour la fin , on cherche d'abord le dernier jour
     #ensuite on va à 23h
-    fin = (debut0 - timedelta(days=debut0.day)).replace(hour=23)
-    visit_mois = Visite.objects.filter(date_arrivee__range=(debut,fin))
+    t_fin_mois_prec = (t_actuel - timedelta(days=t_actuel.day)).\
+            replace(hour=23)
+    visit_mois_prec = Visite.objects.filter(date_arrivee__range=\
+            (t_debut_mois_prec,t_fin_mois_prec))
 
-    semaine_courante = date.today().isocalendar()[1]
-    date_jour = date.today()
-    mois_prec = date_jour.replace(month=
-    fuseau = timezone.now()
-    debut_semaine = (fuseau - timedelta(days=fuseau.weekday())).\
-            replace(hour=0,minute=0)
+    services = []
+    for s in Service.objects.all():
+        services.append(s.nom_serv)
 
-    visit_semaine = Visite.objects.filter(date_arrivee__gte=debut_semaine)
-    service = ['CNF','fablab']
-    visit_service = {}
-    for svce in service:
-        visit_service[svce] = visit_semaine.filter(service__nom_serv=svce)
+    visit = {}
+    for v in services:
+        visit[v] = visit_mois_prec.filter(service__nom_serv=v).count()
+    visit['TOTAL'] = visit_mois_prec.count()
 
-    usager_total = Usager.objects.all().count()
+    usagers_enreg = {}
+    usagers_enreg['TOTAL'] = Usager.objects.count()
+    usagers_enreg['Courant'] = Usager.objects.filter(\
+            visite__date_arrivee__range=\
+            t_debut_mois_prec,t_fin_mois_prec).count()
+
+    #Usager.objects.annotate(nbr_visit=Count('visite'))
+    #Usager.objects.filter(visite__date_arrivee__range=(debut,maintenant))
+
+    dacgl_stats = [usagers_enreg,visit]
 
     return dacgl_stats
 
