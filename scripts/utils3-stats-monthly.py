@@ -15,6 +15,7 @@ from email.mime.multipart import MIMEMultipart
 
 from django.utils import timezone
 
+
 """
 Collecter des données issues de ces visites
 à l'échelle du mois.
@@ -27,7 +28,7 @@ BASE_DIR = '/home/willy/dacgl'
 sys.path.append(BASE_DIR)
 os.environ["DJANGO_SETTINGS_MODULE"] = "dacgl.settings"
 
-from id2.models import Visite,Usager
+from id2.models import Visite,Usager,Service
 
 django.setup()
 
@@ -78,7 +79,7 @@ def collecte():
     usagers_enreg['TOTAL'] = Usager.objects.count()
     usagers_enreg['Courant'] = Usager.objects.filter(\
             visite__date_arrivee__range=\
-            t_debut_mois_prec,t_fin_mois_prec).count()
+            (t_debut_mois_prec,t_fin_mois_prec)).count()
 
     #Usager.objects.annotate(nbr_visit=Count('visite'))
     #Usager.objects.filter(visite__date_arrivee__range=(debut,maintenant))
@@ -163,9 +164,12 @@ fuseau = 'Africa/Douala'
 s_smtp = "smtp.cm.auf.org"
 from_addr = u'technique@cm.auf.org'
 to_addrs = 'diffusion-bureau@cm.auf.org'
-sujet = 'Informations sur les visites a la DACGL: Mois de %s' % \
-        (t_debut_mois_prec.strftime(%B))
+#sujet = 'Informations sur les visites a la DACGL: Mois de %s' % \
+#        (t_debut_mois_prec.strftime('%B')) TODO t_debut_ pas encore défini
 
 #envoiStats(s_smtp,from_addr,to_addrs,sujet,dacgl_stats)
 
 infos = collecte()
+
+#pense bête
+#len(infos) = 2 . infos[0]['TOTAL']; infos[1]['CNF']
