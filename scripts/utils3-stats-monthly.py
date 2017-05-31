@@ -173,3 +173,51 @@ infos = collecte()
 
 #pense bête
 #len(infos) = 2 . infos[0]['TOTAL']; infos[1]['CNF']
+
+
+
+infoUtiles0 = \
+"""
+Nombre d'usagers au total: %s
+""" % infos[0]['TOTAL']
+
+infoUtiles=''
+for i in infos[1].keys():
+    if i == 'TOTAL':
+        visit_total = infos[1][i]
+    else:
+        infoUtiles += \
+        """
+        <tr>
+         <td>%s </td><td>%s </td>
+        </tr>
+        """ % (i,infos[1][i])
+
+#on positionne le total à la fin
+infoUtiles +=\
+"""
+<tr>
+ <td>%s </td><td>%s </td>
+</tr>
+""" % ('TOTAL',visit_total)
+
+ossature =\
+"""
+<html>
+
+  <head>
+   <title> Stats sur la frequentation - DACGL</title>
+  </head>
+
+  <body>
+    <p>%s</p> <br/>
+    <table border=1>
+      <tr>
+        <th>Service ou bureau</th><th>Nombre visites</th>
+      </tr>
+      %s
+    </table>
+  </body>
+
+</html>
+""" % (infoUtiles0,infoUtiles)
