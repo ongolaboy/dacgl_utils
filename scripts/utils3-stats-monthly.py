@@ -84,13 +84,13 @@ def collecte():
     #Usager.objects.annotate(nbr_visit=Count('visite'))
     #Usager.objects.filter(visite__date_arrivee__range=(debut,maintenant))
 
-    dacgl_stats = [usagers_enreg,visit]
+    dacgl_stats = [usagers_enreg,visit,t_debut_mois_prec]
 
     return dacgl_stats
 
 # section envoi courriel
 
-def envoiStats(s_smtp,from_addr,to_addrs,sujet,fuseau,dacgl_stats):
+def envoiStats(s_smtp,from_addr,to_addrs,sujet,fuseau,msg_utils):
     """
     Envoi des stats à une liste interne
     """
@@ -107,41 +107,13 @@ def envoiStats(s_smtp,from_addr,to_addrs,sujet,fuseau,dacgl_stats):
 
     #create the body of the message
     message = u"""
-    Statistiques des visites a la DACGL pour le mois de %s:\n
-
-    = Nombre d'usagers enregistrés = \n
-     * Au total : %s \n
-     * Pour le mois: %s\n
-
-    = Nombre de visites enregistrées = \n
-
-    Details a l'adresse http://utils2.cm.auf.org/.
-             """ % (dacgl_stats[usagers_enreg['TOTAL']],
-                     dacgl_stats[usagers_enreg['Courant']],
-                     )
+    Veuillez activer l'affichage HTML svp
+    en attendant que nous formations correctement en
+    mode texte
+    """
 
             
-    message_html = """\
-            <html>
-            <head><title>Test</title></head>
-            <body>
-             <h3>Frequence des visites a la DACGL pour la semaine courante</h3>
-              <p>Date du jour: %s </p>
-            <ul>
-             <li>Total des visites: %s</li>
-                 <li>Visites au CNF: %s</li>
-                 <li>Visites au fablab: %s</li>
-             <li>Total des usagers enregistres: %s</li>
-            </ul>
-            <p>Details a l'adresse <a href="http://utils2.cm.auf.org/">
-            http://utils2.cm.auf.org/</a>.
-            </body>
-            </html>
-            """ % (date_jour,visit_semaine.count(),
-                     visit_service['CNF'].count(),
-                     visit_service['fablab'].count(),
-                     usager_total,
-                     )
+    message_html = msg_utils
 
     #record the MIME types
     part1 = MIMEText(message, 'plain')
@@ -160,14 +132,6 @@ def envoiStats(s_smtp,from_addr,to_addrs,sujet,fuseau,dacgl_stats):
         return "Oups :-("
 
 
-fuseau = 'Africa/Douala'
-s_smtp = "smtp.cm.auf.org"
-from_addr = u'technique@cm.auf.org'
-to_addrs = 'diffusion-bureau@cm.auf.org'
-#sujet = 'Informations sur les visites a la DACGL: Mois de %s' % \
-#        (t_debut_mois_prec.strftime('%B')) TODO t_debut_ pas encore défini
-
-#envoiStats(s_smtp,from_addr,to_addrs,sujet,dacgl_stats)
 
 infos = collecte()
 
@@ -201,6 +165,12 @@ infoUtiles +=\
 </tr>
 """ % ('TOTAL',visit_total)
 
+pageWeb=\
+        """
+        <p>Details a l'adresse <a href="http://utils2.cm.auf.org/">
+                    http://utils2.cm.auf.org/</a>.</p>
+"""
+
 ossature =\
 """
 <html>
@@ -217,7 +187,21 @@ ossature =\
       </tr>
       %s
     </table>
+    %s
   </body>
 
 </html>
-""" % (infoUtiles0,infoUtiles)
+""" % (infoUtiles0,infoUtiles,pageWeb)
+
+
+# section expédition du courriel
+
+fuseau = 'Africa/Douala'
+s_smtp = "smtp.cm.auf.org"
+from_addr = u'technique@cm.auf.org'
+to_addrs = 'diffusion-bureau@cm.auf.org'
+sujet = 'Informations sur les visites a la DACGL: Mois de %s' % \
+        infos[2].strftime('%B') #TODO t_debut_ pas encore défini
+msg_utils = ossature
+
+envoiStats(s_smtp,from_addr,to_addrs,sujet,fuseau,msg_utils)
