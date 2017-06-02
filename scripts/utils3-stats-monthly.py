@@ -73,7 +73,10 @@ def collecte():
     visit = {}
     for v in services:
         visit[v] = visit_mois_prec.filter(service__nom_serv=v).count()
+        visit[v+'2'] = visit_mois_prec.filter(service__nom_serv=v).\
+                values('usager').distinct().count()
     visit['TOTAL'] = visit_mois_prec.count()
+    visit['TOTAL2'] = visit_mois_prec.values('usager').distinct().count()
 
     usagers_enreg = {}
     usagers_enreg['TOTAL'] = Usager.objects.count()
@@ -150,12 +153,15 @@ for i in infos[1].keys():
     if i == 'TOTAL':
         visit_total = infos[1][i]
     else:
-        infoUtiles += \
-        """
-        <tr>
-         <td>%s </td><td>%s </td>
-        </tr>
-        """ % (i,infos[1][i])
+        if i =='TOTAL2':
+            visit_total_dist = infos[1][i]
+        else:
+            infoUtiles += \
+            """
+            <tr>
+             <td>%s </td><td>%s </td>
+            </tr>
+            """ % (i,infos[1][i])
 
 #on positionne le total à la fin
 infoUtiles +=\
@@ -163,7 +169,10 @@ infoUtiles +=\
 <tr>
  <td>%s </td><td>%s </td>
 </tr>
-""" % ('TOTAL',visit_total)
+<tr>
+ <td>%s </td><td>%s </td>
+</tr>
+""" % ('TOTAL',visit_total,'TOTAL2',visit_total_dist)
 
 pageWeb=\
         """
@@ -181,6 +190,10 @@ ossature =\
 
   <body>
     <p>%s</p> <br/>
+    <p>Les colonnes avec '2' correspondent aux visites distinctes par
+    personnes</p> <br/>
+    <p>Nous nous excusons pour  le formatage actuel de ces informations</p><br
+    />
     <table border=1>
       <tr>
         <th>Service ou bureau</th><th>Nombre visites</th>
