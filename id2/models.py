@@ -5,11 +5,25 @@ from datetime import datetime
 from django.db import models
 from django.utils import timezone
 
+class Societe(models.Model):
+    """
+    L'AUF reçoit régulièrement des employés d'autres structures.
+    Il est souhaitable de classer ces personnes suivant leur boîte.
+    """
+
+    nom = models.CharField("Nom structure", max_length=30)
+    adresse = models.TextField("Adresse physique")
+    description = models.TextField("Description sommaire")
+    email = models.EmailField(blank=True)
+    telephone = models.IntegerField(blank=True,null=True)
+    site_web = models.URLField(blank=True)
+
+    def __unicode__(self): return self.nom
+
 class Service(models.Model):
     nom_serv = models.CharField("Service", max_length=30)
 
     def __unicode__(self): return self.nom_serv
-
 
 class PieceId(models.Model):
 
@@ -30,7 +44,7 @@ class PieceId(models.Model):
         return 'Piece: %s | id: %s ' % (self.typePiece, self.code)
 
 #un usager peut se rendre dans un ou plusieurs services
-#un service peut recvoir un ou plusieurs usagers
+#un service peut recevoir un ou plusieurs usagers
 class Usager(models.Model):
     """
     Il s'agit ici de toute personne se présentant à la guérite
@@ -52,6 +66,24 @@ class Usager(models.Model):
 
     class Meta:
         unique_together = (('nom','prenom'),) #absolument
+
+class Employe(models.Model):
+    """
+    Catégorie de personnes se présentant dans nos services de la part
+    d'une structure et pour des besoins comme: dépôt de courrier,
+    maintenance de clim, maintenance groupe,...
+    """
+
+    SEXE = (('H','homme'),('F','femme'),)
+    nom = models.CharField("Nom", max_length=50)
+    prenom = models.CharField("Prenoms", max_length=50,default='')
+    sexe = models.CharField(max_length=5,choices=SEXE,default='H')
+    piece = models.ForeignKey(PieceId)
+    structure = models.ForeignKey(Societe)
+    telephone = models.IntegerField(blank=True,null=True)
+    email = models.EmailField(blank=True)
+
+    def __unicode__(self): return self.nom
 
 #une visite correspond a un usager qui vient et part a une date  et heure precise 
 # une visite peut correspondre a un ou plusieurs services

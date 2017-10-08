@@ -1,5 +1,6 @@
 from django.contrib import admin
-from id2.models import Visite,  Usager, Service,PieceId,Abonne
+from id2.models import Visite,  Usager, Service,PieceId,Abonne,\
+        Societe,Employe
 
 class PieceAdmin(admin.ModelAdmin):
     list_display = ['typePiece','date_expiration']
@@ -23,3 +24,5 @@ admin.site.register(PieceId,PieceAdmin)
 admin.site.register(Service)
 admin.site.register(Abonne)
 admin.site.register(Usager,UsagerAdmin)
+admin.site.register(Societe)
+admin.site.register(Employe)
