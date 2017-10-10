@@ -8,3 +8,14 @@ Objectifs
 * Consigner chaque visite en indiquant le lieu,le motif et bien sur l'heure
  * Pas obligatoire mais on peut également consigner l'heure de départ
 * Confectionner de petites stats
+
+
+Scripts
+
+ * djangodracgl_install: sert à installer le projet pour tester en local
+ou éventuellement le déployer (mais ce n'est pas la procédure conséillée)
+
+ * djangodracgl_boot : sert à démarrer le projet sur un port défini
+Pour faciliter l'usage, il faudrait intégrer ce script dans un repertoire
+de binaire (~HOME/bin, /usr/local/bin, ...) et configurer son lancement
+au démarrage.
