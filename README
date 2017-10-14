@@ -7,6 +7,8 @@ Objectifs
  * Infos : nom,prénom,sexe,tel,courriel (les 3 premières obligatoires)
 * Consigner chaque visite en indiquant le lieu,le motif et bien sur l'heure
  * Pas obligatoire mais on peut également consigner l'heure de départ
+* Distinguer dans les visites celles de prestataires venant pour 
+  dépôt courrier, maintenance clim,...
 * Confectionner de petites stats
 
 
