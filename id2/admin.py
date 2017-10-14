@@ -1,6 +1,6 @@
 from django.contrib import admin
 from id2.models import Visite,  Usager, Service,PieceId,Abonne,\
-        Societe,Employe
+        Societe,Employe,VisiteProf
 
 class PieceAdmin(admin.ModelAdmin):
     list_display = ['typePiece','date_expiration']
@@ -19,7 +19,15 @@ class VisiteAdmin(admin.ModelAdmin):
     list_filter = ['service','date_arrivee','date_deprt',
             ]
 
+class VisiteProfAdmin(admin.ModelAdmin):
+    list_display = ('employe','date_arrivee','date_deprt',
+            'service','type_visit')
+    search_fields = ['employe__nom']
+    list_filter = ['service','date_arrivee','date_deprt',
+            ]
+
 admin.site.register(Visite,VisiteAdmin)
+admin.site.register(VisiteProf,VisiteProfAdmin)
 admin.site.register(PieceId,PieceAdmin)
 admin.site.register(Service)
 admin.site.register(Abonne)

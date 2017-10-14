@@ -52,11 +52,12 @@ class VisiteForm(forms.Form):
             queryset=Service.objects.all().order_by('nom_serv'))
     motif = forms.CharField(widget=forms.Textarea,
             initial=u"visite")
+    categorie = forms.CharField(help_text="Type de visiteur")
 
 class RechercheForm(forms.Form):
     nom = forms.CharField()
     employe = forms.BooleanField(help_text=\
-            "<br>Veuillez cocher si employe",
+            u"<br>Veuillez cocher s'il s'agit d'un employe",
             required=False)
 
 class AbonnementForm(forms.Form):

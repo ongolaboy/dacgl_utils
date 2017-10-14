@@ -266,7 +266,8 @@ def visite(request,cat_visiteur,visiteur_id):
     if cat_visiteur == 'usager' :
         try :
             u = Usager.objects.get(pk=visiteur_id)
-            data = {'nom': u.nom, 'prenom': u.prenom}
+            data = {'nom': u.nom, 'prenom': u.prenom,
+                    'categorie': cat_visiteur}
             #on lie les données au formulaire
             form = VisiteForm(data)
 
@@ -286,7 +287,8 @@ def visite(request,cat_visiteur,visiteur_id):
     elif cat_visiteur == 'employe' :
         try :
             u = Employe.objects.get(pk=visiteur_id)
-            data = {'nom': u.nom, 'prenom': u.prenom}
+            data = {'nom': u.nom, 'prenom': u.prenom,
+                    'categorie': cat_visiteur}
             #on lie les données au formulaire
             form = VisiteForm(data)
 
@@ -314,22 +316,50 @@ def visiteTraitement(request):
             p = form.cleaned_data['prenom']
             s = form.cleaned_data['service']
             m = form.cleaned_data['motif']
+            c = form.cleaned_data['categorie']
 
-            try:
-                u = Usager.objects.get(nom=n,prenom=p)
-                v = Visite(usager=u,
-                        service=Service.objects.get(nom_serv=s),
-                        type_visit=m)
-                v.save()
-                contexte = {'nom':u.nom,
-                        'num':v.id,
-                        }
-                return render(request,'id2/visiteur-enregistre.html',\
-                        contexte,status=302)
+            if c == 'usager':
+                try:
+                    u = Usager.objects.get(nom=n,prenom=p)
+                    v = Visite(usager=u,
+                            service=Service.objects.get(nom_serv=s),
+                            type_visit=m)
+                    v.save()
+                    contexte = {'nom':u.nom,
+                            'num':v.id,
+                            }
+                    return render(request,'id2/visiteur-enregistre.html',\
+                            contexte,status=302)
 
-            except Usager.DoesNotExist:
-                # faut trouver un usager qui existe dans la base
+                except Usager.DoesNotExist:
+                    # faut trouver un usager qui existe dans la base
+                    return HttpResponseRedirect('/ident/recherche')
+
+
+            elif c == 'employe':
+                try:
+                    e = Employe.objects.get(nom=n,prenom=p)
+                    v = VisiteProf(employe = e,
+                            service=Service.objects.get(nom_serv=s),
+                            type_visit=m)
+                    v.save()
+                    contexte = {'nom': e.nom,
+                            'num': e.id,
+                            'structure': e.structure,
+                            }
+                    return render(request,
+                            'id2/visiteur-enregistre.html',\
+                            contexte,status=302)
+
+                except Employe.DoesNotExist:
+                    # faut trouver un usager qui existe dans la base
+                    return HttpResponseRedirect('/ident/recherche')
+
+            else:
+                #on considère qu'on a entré une catégorie inconnue
                 return HttpResponseRedirect('/ident/recherche')
+
+
         else:
             contexte = {'message': 'Veuillez revérifier votre saisie',
                     'form': form,

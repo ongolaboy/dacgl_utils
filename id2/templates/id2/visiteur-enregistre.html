@@ -2,6 +2,6 @@
 
 {% block content %}
 <div align="center">
-	<p> Visite numéro {{ num }} de {{ nom }} enregistrée </p>
+	<p> Visite numéro {{ num }} de {{ nom }} {% if structure %} de la structure {{structure}} {% endif %}  enregistrée </p>
 
 {% endblock %}
