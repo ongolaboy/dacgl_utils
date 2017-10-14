@@ -6,6 +6,7 @@
  <ul>
 	 <li><a href="#lastvisit">Les dernières visites</a></li>
 	 <li><a href="#lastsubscribed">Les dernières inscriptions</a></li>
+	 <li><a href="#lastvisitpresta">Les dernières visites de prestataire</a></li>
 	 <li><a href="#récap">Récapitulatif</a></li>
  </ul>
 
@@ -26,6 +27,22 @@
  <br />
  <br />
 
+	 {% if derniereVisitePresta %}
+	 <h3> <a name="lastvisitpresta">Les 20 dernières visites de prestataires</a> </h3>
+	 <table>
+		 <tr><th>Nom</th><th>Lieu</th><th>Motif</th><th>Heure d'arrivée</th><th>Heure de départ</th></tr>
+		 {% for visite in derniereVisitePresta %}
+		 <tr><td><a href="/ident/consigne/{{visite.id}}">{{ visite.employe }}</a></td>
+			 <td>{{ visite.service }}</td>
+			 <td>{{ visite.type_visit }}</td>
+			 <td>{{ visite.date_arrivee }}</td>
+			 <td>{{ visite.date_deprt }}</td>
+		 </tr>
+		 {% endfor %}
+	 </table>
+	 {% endif %}
+ <br />
+ <br />
 	 {% if dernierInscrit %}
 	 <h3> <a name="lastsubscribed">Les 10 derniers usagers enregistrés</a> </h3>
 	 <table>

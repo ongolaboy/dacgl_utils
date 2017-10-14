@@ -115,8 +115,7 @@ class VisiteProf(models.Model):
     employe = models.ForeignKey(Employe)
 
     def __unicode__(self):
-        return "{0} s'est rendu au {1}".\
-                format(self.employe, self.self.service)
+        return "{0} s'est rendu au {1}".format(self.employe, self.service)
 
 #TODO créer une classe abstraite pour les abonnés
 # et disposer d'une classe d'abonné CNF et une autre fablab

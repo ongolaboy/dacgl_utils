@@ -37,10 +37,17 @@ def index(request):
             date_arrivee__gte=debutSemaine
             )
 
+    #Spéficiquement pour les prestataires
+    e = Employe.objects.count()
+    last_visit_presta = VisiteProf.objects.all().\
+            order_by('-date_arrivee')[:20]
+
     contexte = {
             'usager':u,
+            'employe':e,
             'services':svce,
             'derniereVisite': last_visit,
+            'derniereVisitePresta': last_visit_presta,
             'dernierInscrit': last_inscrit,
             'visitCeMois' : visitCeMois,
             'visitSemaine': visitSemaine,
