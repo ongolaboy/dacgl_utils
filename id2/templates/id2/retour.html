@@ -6,9 +6,15 @@
 	<p>Vérifiez les informations ci-dessous avant confirmation svp</p>
 	<table border=0>
 		<tr>
-			<td>Usager</td>
+			<td>Visiteur</td>
 			<td>{{nom}} {{prenom}}</td>
 		</tr>
+		{% if structure %}
+		<tr>
+			<td>Structure</td>
+			<td>{{structure}}</td>
+		</tr>
+		{% endif %}
 		<tr>
 			<td>Service</td>
 			<td>{{service}}</td>
@@ -19,8 +25,9 @@
 		</tr>
 	</table>
 	<br />
-	<p>Est-ce que l'usager ci-dessus est-il déjà parti ?</p>
-	<form action="{% url 'consigne-traitement' visite_id %}" method="post">
+	<p>Est-ce que le visiteur ci-dessus est-il déjà parti ?</p>
+
+	<form action="{% url 'consigne-traitement' categorie visite_id %}" method="post">
 		{% csrf_token %}
 		<p><input type="hidden" name="visite" value="{{visite_id}}" />
 		<p><input type="radio" name="DepartAUF" value="Oui" />OUI

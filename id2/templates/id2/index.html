@@ -15,7 +15,7 @@
 	 <table>
 		 <tr><th>Nom</th><th>Lieu</th><th>Motif</th><th>Heure d'arrivée</th><th>Heure de départ</th></tr>
 		 {% for visite in derniereVisite %}
-		 <tr><td><a href="/ident/consigne/{{visite.id}}">{{ visite.usager }}</a></td>
+		 <tr><td><a href="/ident/consigne/usager/{{visite.id}}">{{ visite.usager }}</a></td>
 			 <td>{{ visite.service }}</td>
 			 <td>{{ visite.type_visit }}</td>
 			 <td>{{ visite.date_arrivee }}</td>
@@ -32,7 +32,7 @@
 	 <table>
 		 <tr><th>Nom</th><th>Lieu</th><th>Motif</th><th>Heure d'arrivée</th><th>Heure de départ</th></tr>
 		 {% for visite in derniereVisitePresta %}
-		 <tr><td><a href="/ident/consigne/{{visite.id}}">{{ visite.employe }}</a></td>
+		 <tr><td><a href="/ident/consigne/employe/{{visite.id}}">{{ visite.employe }}</a></td>
 			 <td>{{ visite.service }}</td>
 			 <td>{{ visite.type_visit }}</td>
 			 <td>{{ visite.date_arrivee }}</td>

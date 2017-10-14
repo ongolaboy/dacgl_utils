@@ -381,28 +381,56 @@ def visiteTraitement(request):
         return render(request,'id2/visite.html',{'form':form})
 
 @login_required(login_url='/ident/login/')
-def consignerDepart(request,visite_id):
-    try :
-        v = Visite.objects.get(pk=visite_id)
-        u= Usager.objects.get(pk=v.usager_id)
-        data = {'nom': u.nom,
-                'prenom': u.prenom,
-                'service': v.service,
-                'motif': v.type_visit,
-                'arrivee':v.date_arrivee,
-                'visite_id':v.id,
-                }
-        return render(request,'id2/retour.html',data)
+def consignerDepart(request,cat_visiteur,visite_id):
 
-    except Visite.DoesNotExist:
-        message = "Cette visite n'existe pas dans la base de données"
-        return HttpResponseRedirect('/ident')
+    if cat_visiteur == 'usager':
+        try :
+            v = Visite.objects.get(pk=visite_id)
+            u= Usager.objects.get(pk=v.usager_id)
+            data = {'nom': u.nom,
+                    'prenom': u.prenom,
+                    'service': v.service,
+                    'motif': v.type_visit,
+                    'arrivee':v.date_arrivee,
+                    'visite_id':v.id,
+                    'categorie': cat_visiteur,
+                    }
+            return render(request,'id2/retour.html',data)
 
-def consigneTraitement(request,visite_id):
+        except Visite.DoesNotExist:
+            message = "Cette visite n'existe pas dans la base de données"
+            return HttpResponseRedirect('/ident')
+
+    elif cat_visiteur == 'employe':
+        try :
+            v = VisiteProf.objects.get(pk=visite_id)
+            u= Employe.objects.get(pk=v.employe_id)
+            data = {'nom': u.nom,
+                    'prenom': u.prenom,
+                    'structure': u.structure,
+                    'service': v.service,
+                    'motif': v.type_visit,
+                    'arrivee':v.date_arrivee,
+                    'visite_id':v.id,
+                    'categorie': cat_visiteur,
+                    }
+            return render(request,'id2/retour.html',data)
+
+        except Visite.DoesNotExist:
+            message = "Cette visite n'existe pas dans la base de données"
+            return HttpResponseRedirect('/ident')
+
+def consigneTraitement(request,cat_visiteur,visite_id):
     c = get_object_or_404(Visite, pk=visite_id)
     etat = request.POST['DepartAUF']
 
     if etat == 'Oui':
+        # Dans quelle catégorie de visite va-t-on consigner le départ ?
+        if cat_visiteur == 'usager':
+            c = get_object_or_404(Visite, pk=visite_id)
+        elif cat_visiteur == 'employe':
+            c = get_object_or_404(VisiteProf, pk=visite_id)
+
         if c.date_deprt != None:
             #quelque chose a déjà été enregistré et par conséquence
             # on n'ajoute plus rien

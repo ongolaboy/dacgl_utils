@@ -20,10 +20,11 @@ urlpatterns = patterns('',
             name='visite-traitement'),
 
 
-        url(r'consigne/(?P<visite_id>\d+)/$',views.consignerDepart),
-        url(r'consigne/traitement/(?P<visite_id>\d+)/$',
+        url(r'consigne/traitement/(?P<cat_visiteur>[a-z]+)/(?P<visite_id>\d+)/$',
             views.consigneTraitement,\
                 name="consigne-traitement"),
+        url(r'consigne/(?P<cat_visiteur>[a-z]+)/(?P<visite_id>\d+)/$',\
+                views.consignerDepart),
 
         url(r'service/recherche/traitement/$',
             views.serviceRechercheTraitement,
