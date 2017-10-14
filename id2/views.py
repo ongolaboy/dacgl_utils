@@ -11,7 +11,8 @@ from django.utils import timezone
 
 from id2.forms import InscriptionForm,VisiteForm,RechercheForm
 from id2.forms import AbonnementForm
-from id2.models import Usager,PieceId,Visite,Service,Abonne
+from id2.models import Usager,PieceId,Visite,Service,Abonne,Employe,\
+        VisiteProf
 
 
 def index(request):
@@ -97,32 +98,57 @@ def inscriptionTraitement(request):
             date_expiration = form.cleaned_data['date_expiration']
             em = form.cleaned_data['email']
             tel = form.cleaned_data['telephone']
+            cat = form.cleaned_data['categorie']
+            company = form.cleaned_data['structure']
 
-            #on passe aux vérifications AVANT de vouloir save
-            try :
-                u = Usager.objects.get(nom=n,prenom=p)
-            except Usager.DoesNotExist:
+            if cat == 'usager':
+                #on passe aux vérifications AVANT de vouloir save
                 try :
-                    piece0 = PieceId.objects.get(code=cod)
-                #on va d'abord enregistrer la pièce
-                except PieceId.DoesNotExist :
-                    piece0 =\
-                    PieceId(typePiece=piece,
-                            date_expiration=date_expiration,
-                            code=cod,
-                            )
-                    piece0.save()
-                u = Usager(nom=n,sexe=s,prenom=p,
-                        piece=piece0,
-                        email=em,
-                        telephone=tel)
-                u.save()
-                contexte = {'message': 'Inscription effectuée'}
+                    u = Usager.objects.get(nom=n,prenom=p)
+                except Usager.DoesNotExist:
+                    try :
+                        piece0 = PieceId.objects.get(code=cod)
+                    #on va d'abord enregistrer la pièce
+                    except PieceId.DoesNotExist :
+                        piece0 =\
+                        PieceId(typePiece=piece,
+                                date_expiration=date_expiration,
+                                code=cod,
+                                )
+                        piece0.save()
+                    u = Usager(nom=n,sexe=s,prenom=p,
+                            piece=piece0,
+                            email=em,
+                            telephone=tel)
+                    u.save()
+                    contexte = {'message': 'Inscription effectuée'}
 
-            #tout est ok, on revient sur un formulaire vierge
-            return HttpResponseRedirect('/ident/inscription/')
+                #tout est ok, on revient sur un formulaire vierge
+                return HttpResponseRedirect('/ident/inscription/')
+            elif cat == 'employe':
+                try :
+                    e = Employe.objects.get(nom=n,prenom=p)
+                except Employe.DoesNotExist:
+                    try :
+                        piece0 = PieceId.objects.get(code=cod)
+                    #on va d'abord enregistrer la pièce
+                    except PieceId.DoesNotExist :
+                        piece0 =\
+                        PieceId(typePiece=piece,
+                                date_expiration=date_expiration,
+                                code=cod,
+                                )
+                        piece0.save()
+                    e = Employe(nom=n,sexe=s,prenom=p,
+                            piece=piece0,
+                            email=em,
+                            telephone=tel,
+                            structure=company)
+                    e.save()
+                    contexte = {'message': 'Inscription effectuée'}
 
-        #si le formulaire a des points non valides
+                #tout est ok, on revient sur un formulaire vierge
+                return HttpResponseRedirect('/ident/inscription/')
         else :
             contexte = {'message': 'Veuillez revérifier votre saisie',
                     'form': form,
@@ -147,20 +173,37 @@ def rechercheTraitement(request):
         form = RechercheForm(request.GET)
         if form.is_valid():
             nom = form.cleaned_data['nom']
-            resultat = Usager.objects.filter(nom__icontains=nom).\
-                    order_by('nom')
-            #on cherche les départs dont les dates ne sont pas
-            #encore consignés
-            res_depart = Visite.objects.filter(\
-                    usager__nom__icontains=nom).filter(date_deprt=None).\
-                    order_by('usager','date_arrivee')
+            travailleur = form.cleaned_data['employe']
+
+            if travailleur == False:
+                resultat = Usager.objects.filter(nom__icontains=nom).\
+                        order_by('nom')
+                #on cherche les départs dont les dates ne sont pas
+                #encore consignées
+                res_depart = Visite.objects.filter(\
+                        usager__nom__icontains=nom).\
+                        filter(date_deprt=None).\
+                        order_by('usager','date_arrivee')
+            else :  #Il s'agit donc d'un employé
+
+                resultat = Employe.objects.filter(nom__icontains=nom).\
+                        order_by('nom')
+                #on cherche les départs dont les dates ne sont pas
+                #encore consignées
+                res_depart = VisiteProf.objects.filter(\
+                        employe__nom__icontains=nom).\
+                        filter(date_deprt=None).\
+                        order_by('employe','date_arrivee')
+
+
             contexte = {'resultat': resultat,
                     'res_depart': res_depart,
+                    'travailleur':travailleur,
                     'terme': nom,
                     }
 
             return render(request,
-                    'id2/resultat2.html',
+                    'id2/resultat.html',
                    contexte,
                     status=302
                     )
@@ -173,33 +216,92 @@ def rechercheTraitement(request):
         form = RechercheForm()
         return HttpResponseRedirect('/ident/recherche/')
 
+def visiteProfTraitement(request):
+    contexte = {}
+    if request.method == 'POST':
+        form = VisiteProfForm(request.POST)
+        if form.is_valid():
+            n = form.cleaned_data['nom']
+            p = form.cleaned_data['prenom']
+            s = form.cleaned_data['structure']
+            svce = form.cleaned_data['service']
+            m = form.cleaned_data['motif']
+
+            try:
+                u = Employe.objects.get(nom=n,prenom=p)
+                v = VisiteProf(employe=u,
+                        service=Service.objects.get(nom_serv=s),
+                        type_visit=m)
+                v.save()
+                contexte = {'nom':u.nom,
+                        'num':v.id,
+                        }
+                return render(request,'id2/visiteur-enregistre.html',\
+                        contexte,status=302)
+
+            except Usager.DoesNotExist:
+                # faut trouver un usager qui existe dans la base
+                return HttpResponseRedirect('/ident/recherche')
+        else:
+            contexte = {'message': 'Veuillez revérifier votre saisie',
+                    'form': form,
+                    }
+            return render(request,
+                    'id2/visite.html',
+                    contexte,status=303)
+
+    #la méthode n'était pas de type POST
+    else:
+        form = VisiteForm()
+        return render(request,'id2/visite.html',{'form':form})
+
 @login_required(login_url='/ident/')
-def visite(request,usager_id):
+def visite(request,cat_visiteur,visiteur_id):
     """
     A travers cette vue on va consigner automatiquement
-    l'heure d'arrivée d'un usager.
+    l'heure d'arrivée d'un usager ou d'un employé.
     """
 
-    try :
-        u = Usager.objects.get(pk=usager_id)
-        data = {'nom': u.nom, 'prenom': u.prenom}
-        #on lie les données au formulaire
-        form = VisiteForm(data)
+    #cat_visiteur = 0
+    if cat_visiteur == 'usager' :
+        try :
+            u = Usager.objects.get(pk=visiteur_id)
+            data = {'nom': u.nom, 'prenom': u.prenom}
+            #on lie les données au formulaire
+            form = VisiteForm(data)
 
-        contexte = {
-                'form': form,
-                }
-        return render(request,'id2/visite.html',contexte)
-    except Usager.DoesNotExist:
-        message = 'Veuillez enregistrer cet usager au préalable'
-        form = InscriptionForm()
-        contexte = {'form': form,
-                'error_message': message,
-                }
-        return render(request,'id2/inscription.html',
-                contexte,status=302)
+            contexte = {
+                    'form': form,
+                    }
+            return render(request,'id2/visite.html',contexte)
+        except Usager.DoesNotExist:
+            message = 'Veuillez enregistrer cet usager au préalable'
+            form = InscriptionForm()
+            contexte = {'form': form,
+                    'error_message': message,
+                    }
+            return render(request,'id2/inscription.html',
+                    contexte,status=302)
 
+    elif cat_visiteur == 'employe' :
+        try :
+            u = Employe.objects.get(pk=visiteur_id)
+            data = {'nom': u.nom, 'prenom': u.prenom}
+            #on lie les données au formulaire
+            form = VisiteForm(data)
 
+            contexte = {
+                    'form': form,
+                    }
+            return render(request,'id2/visite.html',contexte)
+        except Employe.DoesNotExist:
+            message = u'Veuillez enregistrer cet employé au préalable'
+            form = InscriptionForm()
+            contexte = {'form': form,
+                    'error_message': message,
+                    }
+            return render(request,'id2/inscription.html',
+                    contexte,status=302)
 
 
 

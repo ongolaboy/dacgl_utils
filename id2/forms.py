@@ -2,7 +2,7 @@
 
 from django import forms
 
-from id2.models import Service
+from id2.models import Service,Societe
 
 class InscriptionForm(forms.Form):
     """
@@ -10,6 +10,8 @@ class InscriptionForm(forms.Form):
     Et donc pour toutes les personnes pas encore identifiées
     """
     SEXE = (('H',u'homme'),('F',u'femme'),)
+
+    CATEGORIE = (('usager',u'usager'),('employe',u'employe'),)
 
     PIECE = (
             ('cni',u'CNI'),
@@ -22,6 +24,8 @@ class InscriptionForm(forms.Form):
     prenom = forms.CharField(max_length=150,required=False)
     sexe = forms.ChoiceField(choices=SEXE)
     typePiece = forms.ChoiceField(label='Type de piece',choices=PIECE)
+    categorie = forms.ChoiceField(label='Type de visiteur',\
+            choices=CATEGORIE)
     code = forms.CharField(max_length=60,
             help_text=u"Numero ou identifiant de la piece.")
     date_expiration=forms.DateField(label=u"Date d'expiration",
@@ -31,6 +35,10 @@ class InscriptionForm(forms.Form):
     email = forms.EmailField(label=u"Adresse electronique",
             required=False)
     telephone = forms.IntegerField(help_text=u"Num de telephone",\
+            required=False)
+    structure = forms.ModelChoiceField(\
+            help_text=u"Si employe, de quelle structure ?",
+            queryset=Societe.objects.all().order_by('nom'),
             required=False)
 
 class VisiteForm(forms.Form):
@@ -47,6 +55,9 @@ class VisiteForm(forms.Form):
 
 class RechercheForm(forms.Form):
     nom = forms.CharField()
+    employe = forms.BooleanField(help_text=\
+            "<br>Veuillez cocher si employe",
+            required=False)
 
 class AbonnementForm(forms.Form):
     nom = forms.CharField()

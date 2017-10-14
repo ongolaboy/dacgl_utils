@@ -75,6 +75,7 @@ class Employe(models.Model):
     """
 
     SEXE = (('H','homme'),('F','femme'),)
+
     nom = models.CharField("Nom", max_length=50)
     prenom = models.CharField("Prenoms", max_length=50,default='')
     sexe = models.CharField(max_length=5,choices=SEXE,default='H')
@@ -102,6 +103,20 @@ class Visite(models.Model):
        
     def __unicode__(self):
         return "{0} s'est rendu au {1}".format(self.usager, self.service)
+
+class VisiteProf(models.Model):
+    date_arrivee = models.DateTimeField('Heure Arrivée',\
+            default=timezone.now(),
+                auto_now_add=True)
+    date_deprt = models.DateTimeField('Heure Depart',blank=True,null=True)
+    type_visit = models.TextField('Objet de la Visite', default='Courrier'
+            )
+    service = models.ForeignKey(Service)
+    employe = models.ForeignKey(Employe)
+
+    def __unicode__(self):
+        return "{0} s'est rendu au {1}".\
+                format(self.employe, self.self.service)
 
 #TODO créer une classe abstraite pour les abonnés
 # et disposer d'une classe d'abonné CNF et une autre fablab
