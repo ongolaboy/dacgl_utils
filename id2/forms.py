@@ -6,8 +6,8 @@ from id2.models import Service,Societe
 
 class InscriptionForm(forms.Form):
     """
-    Ce formulaire s'occupe des inscriptions dans le système.
-    Et donc pour toutes les personnes pas encore identifiées
+    Ce formulaire s'occupe des inscriptions dans le systeme.
+    Et donc pour toutes les personnes pas encore identifiees
     """
     SEXE = (('H',u'homme'),('F',u'femme'),)
 

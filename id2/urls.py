@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import patterns,url
+from django.conf.urls import url
 
 from id2 import views
 
-urlpatterns = patterns('',
+urlpatterns = [
         url(r'^$',views.index,name='index'),
         url(r'login/$',views.entree,name='entree'),
         url(r'logout/$',views.sortie,name='sortie'),
@@ -45,4 +45,4 @@ urlpatterns = patterns('',
         url(r'recherche/$',views.recherche, name='recherche'),
         url(r'recherche/traitement/$',views.rechercheTraitement,
             name='recherche-traitement'),
-        )
+        ]

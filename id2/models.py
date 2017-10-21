@@ -56,7 +56,7 @@ class Usager(models.Model):
     nom = models.CharField("Nom", max_length=50)
     prenom = models.CharField("Prenoms", max_length=50,default='')
     sexe = models.CharField(max_length=5,choices=SEXE,default='H')
-    piece = models.ForeignKey(PieceId)
+    piece = models.ForeignKey(PieceId,on_delete=models.CASCADE)
     email = models.EmailField(blank=True)
     telephone = models.IntegerField(blank=True,null=True)
 
@@ -79,8 +79,8 @@ class Employe(models.Model):
     nom = models.CharField("Nom", max_length=50)
     prenom = models.CharField("Prenoms", max_length=50,default='')
     sexe = models.CharField(max_length=5,choices=SEXE,default='H')
-    piece = models.ForeignKey(PieceId)
-    structure = models.ForeignKey(Societe)
+    piece = models.ForeignKey(PieceId,on_delete=models.CASCADE)
+    structure = models.ForeignKey(Societe,on_delete=models.CASCADE)
     telephone = models.IntegerField(blank=True,null=True)
     email = models.EmailField(blank=True)
 
@@ -92,13 +92,13 @@ class Employe(models.Model):
 class Visite(models.Model):
     date_arrivee = models.DateTimeField('Heure Arrivée',\
             default=timezone.now(),
-                auto_now_add=True)
+                )
     date_deprt = models.DateTimeField('Heure Depart',blank=True,null=True)
 #            default=datetime.today().replace(year=datetime.today().hour+1)
     type_visit = models.TextField('Objet de la Visite', default='AUF'
             )
-    service = models.ForeignKey(Service)
-    usager = models.ForeignKey(Usager)
+    service = models.ForeignKey(Service,on_delete=models.CASCADE)
+    usager = models.ForeignKey(Usager,on_delete=models.CASCADE)
     
        
     def __unicode__(self):
@@ -107,12 +107,12 @@ class Visite(models.Model):
 class VisiteProf(models.Model):
     date_arrivee = models.DateTimeField('Heure Arrivée',\
             default=timezone.now(),
-                auto_now_add=True)
+                )
     date_deprt = models.DateTimeField('Heure Depart',blank=True,null=True)
     type_visit = models.TextField('Objet de la Visite', default='Courrier'
             )
-    service = models.ForeignKey(Service)
-    employe = models.ForeignKey(Employe)
+    service = models.ForeignKey(Service,on_delete=models.CASCADE)
+    employe = models.ForeignKey(Employe,on_delete=models.CASCADE)
 
     def __unicode__(self):
         return "{0} s'est rendu au {1}".format(self.employe, self.service)
@@ -120,8 +120,8 @@ class VisiteProf(models.Model):
 #TODO créer une classe abstraite pour les abonnés
 # et disposer d'une classe d'abonné CNF et une autre fablab
 class Abonne(models.Model):
-    usager = models.ForeignKey(Usager)
-    service = models.ForeignKey(Service)
+    usager = models.ForeignKey(Usager,on_delete=models.CASCADE)
+    service = models.ForeignKey(Service,on_delete=models.CASCADE)
     matricule = models.CharField(\
             u"Identifiant de l'abonné",max_length=60,default=0,\
             help_text=u"Code généré suivant les règles du service",
@@ -130,10 +130,10 @@ class Abonne(models.Model):
             null=True,blank=True,
             )
     inscription = models.DateTimeField(default=timezone.now(),
-            auto_now_add=True)
+            )
     expiration = models.DateField(blank=True, null=True)
     derniere_modif = models.DateTimeField(default=timezone.now(),
-            auto_now=True)
+            )
 
     class Meta:
         unique_together = (('usager','service'),) #absolument
