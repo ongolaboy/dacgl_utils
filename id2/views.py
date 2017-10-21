@@ -330,7 +330,8 @@ def visiteTraitement(request):
                     u = Usager.objects.get(nom=n,prenom=p)
                     v = Visite(usager=u,
                             service=Service.objects.get(nom_serv=s),
-                            type_visit=m)
+                            type_visit=m,
+                            date_arrivee=timezone.now())
                     v.save()
                     contexte = {'nom':u.nom,
                             'num':v.id,
@@ -348,7 +349,8 @@ def visiteTraitement(request):
                     e = Employe.objects.get(nom=n,prenom=p)
                     v = VisiteProf(employe = e,
                             service=Service.objects.get(nom_serv=s),
-                            type_visit=m)
+                            type_visit=m,
+                            date_arrivee=timezone.now())
                     v.save()
                     contexte = {'nom': e.nom,
                             'num': e.id,
