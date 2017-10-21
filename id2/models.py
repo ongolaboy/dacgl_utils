@@ -4,7 +4,9 @@ from datetime import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
 
+@python_2_unicode_compatible
 class Societe(models.Model):
     """
     L'AUF reçoit régulièrement des employés d'autres structures.
@@ -18,13 +20,15 @@ class Societe(models.Model):
     telephone = models.IntegerField(blank=True,null=True)
     site_web = models.URLField(blank=True)
 
-    def __unicode__(self): return self.nom
+    def __str__(self): return self.nom
 
+@python_2_unicode_compatible
 class Service(models.Model):
     nom_serv = models.CharField("Service", max_length=30)
 
-    def __unicode__(self): return self.nom_serv
+    def __str__(self): return self.nom_serv
 
+@python_2_unicode_compatible
 class PieceId(models.Model):
 
     PIECE = (
@@ -40,11 +44,12 @@ class PieceId(models.Model):
             help_text="Pour autre,laisser '0'",
             unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return 'Piece: %s | id: %s ' % (self.typePiece, self.code)
 
 #un usager peut se rendre dans un ou plusieurs services
 #un service peut recevoir un ou plusieurs usagers
+@python_2_unicode_compatible
 class Usager(models.Model):
     """
     Il s'agit ici de toute personne se présentant à la guérite
@@ -62,11 +67,12 @@ class Usager(models.Model):
 
     services = models.ManyToManyField(Service, through='Visite')
 
-    def __unicode__(self): return self.nom
+    def __str__(self): return self.nom
 
     class Meta:
         unique_together = (('nom','prenom'),) #absolument
 
+@python_2_unicode_compatible
 class Employe(models.Model):
     """
     Catégorie de personnes se présentant dans nos services de la part
@@ -84,11 +90,12 @@ class Employe(models.Model):
     telephone = models.IntegerField(blank=True,null=True)
     email = models.EmailField(blank=True)
 
-    def __unicode__(self): return self.nom
+    def __str__(self): return self.nom
 
 #une visite correspond a un usager qui vient et part a une date  et heure precise 
 # une visite peut correspondre a un ou plusieurs services
 #on devrait pourvoir faire les statistiques des visites par usager et par service
+@python_2_unicode_compatible
 class Visite(models.Model):
     date_arrivee = models.DateTimeField('Heure Arrivée',\
             default=timezone.now(),
@@ -101,9 +108,10 @@ class Visite(models.Model):
     usager = models.ForeignKey(Usager,on_delete=models.CASCADE)
     
        
-    def __unicode__(self):
+    def __str__(self):
         return "{0} s'est rendu au {1}".format(self.usager, self.service)
 
+@python_2_unicode_compatible
 class VisiteProf(models.Model):
     date_arrivee = models.DateTimeField('Heure Arrivée',\
             default=timezone.now(),
@@ -114,11 +122,12 @@ class VisiteProf(models.Model):
     service = models.ForeignKey(Service,on_delete=models.CASCADE)
     employe = models.ForeignKey(Employe,on_delete=models.CASCADE)
 
-    def __unicode__(self):
+    def __str__(self):
         return "{0} s'est rendu au {1}".format(self.employe, self.service)
 
 #TODO créer une classe abstraite pour les abonnés
 # et disposer d'une classe d'abonné CNF et une autre fablab
+@python_2_unicode_compatible
 class Abonne(models.Model):
     usager = models.ForeignKey(Usager,on_delete=models.CASCADE)
     service = models.ForeignKey(Service,on_delete=models.CASCADE)
@@ -138,6 +147,6 @@ class Abonne(models.Model):
     class Meta:
         unique_together = (('usager','service'),) #absolument
 
-    def __unicode__(self):
+    def __str__(self):
         return "Matricule: %s |Date Inscription: %s" % \
                 (self.matricule,self.inscription)
