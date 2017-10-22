@@ -15,11 +15,19 @@ class PieceAdmin(admin.ModelAdmin):
             'categorie', 'emplacement__site',
             'sortie_inventaire']
 
+class PieceInline(admin.StackedInline):
+    model = Piece
+
+class CommandeAdmin(admin.ModelAdmin):
+    inlines = [
+            PieceInline,
+            ]
+
 
 admin.site.register(Societe)
 admin.site.register(Implantation)
 admin.site.register(Salle)
-admin.site.register(Commande)
+admin.site.register(Commande,CommandeAdmin)
 admin.site.register(Piece,PieceAdmin)
 admin.site.register(Devise)
 admin.site.register(Marque)
