@@ -99,7 +99,6 @@ class Ensemble(models.Model):
             )
 
 
-    modele = models.CharField(max_length=200)
     description = models.TextField()
     prix_achat = models.PositiveIntegerField()
     devise = models.ForeignKey(Devise,
@@ -126,10 +125,11 @@ class Piece(models.Model):
     ordinateur portable
     """
 
-    num_serie = models.CharField(u"Numéro de série",max_length=200)
+    num_serie = models.CharField(u"Numéro de série",max_length=200,
+            unique=True)
     description = models.CharField(max_length=200, blank=True)
     date_acquisition = models.DateField()
-    code_inventaire = models.CharField(max_length=100)
+    code_inventaire = models.CharField(max_length=100, unique=True)
     comm_coda = models.ForeignKey(Commande,
             on_delete= models.CASCADE)
     ensemble = models.ForeignKey(Ensemble,
