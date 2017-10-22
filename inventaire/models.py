@@ -31,7 +31,7 @@ class Famille(models.Model):
 class Produit(models.Model):
     modele = models.CharField(max_length=100)
     famille = models.ForeignKey(Famille,
-            on_delete=models.CASCADE)
+            on_delete=models.CASCADE, default="Autre")
     constructeur = models.ForeignKey(Marque,
             on_delete=models.CASCADE)
 
