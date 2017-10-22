@@ -1,0 +1,25 @@
+<table border=1>
+  <tr>
+    <th>Intitulé</th>
+    <th>En état de marche</th>
+    <th>Attribution</th>
+    <th>Date d'acquisition</th>
+    <th>Code d'inventaire</th>
+    <th>Commande CODA</th>
+    <th>Modele</th>
+    <th>Catégorie</th>
+  </tr>
+  {% for piece in total_piece %}
+  <tr>
+    <td>{{ piece.intitule }}</td>
+    <td>{{ piece.fonctionnel }}</td>
+    <td>{{ piece.usage }}</td>
+    <td>{{ piece.date_acquisition }}</td>
+    <td>{{ piece.code_inventaire }}</td>
+    <td>{{ piece.commande_coda }}</td>
+    <td>{{ piece.modele }}</td>
+    <td>{{ piece.categorie }}</td>
+
+  <tr>
+  {% endfor %}
+</table>
