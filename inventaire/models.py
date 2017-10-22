@@ -20,8 +20,18 @@ class Marque(models.Model):
         return self.nom
 
 
+class Famille(models.Model):
+    intitule = models.CharField(max_length=100, default="Autre",
+            help_text=u"Quel famille de produits ? ordi,imprimante")
+
+    def __str__(self):
+        return self.intitule
+
+
 class Produit(models.Model):
     modele = models.CharField(max_length=100)
+    famille = models.ForeignKey(Famille,
+            on_delete=models.CASCADE)
     constructeur = models.ForeignKey(Marque,
             on_delete=models.CASCADE)
 
@@ -30,7 +40,8 @@ class Produit(models.Model):
 
 
 class Categorie(models.Model):
-    nom = models.CharField(max_length=200)
+    nom = models.CharField(max_length=200,
+            help_text=u"Mobilier,info,élec,...")
 
     def __str__(self):
         return self.nom
@@ -78,10 +89,13 @@ class Commande(models.Model):
     numero = models.PositiveIntegerField()
     devise = models.ForeignKey(Devise,
             on_delete=models.CASCADE)
-    notes = models.TextField()
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        unique_together = ('section','numero')
 
     def __str__(self):
-        return "%s %s | %s %s" % (self.section,self.numero,
+        return "COM %s %s | %s %s" % (self.section,self.numero,
                 self.valeur, self.devise)
 
 
@@ -99,7 +113,8 @@ class Ensemble(models.Model):
             )
 
 
-    description = models.TextField()
+    intitule = models.CharField(max_length=200, default="Piece")
+    description = models.TextField(blank=True)
     prix_achat = models.PositiveIntegerField()
     devise = models.ForeignKey(Devise,
             on_delete=models.CASCADE)
