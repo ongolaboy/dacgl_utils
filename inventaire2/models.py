@@ -87,13 +87,17 @@ class Commande(models.Model):
     SECTION = (
             ('INF','COM-INF'),
             ('ARE','COM-ARE'),
+            ('AUTRE','Autre'),
             )
 
     description = models.CharField(max_length=200, blank=True)
     valeur = models.PositiveIntegerField(blank=True)
     section = models.CharField(max_length=10, choices=SECTION,
-            default='INF')
-    numero = models.PositiveIntegerField()
+            default='INF',
+            help_text=u"Utilisez 'Autre' si vous ne connaissez pas \
+                    la commande")
+    numero = models.PositiveIntegerField(help_text=u"Numéro \
+            commande")
     devise = models.ForeignKey(Devise,
             on_delete=models.CASCADE)
     livree_par = models.ForeignKey(Societe,
