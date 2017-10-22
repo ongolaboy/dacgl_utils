@@ -21,7 +21,7 @@ class Marque(models.Model):
 
 
 class Famille(models.Model):
-    intitule = models.CharField(max_length=100, default="Autre",
+    intitule = models.CharField(max_length=100,
             help_text=u"Quel famille de produits ? ordi,imprimante")
 
     def __str__(self):
@@ -31,12 +31,12 @@ class Famille(models.Model):
 class Produit(models.Model):
     modele = models.CharField(max_length=100)
     famille = models.ForeignKey(Famille,
-            on_delete=models.CASCADE, default="Autre")
+            on_delete=models.CASCADE)
     constructeur = models.ForeignKey(Marque,
             on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.modele
+        return "%s %s" % (self.constructeur, self.modele)
 
 
 class Categorie(models.Model):
@@ -89,6 +89,8 @@ class Commande(models.Model):
     numero = models.PositiveIntegerField()
     devise = models.ForeignKey(Devise,
             on_delete=models.CASCADE)
+    fournisseur = models.ForeignKey(Societe,
+            on_delete=models.CASCADE)
     notes = models.TextField(blank=True)
 
     class Meta:
@@ -121,8 +123,8 @@ class Ensemble(models.Model):
     fonctionnel = models.BooleanField(default=True)
     usage = models.CharField(max_length=20, choices=USAGE,
             default='personnel')
-    commentaire = models.TextField()
-    emplacement = models.CharField(max_length=200)
+    commentaire = models.TextField(blank=True)
+    emplacement = models.CharField(max_length=200, blank=True)
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
     ville = models.ForeignKey(Ville, on_delete=models.CASCADE)
     reserve = models.BooleanField(default=False)
@@ -130,7 +132,8 @@ class Ensemble(models.Model):
             default=False)
 
     def __str__(self):
-        return '%s %s %s' % (self.modele, self.prix_achat, self.devise)
+        return '%s | %s  %s %s' % (self.ville,self.intitule, 
+                self.prix_achat, self.devise)
 
 
 class Piece(models.Model):
