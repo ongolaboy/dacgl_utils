@@ -13,6 +13,25 @@ class Devise(models.Model):
         return self.nom
 
 
+class Implantation(models.Model):
+    nom = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.nom
+
+class Salle(models.Model):
+    nom = models.CharField(max_length=30)
+    site = models.ForeignKey(Implantation,
+            on_delete = models.CASCADE)
+
+    class Meta:
+        unique_together = ('nom','site')
+        ordering = ['site','nom']
+
+    def __str__(self):
+        return '%s:%s' % (self.site, self.nom)
+
+
 class Marque(models.Model):
     nom = models.CharField(max_length=30)
 
@@ -20,20 +39,15 @@ class Marque(models.Model):
         return self.nom
 
 
-class Famille(models.Model):
-    intitule = models.CharField(max_length=100,
-            help_text=u"Quel famille de produits ? ordi,imprimante")
-
-    def __str__(self):
-        return self.intitule
-
 
 class Produit(models.Model):
-    modele = models.CharField(max_length=100)
-    famille = models.ForeignKey(Famille,
-            on_delete=models.CASCADE)
+    modele = models.CharField(max_length=100, blank=True)
     constructeur = models.ForeignKey(Marque,
             on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('modele','constructeur')
+        ordering = ['constructeur','modele']
 
     def __str__(self):
         return "%s %s" % (self.constructeur, self.modele)
@@ -46,12 +60,6 @@ class Categorie(models.Model):
     def __str__(self):
         return self.nom
 
-
-class Ville(models.Model):
-    nom = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.nom
 
 class Societe(models.Model):
     """
@@ -82,14 +90,13 @@ class Commande(models.Model):
             )
 
     description = models.CharField(max_length=200, blank=True)
-    description = models.CharField(max_length=200, blank=True)
-    valeur = models.PositiveIntegerField()
+    valeur = models.PositiveIntegerField(blank=True)
     section = models.CharField(max_length=10, choices=SECTION,
             default='INF')
     numero = models.PositiveIntegerField()
     devise = models.ForeignKey(Devise,
             on_delete=models.CASCADE)
-    fournisseur = models.ForeignKey(Societe,
+    livree_par = models.ForeignKey(Societe,
             on_delete=models.CASCADE)
     notes = models.TextField(blank=True)
 
@@ -97,43 +104,8 @@ class Commande(models.Model):
         unique_together = ('section','numero')
 
     def __str__(self):
-        return "COM %s %s | %s %s" % (self.section,self.numero,
+        return "COM %s : %s | %s %s" % (self.section,self.numero,
                 self.valeur, self.devise)
-
-
-class Ensemble(models.Model):
-    """
-    Il peut s'agir d'une visio qui contient plusieurs éléments,
-    d'un serveur avec ses disques durs,etc.
-    """
-    
-    USAGE = (
-            ('personnel','Personnel'),
-            ('infrastructure','Infrastructure'),
-            ('usager','Usager'),
-            ('projet','Projet'),
-            )
-
-
-    intitule = models.CharField(max_length=200, default="Piece")
-    description = models.TextField(blank=True)
-    prix_achat = models.PositiveIntegerField()
-    devise = models.ForeignKey(Devise,
-            on_delete=models.CASCADE)
-    fonctionnel = models.BooleanField(default=True)
-    usage = models.CharField(max_length=20, choices=USAGE,
-            default='personnel')
-    commentaire = models.TextField(blank=True)
-    emplacement = models.CharField(max_length=200, blank=True)
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
-    ville = models.ForeignKey(Ville, on_delete=models.CASCADE)
-    reserve = models.BooleanField(default=False)
-    sortie = models.BooleanField(help_text="Sortie de stock ?",
-            default=False)
-
-    def __str__(self):
-        return '%s | %s  %s %s' % (self.ville,self.intitule, 
-                self.prix_achat, self.devise)
 
 
 class Piece(models.Model):
@@ -143,17 +115,39 @@ class Piece(models.Model):
     ordinateur portable
     """
 
+    USAGE = (
+            ('personnel','Personnel'),
+            ('infrastructure','Infrastructure'),
+            ('usager','Usager'),
+            ('projet','Projet'),
+            )
+
+    intitule = models.CharField(max_length=200, default="Piece")
+    prix_achat = models.PositiveIntegerField(default=0)
+    devise = models.ForeignKey(Devise,
+            on_delete=models.CASCADE)
     num_serie = models.CharField(u"Numéro de série",max_length=200,
-            unique=True)
-    description = models.CharField(max_length=200, blank=True)
+            blank=True)
+    fonctionnel = models.BooleanField(help_text="Est-ce que ça marche?",
+            default=True)
+    usage = models.CharField(max_length=20, choices=USAGE,
+            help_text="Personnel,usager ?",default='personnel')
     date_acquisition = models.DateField()
-    code_inventaire = models.CharField(max_length=100, unique=True)
-    comm_coda = models.ForeignKey(Commande,
-            on_delete= models.CASCADE)
-    ensemble = models.ForeignKey(Ensemble,
+    code_inventaire = models.CharField(max_length=100, unique=True,
+            help_text="ex CG1 I9012")
+    description = models.CharField(max_length=200, blank=True)
+    commentaire = models.TextField(blank=True)
+    emplacement = models.ForeignKey(Salle,
+            on_delete = models.CASCADE)
+    commande_coda = models.ForeignKey(Commande,
             on_delete= models.CASCADE)
     modele = models.ForeignKey(Produit,
             on_delete= models.CASCADE)
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
+    sortie_inventaire = models.BooleanField(default=False,
+            help_text="Sortie d'inventaire ?")
+    periode_amortissement = models.PositiveIntegerField(default=4,
+            help_text=u"En nombre d'années")
 
     def __str__(self):
         return "%s %s %s" % (self.num_serie,
