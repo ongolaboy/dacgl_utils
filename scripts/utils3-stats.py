@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding:utf-8 -*-
 
 import os
@@ -28,9 +28,12 @@ BASE_DIR = '/home/willy/dacgl'
 sys.path.append(BASE_DIR)
 os.environ["DJANGO_SETTINGS_MODULE"] = "dacgl.settings"
 
-from id2.models import Visite,Usager
 
 django.setup()
+
+from dacgl.settings import TIME_ZONE
+from id2.models import Visite,Usager
+
 
 semaine_courante = date.today().isocalendar()[1]
 date_jour = date.today()
@@ -50,11 +53,11 @@ usager_total = Usager.objects.count()
 
 s_smtp = "smtp.cm.auf.org"
 from_addr = u'technique@cm.auf.org'
-to_addrs = 'cnfy@cm.auf.org,ongolafablab@cm.auf.org'
+to_addrs = 'cnfy@cm.auf.org'
 sujet = 'Informations sur les visites a la DACGL: semaine %s' % \
         semaine_courante
 
-moment = datetime.now(tzone('Africa/Douala')).\
+moment = datetime.now(tzone(TIME_ZONE)).\
     strftime('%a, %d %B %Y %H:%M:%S %z')
 #create message container
 
@@ -115,6 +118,6 @@ msg.attach(part2)
 client = smtplib.SMTP(s_smtp)
 try:
         client.sendmail(from_addr,to_addrs,msg.as_string())
-        print 'stats fréquentations DACGL envoyées'
-except Exception, err:
-    print "Oups :-("
+        print ('stats fréquentations DACGL envoyées')
+except Exception:
+    print ("Oups :-(")

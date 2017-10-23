@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding:utf-8 -*-
 
 import os
@@ -28,9 +28,12 @@ BASE_DIR = '/home/willy/dacgl'
 sys.path.append(BASE_DIR)
 os.environ["DJANGO_SETTINGS_MODULE"] = "dacgl.settings"
 
-from id2.models import Visite,Usager,Service
 
 django.setup()
+
+from dacgl.settings import TIME_ZONE
+from id2.models import Visite,Usager,Service
+
 
 def collecte():
     """
@@ -93,12 +96,12 @@ def collecte():
 
 # section envoi courriel
 
-def envoiStats(s_smtp,from_addr,to_addrs,sujet,fuseau,msg_utils):
+def envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils):
     """
     Envoi des stats à une liste interne
     """
 
-    moment = datetime.now(tzone(fuseau)).\
+    moment = datetime.now(tzone(TIME_ZONE)).\
         strftime('%a, %d %B %Y %H:%M:%S %z')
     #create message container
 
@@ -131,7 +134,7 @@ def envoiStats(s_smtp,from_addr,to_addrs,sujet,fuseau,msg_utils):
     try:
             client.sendmail(from_addr,to_addrs,msg.as_string())
             return 'stats fréquentations mensuelles DACGL envoyées'
-    except Exception, err:
+    except Exception:
         return "Oups :-("
 
 
@@ -209,7 +212,6 @@ ossature =\
 
 # section expédition du courriel
 
-fuseau = 'Africa/Douala'
 s_smtp = "smtp.cm.auf.org"
 from_addr = u'technique@cm.auf.org'
 to_addrs = 'diffusion-bureau@cm.auf.org'
@@ -217,4 +219,4 @@ sujet = 'Informations sur les visites a la DACGL: Mois de %s' % \
         infos[2].strftime('%B') #TODO t_debut_ pas encore défini
 msg_utils = ossature
 
-envoiStats(s_smtp,from_addr,to_addrs,sujet,fuseau,msg_utils)
+envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils)
