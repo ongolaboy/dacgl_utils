@@ -84,8 +84,13 @@ def inscription(request):
     contexte = {}
     try:
         u = Usager.objects.latest('pk')
-        message = "%s %s" % (u.nom,u.prenom)
-        contexte = {'message': message,'form':form}
+        e = Employe.objects.latest('pk')
+        contexte = {'dernier_usager': u,
+                'dernier_employe':e,
+                'form':form}
+        return render(request,'id2/inscription.html',contexte)
+    except Employe.DoesNotExist:
+        contexte = {'dernier_usager': u, 'form':form}
         return render(request,'id2/inscription.html',contexte)
     except Usager.DoesNotExist:
         contexte = {'message': message, 'form':form}

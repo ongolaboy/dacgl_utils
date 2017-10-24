@@ -7,7 +7,14 @@
  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <h3> Formulaire d'inscription de nouveaux usagers</h3>
 Dernière inscription :  <br />
-<p><strong> {{ message }}</strong></p> <br />
+{% if dernier_usager %}
+<p>Consignez la visite de l'usager<a href="/ident/visite/usager/{{ dernier_usager.id }}"><strong>
+        {{  dernier_usager.nom }}</strong> {{dernier_usager.prenom}}</a> ? </p> <br />
+{% endif %}
+{% if dernier_employe %}
+<p>Consignez la visite de l'employé <a href="/ident/visite/employer/{{ dernier_employe.id }}"><strong>
+        {{  dernier_employe.nom }}</strong> {{dernier_employe.prenom}}</a> ? </p> <br />
+{% endif %}
 <form action="{% url 'inscriptionTraitement' %}" method="post">
 
   <table>
