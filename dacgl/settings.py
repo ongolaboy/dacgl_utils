@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'id2.apps.Id2Config',
     'inventaire2.apps.Inventaire2Config',
+    'manif.apps.ManifConfig',
 ]
 
 MIDDLEWARE = [
