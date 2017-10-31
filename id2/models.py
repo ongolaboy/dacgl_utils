@@ -98,7 +98,7 @@ class Employe(models.Model):
 @python_2_unicode_compatible
 class Visite(models.Model):
     date_arrivee = models.DateTimeField('Heure Arrivée',\
-            default=timezone.now(),
+            default=timezone.now,
                 )
     date_deprt = models.DateTimeField('Heure Depart',blank=True,null=True)
 #            default=datetime.today().replace(year=datetime.today().hour+1)
@@ -114,7 +114,7 @@ class Visite(models.Model):
 @python_2_unicode_compatible
 class VisiteProf(models.Model):
     date_arrivee = models.DateTimeField('Heure Arrivée',\
-            default=timezone.now(),
+            default=timezone.now,
                 )
     date_deprt = models.DateTimeField('Heure Depart',blank=True,null=True)
     type_visit = models.TextField('Objet de la Visite', default='Courrier'
@@ -138,10 +138,10 @@ class Abonne(models.Model):
     photo = models.ImageField(upload_to="id2/photos/%Y/%m/%d",
             null=True,blank=True,
             )
-    inscription = models.DateTimeField(default=timezone.now(),
+    inscription = models.DateTimeField(default=timezone.now,
             )
     expiration = models.DateField(blank=True, null=True)
-    derniere_modif = models.DateTimeField(default=timezone.now(),
+    derniere_modif = models.DateTimeField(default=timezone.now,
             )
 
     class Meta:
