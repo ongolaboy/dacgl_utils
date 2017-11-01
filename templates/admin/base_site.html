@@ -1,9 +1,9 @@
 {% extends "admin/base.html" %}
 
-{% block title %}{{ title }} | DRACGL - Gestion{% endblock %}
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">DRACGL - Console d'administration</a></h1>
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Interface d'admin des outils de la DRACGL</a></h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

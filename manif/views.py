@@ -1,3 +1,8 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import Evenement
+
+def index(request):
+
+    contexte = {}
+    return render(request,'manif/index.html',contexte)
