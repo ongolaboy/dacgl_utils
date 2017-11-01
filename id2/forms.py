@@ -27,7 +27,8 @@ class InscriptionForm(forms.Form):
     categorie = forms.ChoiceField(label='Type de visiteur',\
             choices=CATEGORIE)
     code = forms.CharField(max_length=60,
-            help_text=u"Numero ou identifiant de la piece.")
+            help_text=u"Numero ou identifiant de la piece.",
+            required=False)
     date_expiration=forms.DateField(label=u"Date d'expiration",
             required=False,
             help_text="Format<br>DD/MM/YYYY",

@@ -41,8 +41,8 @@ class PieceId(models.Model):
     date_expiration = models.DateField(blank=True,null=True)
     code = models.CharField(\
             "Numéro ou code de la pièce",max_length=60,default=0,\
-            help_text="Pour autre,laisser '0'",
-            unique=True)
+            help_text="Pour autre,laisser '0'", blank=True,
+            )
 
     def __str__(self):
         return 'Piece: %s | id: %s ' % (self.typePiece, self.code)
