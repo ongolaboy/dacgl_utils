@@ -61,7 +61,8 @@ class Usager(models.Model):
     nom = models.CharField("Nom", max_length=50)
     prenom = models.CharField("Prenoms", max_length=50,default='')
     sexe = models.CharField(max_length=5,choices=SEXE,default='H')
-    piece = models.ForeignKey(PieceId,on_delete=models.CASCADE)
+    piece = models.ForeignKey(PieceId,on_delete=models.CASCADE,
+            blank=True)
     email = models.EmailField(blank=True)
     telephone = models.IntegerField(blank=True,null=True)
 
