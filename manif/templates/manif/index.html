@@ -1,5 +1,19 @@
 {% extends "manif/base.html" %}
 
 {% block content %}
-.
+
+ {% if manifs %}
+ <h2>Manifestation(s) en cours</h2>
+  {% for manif in manifs %}
+  <ul>
+	  <li>{{ manif.intitule }}<br />Objectif: {{ manif.description }}</li>
+  </ul>
+  {% endfor %}
+
+   <p> <a href="{% url 'manif:consigne' %}">Enregistrer sa participation</a> </p>
+ {% else %}
+  <p> Aucune manifestation repertoriée en ce moment</p>
+ {% endif %}
+
+
 {% endblock %}

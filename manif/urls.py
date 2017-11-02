@@ -6,4 +6,7 @@ app_name = 'manif'
 
 urlpatterns = [
         url(r'^$', views.index, name='index'),
+        url(r'^consigne/traitement/$', views.consigneTraitement,
+            name='consigne-traitement'),
+        url(r'^consigne', views.consigne, name='consigne'),
         ]

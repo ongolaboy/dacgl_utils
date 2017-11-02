@@ -11,6 +11,7 @@ class Evenement(models.Model):
     periode = models.DateField()
     duree = models.CharField(max_length=15,blank=True)
     participant = models.ManyToManyField(Usager, through='Participation')
+    ouvert = models.BooleanField(default=True)
 
     def __str__(self):
         return "%s  (%s)" % (self.intitule, self.lieu)
@@ -24,3 +25,9 @@ class Participation(models.Model):
             on_delete=models.PROTECT)
     date_inscription = models.DateTimeField(default=timezone.now)
     commentaire = models.TextField(blank=True)
+
+    class Meta:
+        unique_together = (('usager','evenement'))
+
+    def __str__(self):
+        return "%s | %s" % (self.usager, self.evenement)

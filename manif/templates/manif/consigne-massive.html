@@ -1,0 +1,22 @@
+{% extends "manif/base.html" %}
+
+{% block content %}
+ <h3> Formulaire d'inscription en masse de participants</h3>
+ {% if user.is_authenticated %}
+
+  <form action="" method="post">
+	  {% csrf_token %}
+	  <table>
+		  {{ formulaire_participation }}
+		  <tr>
+			  <td><input type="Submit" value="consigner le tout"></td>
+		  </tr>
+	  </table>
+  </form>
+
+ {% else %}
+  <p>Il faut disposer d'un compte pour effectuer ces traitements</p>
+ {% endif %}
+
+
+{% endblock %}
