@@ -1,4 +1,9 @@
 
+jeudi 2 novembre 2017, 12:06:55 (UTC+0100)
+
+ * désormais on peut enregistrer les usagers en fonction d'un
+ évènement qui se tiendrait dans les locaux
+
 lundi 23 octobre 2017, 22:03:54 (UTC+0100)
 
  * fonctionne désormais sur python3 et django 1.10 !
