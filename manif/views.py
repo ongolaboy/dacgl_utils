@@ -42,7 +42,7 @@ def consigneTraitement(request):
             if em != '':
                 if u.email == '':
                     u.email = em
-                    u.save()
+                    u.save(update_fields=['email'])
             particip = Participation(usager=u,evenement=e,
                     commentaire=comm)
             particip.save()

@@ -4,15 +4,18 @@
  <h3> Formulaire d'enregistrement à une activité</h3>
  {{ message }}
 
- <form action="{% url 'manif:consigne-traitement' %}" autocomplete="on" method="post">
-	  <table>
-	  {% csrf_token %}
-		  {{ formulaire_participation.as_table }}
-		  <tr>
-			  <td><input type="submit" value="Enregistrer"/></td>
-		  </tr>
-	  </table>
-  </form>
+ <div align="center">
+	 <form action="{% url 'manif:consigne-traitement' %}" autocomplete="on" method="post">
+		  <table>
+		  {% csrf_token %}
+			  {{ formulaire_participation.as_table }}
+			  <tr>
+				  <td></td>
+				  <td><input type="submit" value="Enregistrer"/></td>
+			  </tr>
+		  </table>
+	  </form>
+ </div>
 
 
 {% endblock %}

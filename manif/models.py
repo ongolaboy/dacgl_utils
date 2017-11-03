@@ -17,9 +17,9 @@ class Evenement(models.Model):
 
     def duree(self):
         if self.fin is None:
-            self.periode = timedelta(days=1)
+            self.periode = (timedelta(days=1)).days
         else:
-            self.periode = (self.fin - self.debut).days
+            self.periode = (self.fin - self.debut).days + 1
         return self.periode
 
     def __str__(self):
