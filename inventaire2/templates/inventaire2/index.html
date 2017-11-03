@@ -22,6 +22,8 @@
 		<th>Commande Coda</th>
 		<th>Prix d'achat</th>
 		<th>Devise</th>
+		<th>Modèle</th>
+		<th>Emplacement</th>
 	</tr>
 
 	{% for p in piece %}
@@ -34,6 +36,8 @@
 		<td> {{ p.commande_coda }} </td>
 		<td> {{ p.prix_achat }} </td>
 		<td> {{ p.devise }} </td>
+		<td> {{ p.modele }} </td>
+		<td> {{ p.emplacement }} </td>
 	</tr>
 	{% endfor %}
 

@@ -38,6 +38,8 @@ class Marque(models.Model):
     def __str__(self):
         return self.nom
 
+    class Meta:
+        ordering = ['nom']
 
 
 class Produit(models.Model):
@@ -57,6 +59,9 @@ class Categorie(models.Model):
     nom = models.CharField(max_length=200,
             help_text=u"Mobilier,info,élec,...")
 
+    class Meta:
+        ordering = ['nom']
+
     def __str__(self):
         return self.nom
 
@@ -74,6 +79,9 @@ class Societe(models.Model):
     telephone = models.IntegerField(blank=True,null=True)
     site_web = models.URLField(blank=True)
     id_CODA = models.CharField(max_length=20, blank=True)
+
+    class Meta:
+        ordering = ['nom']
 
     def __str__(self): return self.nom
 
@@ -106,6 +114,7 @@ class Commande(models.Model):
 
     class Meta:
         unique_together = ('section','numero')
+        ordering = ['section','numero']
 
     def __str__(self):
         return "COM %s : %s | %s %s" % (self.section,self.numero,
@@ -144,7 +153,7 @@ class Piece(models.Model):
     emplacement = models.ForeignKey(Salle,
             on_delete = models.CASCADE)
     commande_coda = models.ForeignKey(Commande,
-            on_delete= models.CASCADE)
+            on_delete= models.CASCADE, blank=True)
     modele = models.ForeignKey(Produit,
             on_delete= models.CASCADE)
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
