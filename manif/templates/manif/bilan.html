@@ -1,0 +1,33 @@
+{% extends "manif/base.html" %}
+
+{% block content %}
+
+{% if message_erreur %}
+ {{ message_erreur }}
+{% else %}
+
+<h2> Résumé </h2>
+  <p>Nombre d'évènements enregistrés: {{ ev_all | length }}</p>
+
+    <table>
+      <tr><td>Numéro</td><td>Intitulé</td>
+        <td>Début</td>
+        <td>Durée (<em>en jour</em></td>
+        <td>Total participation</td>
+        <td>Total sexe masculin</td>
+        <td>Total sexe féminin</td>
+      
+      </tr>
+      {% for k,v in ev_critere.items %}
+      <tr>
+        <td> {{ k }} </td>
+         {% for j in v %}
+        <td> {{ j }} </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+
+{% endif %}
+
+{% endblock %}

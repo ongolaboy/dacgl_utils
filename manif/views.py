@@ -61,3 +61,22 @@ def consigneTraitement(request):
         contexte = {'message': 'Veuillez recommencer svp'}
         return render(request,'manif/consigne-individuelle.html',
                 contexte)
+
+def bilan(request):
+    contexte = {}
+    if Evenement.objects.all != None:
+        ev = Evenement.objects.all()
+        ev_liste = {}
+        for ev1 in ev:
+            particip_total = ev1.participant.all()
+            ev_liste[ev1.id] = (ev1.intitule,
+                    ev1.debut, ev1.duree(),
+                    particip_total.all().count(),
+                    particip_total.filter(sexe='H').count(),
+                    particip_total.filter(sexe='F').count(),
+                    )
+        contexte = {'ev_all':ev,'ev_critere':ev_liste}
+
+    else: contexte = {'message_erreur':"Il n'y a pas d'évènements"}
+
+    return render(request,'manif/bilan.html',contexte)
