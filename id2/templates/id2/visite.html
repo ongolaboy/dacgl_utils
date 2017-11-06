@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<form action="{% url 'visite-traitement' %}" method="post">
+<form action="{% url 'id2:visite-traitement' %}" method="post">
 	<table>
 		{% csrf_token %}
 		{{ form.as_table }}

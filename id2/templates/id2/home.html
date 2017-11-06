@@ -43,10 +43,10 @@
 {% for n in visites %}
        <tr>
        
-           <td> <a href="{% url 'deconnexion' %}">{{ n.date_jour }}</a></td>
-           <td> <a href="{% url 'deconnexion' %}">{{ n.usager }}</a></td>
-           <td> <a href="{% url 'deconnexion' %}">{{ n.service }}</a></td>
-           <td> <a href="{% url 'deconnexion' %}">{{ n.type_visit }}</a></td>
+           <td> <a href="{% url 'id2:deconnexion' %}">{{ n.date_jour }}</a></td>
+           <td> <a href="{% url 'id2:deconnexion' %}">{{ n.usager }}</a></td>
+           <td> <a href="{% url 'id2:deconnexion' %}">{{ n.service }}</a></td>
+           <td> <a href="{% url 'id2:deconnexion' %}">{{ n.type_visit }}</a></td>
            
        </tr>
 {% endfor %}

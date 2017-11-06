@@ -2,7 +2,7 @@
 
 {% block content %}
 <div align="center">
-<form action="{% url 'recherche-traitement' %}" method="get">
+<form action="{% url 'id2:recherche-traitement' %}" method="get">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Rechercher" />

@@ -15,7 +15,7 @@ Dernière inscription :  <br />
 <p>Consignez la visite de l'employé <a href="/ident/visite/employer/{{ dernier_employe.id }}"><strong>
         {{  dernier_employe.nom }}</strong> {{dernier_employe.prenom}}</a> ? </p> <br />
 {% endif %}
-<form action="{% url 'inscriptionTraitement' %}" method="post">
+<form action="{% url 'id2:inscriptionTraitement' %}" method="post">
 
   <table>
   {%  csrf_token %}

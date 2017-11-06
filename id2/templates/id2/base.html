@@ -13,8 +13,8 @@
 	  <div id"menu0" float="left">
 	   <p>
            <a href="/ident/">Accueil</a> |<a
-	      href="{% url 'inscription' %}"> Inscription</a> | 
-	     <a href="{% url 'recherche' %}">Recherche</a>
+	      href="{% url 'id2:inscription' %}"> Inscription</a> |
+	     <a href="{% url 'id2:recherche' %}">Recherche</a>
 	   </p><br />
 	   {% if user.is_staff %}
 	    {% if services %}
@@ -59,8 +59,8 @@
 	   <hr>
 	   <p>
            <a href="/ident/">Accueil</a> |<a
-	      href="{% url 'inscription' %}"> Inscription</a> | 
-	     <a href="{% url 'recherche' %}">Effectuez une recherche</a>
+	      href="{% url 'id2:inscription' %}"> Inscription</a> |
+	     <a href="{% url 'id2:recherche' %}">Effectuez une recherche</a>
 	   </p>
 	  </div>
 	 

@@ -7,7 +7,7 @@
 		{% comment %}
   <form action="/ident/login/verification" method="post">
 		{% endcomment %}
-		<form action="{% url 'entreeVerification' %}" method="post">
+		<form action="{% url 'id2:entreeVerification' %}" method="post">
 	  {% csrf_token %}
 	  <tr><th><label for"id_identifiant">Identifiant:</label></th><td><input id="id_identifiant" maxlength="40" name="identifiant" type="text" /></td></tr>
 	  <tr><th><label for"id_password">Mot de passe:</label></th><td><input id="id_password" maxlength="90" name="password" type="password" /></td></tr>

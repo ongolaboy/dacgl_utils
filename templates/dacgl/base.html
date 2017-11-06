@@ -12,9 +12,8 @@
 	  <div>
 	  <div id="menu0" float="left">
 	   <p>
-           <a href="/">Accueil</a> |<a
-	      href="{% url 'inscription' %}"> Inscription</a> | 
-	     <a href="{% url 'recherche' %}">Recherche</a>
+	   <a href="{% url 'home' %}">Accueil</a> |
+	     <a href="{% url 'manif:index' %}">Manifestations organisées</a>
 	   </p><br />
 	   {% if user.is_staff %}
 	    {% if services %}
@@ -56,9 +55,10 @@
 	  <div align="center" id="piedDePage">
 	   <hr>
 	   <p>
-           <a href="/ident/">Accueil</a> |<a
-	      href="{% url 'inscription' %}"> Inscription</a> | 
-	     <a href="{% url 'recherche' %}">Effectuez une recherche</a>
+	   <a href="{% url 'home' %}">Accueil</a> |<a
+       href="{% url 'id2:index' %}">Gestion des visites</a> |
+	     <a href="{% url 'manif:index' %}">Bilan des manifestations organisées</a>
+	     | <a href ="{% url 'inventaire2:index' %}">Inventaire </a>
 	   </p>
 	  </div>
 	 
