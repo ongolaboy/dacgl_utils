@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+<html>
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>{% block title %} DRACGL {% endblock %}</title>
+  <link rel="stylesheet"  type="text/css" href="{% static 'dacgl/css/base.css' %}">
+	</head>
+
+  <body>
+	  <div>
+	  <div id="menu0" float="left">
+	   <p>
+           <a href="/">Accueil</a> |<a
+	      href="{% url 'inscription' %}"> Inscription</a> | 
+	     <a href="{% url 'recherche' %}">Recherche</a>
+	   </p><br />
+	   {% if user.is_staff %}
+	    {% if services %}
+	    <p>
+	    Les services:<br />
+	    {% for s in services %}
+	    <a href="/ident/service/{{s.id}}/">{{s.nom_serv}}</a> |
+	    {% endfor %}
+	    </p>
+	    {% endif %}
+	   {% endif %}
+	  </div>
+          <div id="side" align="right">
+                  {% block sidebar %}
+
+                  <ul>
+                          {% if not user.is_authenticated %}
+				  <p>Ouvrir <a href="/ident/login">une session</a></p>
+                          {% else %}
+				  Bienvenue {{ user.username }}
+				  <li><a href="/ident/">Accueil</li>
+                                  {% if user.is_staff %}
+					  <li><a href="/admin" target="_blank">Interface d'administration</li>
+                                  {% endif %}
+                          <li>
+				  <a href="/ident/logout">Se déconnecter</a> <br />
+                            {% endif %}
+                        </ul>
+
+		{% endblock %}
+                </div>
+	  </div>
+
+          <div id="content">
+                  {% block content %}{% endblock %}
+          </div>
+          {% block piedDePage %}
+
+	  <div align="center" id="piedDePage">
+	   <hr>
+	   <p>
+           <a href="/ident/">Accueil</a> |<a
+	      href="{% url 'inscription' %}"> Inscription</a> | 
+	     <a href="{% url 'recherche' %}">Effectuez une recherche</a>
+	   </p>
+	  </div>
+	 
+	  {% endblock %}
+  </body>
+
+</html>
