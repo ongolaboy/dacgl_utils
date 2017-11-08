@@ -9,5 +9,7 @@ urlpatterns = [
         url(r'^consigne/traitement/$', views.consigneTraitement,
             name='consigne-traitement'),
         url(r'^consigne', views.consigne, name='consigne'),
+        url(r'^bilan/(?P<bilan_id>\d+)', views.bilanDetaille,
+            name='bilan-detaille'),
         url(r'^bilan', views.bilan, name='bilan'),
         ]

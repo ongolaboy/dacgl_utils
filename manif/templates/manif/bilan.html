@@ -20,7 +20,7 @@
       </tr>
       {% for k,v in ev_critere.items %}
       <tr>
-        <td> {{ k }} </td>
+	      <td> <a href="{% url 'manif:bilan-detaille' k %}">{{ k }}</a></td>
          {% for j in v %}
         <td> {{ j }} </td>
         {% endfor %}

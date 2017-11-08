@@ -80,3 +80,22 @@ def bilan(request):
     else: contexte = {'message_erreur':"Il n'y a pas d'évènements"}
 
     return render(request,'manif/bilan.html',contexte)
+
+
+def  bilanDetaille(request,bilan_id):
+
+    contexte = {}
+    presents = Participation.objects.filter(evenement=bilan_id).\
+            order_by('usager__nom')
+    presents_total = presents.count()
+    present_H = presents.filter(usager__sexe='H').count()
+    present_F = presents.filter(usager__sexe='F').count()
+    ev = Evenement.objects.get(pk=bilan_id)
+
+    contexte = {'presents': presents,
+            'presents_total': presents_total,
+            'present_H': present_H,
+            'present_F': present_F,
+            'ev': ev}
+
+    return render(request,'manif/bilan-detaille.html',contexte)

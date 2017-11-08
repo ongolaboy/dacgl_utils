@@ -1,0 +1,34 @@
+{% extends "manif/base.html" %}
+
+{% block content %}
+
+<h2> Informations sur l'évènement {{ ev.intitule }}</h2>
+
+<ul>
+	<li>Description : {{ev.description}}</li>
+	<li>Date : {{ev.debut}}</li>
+	<li>Durée: {{ ev.duree }} jour{{ev.duree|pluralize}} </li>
+	<li>Nombre de participants au total : {{ presents_total  }} dont:</li>
+	<ul>
+		<li>{{present_F}} femme{{present_F | pluralize}}</li>
+		<li>{{present_H}} homme{{present_H | pluralize}}</li>
+</ul>
+
+<h3> Liste des participants </h3>
+	<table>
+		<tr>
+			<th>N°</th>
+			<th>Nom</th>
+			<th>Prénom</th>
+			<th>Commentaire</th>
+		</tr>
+			{% for p in presents %}
+		<tr>
+			<td>{{forloop.counter}}</td>
+			<td>{{p.usager.nom}}</td>
+			<td>{{p.usager.prenom}}</td>
+			<td>{{p.commentaire}}</td>
+		</tr>
+			{% endfor %}
+	</table>
+{% endblock %}

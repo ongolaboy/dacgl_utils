@@ -6,5 +6,10 @@ class EvenementAdmin(admin.ModelAdmin):
             'debut','fin','duree','ouvert',
     )
 
+class ParticipationAdmin(admin.ModelAdmin):
+    list_display = ('evenement','usager',
+            'date_inscription','commentaire')
+    list_filter = ['evenement']
+
 admin.site.register(Evenement,EvenementAdmin)
-admin.site.register(Participation)
+admin.site.register(Participation,ParticipationAdmin)
