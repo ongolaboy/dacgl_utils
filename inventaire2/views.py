@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.utils import timezone
 
 from .models import Piece
+from .forms import inventaireLegacyForm
 
 # Create your views here.
 
@@ -75,3 +76,13 @@ def extraction(request):
         writer.writerow(ligne_fichier)
 
     return response
+
+def importation(request):
+
+    form = inventaireLegacyForm()
+    contexte = {'form': form,}
+    return render(request,'inventaire2/importation-csv.html',
+            contexte)
+
+def importationProcess(request):
+    pass
