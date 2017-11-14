@@ -18,7 +18,7 @@
 		 <tr><td><a href="/ident/consigne/usager/{{visite.id}}">{{ visite.usager }}</a></td>
 			 <td>{{ visite.service }}</td>
 			 <td>{{ visite.type_visit }}</td>
-			 <td>{{ visite.date_arrivee }}</td>
+			 <td>Il y a {{ visite.date_arrivee |timesince }}</td>
 			 <td>{{ visite.date_deprt }}</td>
 		 </tr>
 		 {% endfor %}
