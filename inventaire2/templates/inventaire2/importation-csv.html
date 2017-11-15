@@ -3,6 +3,11 @@
 {% block content %}
 <h2> Importation de données d'inventaire </h2>
 {% if user.is_authenticated %}
+{% if message %}
+{{ message }}.<br />
+type de contenu: {{ f.content_type }}
+
+{% endif %}
 <form action="{% url 'inventaire2:importation-process' %}" enctype="multipart/form-data" method="post">
   <table>
   {% csrf_token %}

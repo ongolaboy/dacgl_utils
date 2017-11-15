@@ -2,14 +2,20 @@ import csv
 
 from datetime import datetime
 
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 
 from .models import Piece
 from .forms import inventaireLegacyForm
 
-# Create your views here.
+def csvToInventaire(f):
+    with open(f, newline='') as csvfile:
+        inventaire_orig = csv.reader(csvfile, delimiter=',')
+        extraction_f = []
+        for row in inventaire_orig:
+            extraction_f.append(row)
+        return extraction_f
 
 def index(request):
 
@@ -85,4 +91,56 @@ def importation(request):
             contexte)
 
 def importationProcess(request):
-    pass
+    contexte = {}
+    if request.method == 'POST':
+        form = inventaireLegacyForm(request.POST,request.FILES)
+        if form.is_valid():
+            f = request.FILES['fichier']
+            if f.content_type == 'text/csv':
+
+                import_f = csvToInventaire(request.FILES['fichier'])
+                for ligne in import_f:
+                    try :
+                        produit0 = \
+                                Produit.objects.get(modele__icontains=\
+                                ligne[15])
+                    except Produit.MultipleObjectsReturned :
+                        pass #TODO
+                    except Produit.DoesNotExist:
+                        #il faut vérifier que la marque soit présente
+                        try :
+                            marque0 = Marque.objects.get(nom__icontains=\
+                                    ligne[14])
+                        except Marque.DoesNotExist:
+                            marque0 = Marque(nom=ligne[14])
+                            marque0.save()
+
+                        produit0.save()
+
+                    p = Piece(intitule = ligne[3],
+                            devise = ligne[5],
+                            date_acquisition = ligne[9],
+                            code_inventaire = ligne[10],
+                            emplacement = ligne[1],
+                            commande_coda = \
+                                    Commande.objects.get(numero=1),
+                            modele = produit0,
+                            categorie = ligne[2],
+                            )
+
+                return HttpResponseRedirect('/inventaire2')
+            else :
+                form = inventaireLegacyForm()
+                contexte = {'message': "votre fichier n'est pas au \
+                        format CSV",
+                        'form': form,
+                        'f':f,
+                        }
+                return render(request, 'inventaire2/importation-csv.html',
+                        contexte)
+    else:
+        form = inventaireLegacyForm()
+        contexte = {'message': 'Veuillez recommencer svp',
+                'form': form }
+        return  render(request,'inventaire2/importation-csv.html',
+                contexte)
