@@ -1,0 +1,107 @@
+{% extends "inventaire2/base.html" %}
+
+{% block content %}
+ 
+
+<h1> Inventaire du matériel dans la région </h1>
+
+<h2><a name="#top">Sommaire</a></h2>
+<ul>
+	<li><a href="{% url 'inventaire2:extraction' perimetre0  %}">Extraire la totalité pour la région au format CSV</a></li>
+</ul>
+
+<h3> Affichez l'inventaire d'un site en particulier</h3>
+
+<form action = "{% url 'inventaire2:index' %}" method="GET">
+  {% csrf_token %}
+  {{ form.as_table }}
+	<input type=submit value="Affichez" />
+</form>
+
+
+{% if message %}
+<p> {{ message }} </p>
+{% else %}
+
+	{% if pX %}
+	<h4><a name="dernieresEntreesSiteX">Les 40 dernières acquisitions du site 
+			{{ implantationX.nom }}</a></h4>
+
+	<ul>
+		<li>Extraire l'inventaire de {{ implantationX.nom }} au <a href="{% url 'inventaire2:extraction' implantationX.id %}">format CSV</a></li>
+		<li>Nombre de pièces comptabilisées au total: {{ pX | length }}</li>
+	</ul>
+
+	<table border="1">
+		<tr>
+			<th>Intitulé</th>
+			<th>Catégorie</th>
+			<th>Usage</th>
+			<th>Date d'acquisition</th>
+			<th>code inventaire</th>
+			<th>Commande Coda</th>
+			<th>Prix d'achat</th>
+			<th>Devise</th>
+			<th>Modèle</th>
+			<th>Emplacement</th>
+		</tr>
+
+		{% for p in pX %}
+		<tr>
+			<td> {{ p.intitule }} </td>
+		<td> {{ p.categorie }} </td>
+		<td> {{ p.usage }} </td>
+		<td> {{ p.date_acquisition }} </td>
+		<td> {{ p.code_inventaire }} </td>
+		<td> {{ p.commande_coda }} </td>
+		<td> {{ p.prix_achat }} </td>
+		<td> {{ p.devise }} </td>
+		<td> {{ p.modele }} </td>
+		<td> {{ p.emplacement }} </td>
+	</tr>
+	{% endfor %}
+
+</table>
+
+	{% else %}
+
+<h4><a name="dernieresEntrees">Les 40 dernières acquisitions dans la région</a></h4>
+<ul>
+	<li>Nombre total d'articles inventoriés: {{ piece | length}}</li>
+</ul>
+<table border="1">
+	<tr>
+		<th>Intitulé</th>
+		<th>Catégorie</th>
+		<th>Usage</th>
+		<th>Date d'acquisition</th>
+		<th>code inventaire</th>
+		<th>Commande Coda</th>
+		<th>Prix d'achat</th>
+		<th>Devise</th>
+		<th>Modèle</th>
+		<th>Emplacement</th>
+	</tr>
+
+	{% for p in piece %}
+	<tr>
+		<td> {{ p.intitule }} </td>
+		<td> {{ p.categorie }} </td>
+		<td> {{ p.usage }} </td>
+		<td> {{ p.date_acquisition }} </td>
+		<td> {{ p.code_inventaire }} </td>
+		<td> {{ p.commande_coda }} </td>
+		<td> {{ p.prix_achat }} </td>
+		<td> {{ p.devise }} </td>
+		<td> {{ p.modele }} </td>
+		<td> {{ p.emplacement }} </td>
+	</tr>
+	{% endfor %}
+
+</table>
+	{% endif %}
+{% endif %}
+
+<p><a href="#top">Haut de la page</a></p>
+
+{% endblock %}

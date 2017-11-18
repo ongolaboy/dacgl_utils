@@ -6,8 +6,8 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 
-from .models import Piece
-from .forms import inventaireLegacyForm
+from .models import Piece,Implantation
+from .forms import inventaireLegacyForm, implantationForm
 
 def csvToInventaire(f):
     with open(f, newline='') as csvfile:
@@ -19,13 +19,42 @@ def csvToInventaire(f):
 
 def index(request):
 
+    contexte = {}
     p = Piece.objects.all().order_by('-date_acquisition')[:40]
-    contexte = {'piece': p}
+    implantations = Implantation.objects.all()
+    # on fixe arbitrairement le périmètre «global» à 30
+    contexte = {'piece': p, 'implantations': implantations,
+            'perimetre0': 30,}
 
-    return render(request,'inventaire2/index.html',
-            contexte)
 
-def extraction(request):
+    if request.method == "GET":
+        form = implantationForm(request.GET)
+        if form.is_valid():
+            site_X = form.cleaned_data['implantationX']
+            contexte['perimetre'] = site_X.id
+            implantationX = Implantation.objects.get(pk=site_X.id)
+            pX = Piece.objects.\
+                filter(emplacement__site__id=site_X.id).\
+                order_by('-date_acquisition')[:40]
+            if len(pX) == 0:
+                message = 'Aucune information pour %s' % site_X.nom
+                contexte['message'] = message
+            else :
+                contexte['pX'] = pX
+            contexte['implantationX'] = implantationX
+
+    form = implantationForm()
+    contexte['form']  = form
+
+    return render(request,'inventaire2/index2.html', contexte)
+
+def siteInfos(request,site_id):
+
+    infos = Implantation.objects.get(pk=site_id)
+    contexte = {'infos': infos }
+    return render(request,'inventaire2/site.html', contexte)
+
+def extraction(request,perimetre):
 
     fuseau = timezone.get_current_timezone()
     moment = datetime.now(fuseau)
@@ -39,7 +68,14 @@ def extraction(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = info_MIME
     
-    total_piece = Piece.objects.all()
+    piece_a_extraire = Piece.objects
+    if perimetre == 30:
+        piece_a_extraire = piece_a_extraire.all()
+    else:
+        piece_a_extraire = \
+                piece_a_extraire.filter(emplacement__site__id=perimetre)
+
+    total_piece = piece_a_extraire
     writer = csv.writer(response)
 
     #TODO : laisser le choix à l'utilisateur
@@ -55,7 +91,8 @@ def extraction(request):
             ]
     writer.writerow(entete)
             
-    for piece in Piece.objects.all():
+
+    for piece in piece_a_extraire:
         code_document = 'COM-' + \
         piece.commande_coda.section
 
