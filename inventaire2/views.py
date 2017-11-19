@@ -20,10 +20,11 @@ def csvToInventaire(f):
 def index(request):
 
     contexte = {}
-    p = Piece.objects.all().order_by('-date_acquisition')[:40]
+    pT = Piece.objects.all()
+    p = pT.order_by('-date_acquisition')[:40]
     implantations = Implantation.objects.all()
     # on fixe arbitrairement le périmètre «global» à 30
-    contexte = {'piece': p, 'implantations': implantations,
+    contexte = {'piece': p, 'pT':pT,'implantations': implantations,
             'perimetre0': 30,}
 
 
@@ -33,13 +34,14 @@ def index(request):
             site_X = form.cleaned_data['implantationX']
             contexte['perimetre'] = site_X.id
             implantationX = Implantation.objects.get(pk=site_X.id)
-            pX = Piece.objects.\
-                filter(emplacement__site__id=site_X.id).\
-                order_by('-date_acquisition')[:40]
-            if len(pX) == 0:
+            pX_T = Piece.objects.\
+                filter(emplacement__site__id=site_X.id)
+            if len(pX_T) == 0:
                 message = 'Aucune information pour %s' % site_X.nom
                 contexte['message'] = message
             else :
+                pX = pX_T.order_by('-date_acquisition')[:40]
+                contexte['pX_T'] = pX_T
                 contexte['pX'] = pX
             contexte['implantationX'] = implantationX
 
@@ -68,14 +70,6 @@ def extraction(request,perimetre):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = info_MIME
     
-    piece_a_extraire = Piece.objects
-    if perimetre == 30:
-        piece_a_extraire = piece_a_extraire.all()
-    else:
-        piece_a_extraire = \
-                piece_a_extraire.filter(emplacement__site__id=perimetre)
-
-    total_piece = piece_a_extraire
     writer = csv.writer(response)
 
     #TODO : laisser le choix à l'utilisateur
@@ -90,7 +84,12 @@ def extraction(request,perimetre):
             "Description","Commentaire",
             ]
     writer.writerow(entete)
-            
+
+    if perimetre == '30': #TODO comprendre pourquoi c'est 1 str ici :P
+        piece_a_extraire = Piece.objects.all()
+    else:
+        piece_a_extraire = \
+                Piece.objects.filter(emplacement__site__id=perimetre)
 
     for piece in piece_a_extraire:
         code_document = 'COM-' + \

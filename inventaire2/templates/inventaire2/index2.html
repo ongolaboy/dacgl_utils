@@ -29,7 +29,7 @@
 
 	<ul>
 		<li>Extraire l'inventaire de {{ implantationX.nom }} au <a href="{% url 'inventaire2:extraction' implantationX.id %}">format CSV</a></li>
-		<li>Nombre de pièces comptabilisées au total: {{ pX | length }}</li>
+		<li>Nombre de pièces comptabilisées au total: {{ pX_T | length }}</li>
 	</ul>
 
 	<table border="1">
@@ -67,7 +67,7 @@
 
 <h4><a name="dernieresEntrees">Les 40 dernières acquisitions dans la région</a></h4>
 <ul>
-	<li>Nombre total d'articles inventoriés: {{ piece | length}}</li>
+	<li>Nombre total d'articles inventoriés: {{ pT | length}}</li>
 </ul>
 <table border="1">
 	<tr>
