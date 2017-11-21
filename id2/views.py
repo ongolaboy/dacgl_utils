@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
+from django.urls import reverse
 from django.utils import timezone
 
 from id2.forms import InscriptionForm,VisiteForm,RechercheForm
@@ -67,12 +68,12 @@ def entreeVerification(request):
         if user is not None:
             if user.is_active:
                 login(request,user)
-                return HttpResponseRedirect('/ident/')
+                return HttpResponseRedirect(reverse('home'))
             else :
                 # compte désactivé
-                return HttpResponseForbidden('/ident/')
+                return HttpResponseForbidden(reverse('entree'))
 
-    return HttpResponseRedirect('/ident/login/')
+    return HttpResponseRedirect(reverse('entree'))
 
 def inscription(request):
     """
@@ -267,7 +268,7 @@ def visiteProfTraitement(request):
         form = VisiteForm()
         return render(request,'id2/visite.html',{'form':form})
 
-@login_required(login_url='/ident/')
+@login_required(login_url='/login')
 def visite(request,cat_visiteur,visiteur_id):
     """
     A travers cette vue on va consigner automatiquement

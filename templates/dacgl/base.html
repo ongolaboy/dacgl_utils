@@ -15,31 +15,21 @@
 	   <a href="{% url 'home' %}">Accueil</a> |
 	     <a href="{% url 'manif:index' %}">Manifestations organisées</a>
 	   </p><br />
-	   {% if user.is_staff %}
-	    {% if services %}
-	    <p>
-	    Les services:<br />
-	    {% for s in services %}
-	    <a href="/ident/service/{{s.id}}/">{{s.nom_serv}}</a> |
-	    {% endfor %}
-	    </p>
-	    {% endif %}
-	   {% endif %}
 	  </div>
           <div id="side" align="right">
                   {% block sidebar %}
 
                   <ul>
                           {% if not user.is_authenticated %}
-				  <p>Ouvrir <a href="/ident/login">une session</a></p>
+			  <p>Ouvrir <a href="{% url 'entree' %}">une session</a></p>
                           {% else %}
 				  Bienvenue {{ user.username }}
-				  <li><a href="/ident/">Accueil</li>
+				  <li><a href="{% url 'home' %}">Accueil</li>
                                   {% if user.is_staff %}
 					  <li><a href="/admin" target="_blank">Interface d'administration</li>
                                   {% endif %}
                           <li>
-				  <a href="/ident/logout">Se déconnecter</a> <br />
+				  <a href="{% url 'sortie' %}">Se déconnecter</a> <br />
                             {% endif %}
                         </ul>
 

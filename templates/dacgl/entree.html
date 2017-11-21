@@ -1,21 +1,25 @@
-{% extends "id2/base.html" %}
+{% extends "dacgl/base.html" %}
 
 {% block content %}
 <div align="center">
-	<h3> Connexion à l'interface de gestion des visites</h3>
+	<h3> Connexion aux outils de la DRACGL</h3>
+	{% if form.errors %}
+	<p>Les informations saisies ne correspondent pas! </p>
+	{% endif %}
+
 	<table>
 		<form action="{% url 'id2:entreeVerification' %}" method="post">
+			{% comment %}<form action="{% url 'connexion-check' %}" method="post"> {% endcomment %}
 	  {% csrf_token %}
 	  <tr>
 		  <th><label for="id_identifiant">Identifiant:</label></th>
-		  <td>
-			  <input id="id_identifiant" maxlength="40" name="identifiant" type="text" />
+		  <td><input id="id_identifiant" maxlength="40" name="identifiant" type="text" required />
 		  </td>
 	  </tr>
 	  <tr>
 		  <th><label for="id_password">Mot de passe:</label></th>
 		  <td>
-			  <input id="id_password" maxlength="90" name="password" type="password" />
+			  <input id="id_password" maxlength="90" name="password" type="password" required />
 		  </td>
 	  </tr>
 
