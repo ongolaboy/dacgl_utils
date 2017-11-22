@@ -105,3 +105,12 @@
 <p><a href="#top">Haut de la page</a></p>
 
 {% endblock %}
+
+{% block piedDePage %}
+<div align="center">
+	<hr />
+	 {% if user.is_staff %}
+	 <a href="{% url 'inventaire2:importation' %}">Importer un fichier au format CSV</a>
+	 {% endif %}
+</div>
+{% endblock %}

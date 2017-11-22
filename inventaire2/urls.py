@@ -10,8 +10,8 @@ urlpatterns = [
 #        url(r'^site/(?P<site_id>\d+)/$', views.siteInfos, name='siteInfos'),
         url(r'^extraction/csv/(?P<perimetre>\d+)/',
             views.extraction, name='extraction'),
-#        url(r'^importation/csv',
-#            views.importation, name='importation'),
-#        url(r'^importation/traitement/csv',
-#            views.importationProcess, name='importation-process'),
+        url(r'^importation/csv',
+            views.importation, name='importation'),
+        url(r'^importation/traitement/csv',
+            views.importationProcess, name='importation-process'),
         ]

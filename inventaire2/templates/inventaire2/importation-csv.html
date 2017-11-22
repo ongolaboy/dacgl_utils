@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2> Importation de données d'inventaire </h2>
-{% if user.is_authenticated %}
+{% if user.is_staff %}
 {% if message %}
 {{ message }}.<br />
 type de contenu: {{ f.content_type }}
@@ -19,7 +19,7 @@ type de contenu: {{ f.content_type }}
   </table>
 </form>
 {% else %}
- <p> il faut disposer d'un compte pour rajouter un fichier </p>
+ <p> il faut disposer d'un compte admin pour rajouter un fichier </p>
 
 {% endif %}
 

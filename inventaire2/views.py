@@ -2,6 +2,7 @@ import csv
 
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
@@ -119,6 +120,7 @@ def extraction(request,perimetre):
 
     return response
 
+@login_required(login_url='/login/')
 def importation(request):
 
     form = inventaireLegacyForm()
@@ -135,33 +137,33 @@ def importationProcess(request):
             if f.content_type == 'text/csv':
 
                 import_f = csvToInventaire(request.FILES['fichier'])
-                for ligne in import_f:
+                for colonne in import_f:
                     try :
                         produit0 = \
                                 Produit.objects.get(modele__icontains=\
-                                ligne[15])
+                                colonne[15])
                     except Produit.MultipleObjectsReturned :
                         pass #TODO
                     except Produit.DoesNotExist:
                         #il faut vérifier que la marque soit présente
                         try :
                             marque0 = Marque.objects.get(nom__icontains=\
-                                    ligne[14])
+                                    colonne[14])
                         except Marque.DoesNotExist:
-                            marque0 = Marque(nom=ligne[14])
+                            marque0 = Marque(nom=colonne[14])
                             marque0.save()
 
                         produit0.save()
 
-                    p = Piece(intitule = ligne[3],
-                            devise = ligne[5],
-                            date_acquisition = ligne[9],
-                            code_inventaire = ligne[10],
-                            emplacement = ligne[1],
+                    p = Piece(intitule = colonne[3],
+                            devise = colonne[5],
+                            date_acquisition = colonne[9],
+                            code_inventaire = colonne[10],
+                            emplacement = colonne[1],
                             commande_coda = \
                                     Commande.objects.get(numero=1),
                             modele = produit0,
-                            categorie = ligne[2],
+                            categorie = colonne[2],
                             )
 
                 return HttpResponseRedirect('/inventaire2')
