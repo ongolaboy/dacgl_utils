@@ -86,7 +86,7 @@ def extraction(request,perimetre):
             ]
     writer.writerow(entete)
 
-    if perimetre == '30': #TODO comprendre pourquoi c'est 1 str ici :P
+    if perimetre == '30':
         piece_a_extraire = Piece.objects.all()
     else:
         piece_a_extraire = \

@@ -7,7 +7,7 @@
 	<p><strong> {{ message_erreur }} </strong></p>
 	{% endif %}
 	<p> Recherchez une personne à abonner ou <br/>dont il faut mettre à jour les infos d'abonnement </p>
-	<form action="{% url 'service-index-traitement' %}" method="GET">
+	<form action="{% url 'id2:service-index-traitement' %}" method="GET">
 	    {% csrf_token %}
 	    {{ form.as_p }}
     	    <input type="hidden" name="service_id" value="{{service_id}}">
