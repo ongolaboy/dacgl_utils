@@ -129,6 +129,13 @@ def importation(request):
             contexte)
 
 def importationProcess(request):
+    """Importation des données des autres sites
+
+    Certaines informations seront fournies par défaut.
+    Commande CODA: COM-INF 1
+    valeur : 0 XAF
+    """
+
     contexte = {}
     if request.method == 'POST':
         form = inventaireLegacyForm(request.POST,request.FILES)
@@ -137,36 +144,76 @@ def importationProcess(request):
             if f.content_type == 'text/csv':
 
                 import_f = csvToInventaire(request.FILES['fichier'])
+                premiere_ligne = True
+                ligne = 0
+                nbr_lignes_OK = 0
+                lignes_Not_OK = []
                 for colonne in import_f:
-                    try :
-                        produit0 = \
-                                Produit.objects.get(modele__icontains=\
+                    ligne +=1
+                    if premiere_ligne :
+                        premiere_ligne = False
+                        continue
+                    try:
+                        implantation0 = Implantation.objects.get(\
+                                nom__icontains=colonne[1])
+                    except Implantation.DoesNotExist:
+                        implantation0 = Implantation(nom=colonne[1])
+                        implantation0.save()
+                    try:
+                        salle0 = implantation0.salle_set.get(\
+                                nom__icontains=colonne[2])
+                    except Salle.DoesNotExist:
+                        salle0 = Salle(nom=colonne[2],site=implantation0)
+                        salle0.save()
+
+                    try:
+                        marque0 = Marque.objects.get(nom__icontains=\
                                 colonne[15])
+                    except Marque.DoesNotExist:
+                        marque0 = Marque(nom=colonne[15])
+                        marque0.save()
+                    try:
+                        produit0 = marque0.produit_set.get(\
+                                modele__icontains=colonne[16])
                     except Produit.MultipleObjectsReturned :
                         pass #TODO
                     except Produit.DoesNotExist:
-                        #il faut vérifier que la marque soit présente
-                        try :
-                            marque0 = Marque.objects.get(nom__icontains=\
-                                    colonne[14])
-                        except Marque.DoesNotExist:
-                            marque0 = Marque(nom=colonne[14])
-                            marque0.save()
-
+                        produit0 = Produit(modele=colonne[16],
+                                constructeur=marque0)
                         produit0.save()
 
-                    p = Piece(intitule = colonne[3],
-                            devise = colonne[5],
-                            date_acquisition = colonne[9],
-                            code_inventaire = colonne[10],
-                            emplacement = colonne[1],
+                    try:
+                        piece = Piece(intitule = colonne[4],
+                                prix_achat = colonne[5],
+                            devise = colonne[6],
+                            date_acquisition = colonne[10],
+                            code_inventaire = colonne[11],
+                            emplacement = salle0,
+                            #on rappelle qu'on se sert par défaut de
+                            #la COM-INF 1
                             commande_coda = \
                                     Commande.objects.get(numero=1),
                             modele = produit0,
-                            categorie = colonne[2],
+                            categorie = colonne[3],
                             )
+                    except Piece.DoesNotExist:
+                        piece.save()
+                        nbr_lignes_OK += 1
 
-                return HttpResponseRedirect('/inventaire2')
+                    else:
+                        # cette pièce a déjà été inventoriée
+                        lignes_Not_OK.append(ligne)
+
+                contexte = {'lignes_Not_OK': lignes_Not_OK,
+                        'nbr_lignes_OK': nbr_lignes_OK,
+                        'total_lignes': ligne,
+                        'f': f,
+                        }
+
+                return render(request,
+                'inventaire2/importation-csv-report.html',
+                contexte, status=302)
+
             else :
                 form = inventaireLegacyForm()
                 contexte = {'message': "votre fichier n'est pas au \

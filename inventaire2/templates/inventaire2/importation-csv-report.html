@@ -1,0 +1,15 @@
+{% extends "inventaire2/base.html" %}
+
+{% block content %}
+
+<h3> Rapport de l'import du fichier </h3>
+
+<p>Nom du fichier: {{ f }} </p>
+<ul>
+  <li>Nombre total d'articles traités: {{total_lignes| length}}</li>
+  <li>Nombre d'articles traités correctement: {{ nbr_lignes_OK }}</li>
+  <li>Nombre d'articles étant déjà présents et qui n'ont pas été ajoutés:
+    {{ lignes_not_OK | length }}<br />Lignes concernées: {{ lignes_not_OK }}</li>
+</ul>
+
+{% endblock %}
