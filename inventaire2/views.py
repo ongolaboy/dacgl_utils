@@ -1,22 +1,17 @@
 import csv
 
-from datetime import datetime
+from datetime import datetime,date
+from io import TextIOWrapper
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils import timezone
 
-from .models import Piece,Implantation
+from .models import Piece,Implantation,Marque,Salle,Produit,Commande,\
+        Devise,Categorie
 from .forms import inventaireLegacyForm, implantationForm
-
-def csvToInventaire(f):
-    with open(f, newline='') as csvfile:
-        inventaire_orig = csv.reader(csvfile, delimiter=',')
-        extraction_f = []
-        for row in inventaire_orig:
-            extraction_f.append(row)
-        return extraction_f
 
 def index(request):
 
@@ -69,7 +64,7 @@ def extraction(request,perimetre):
     info_MIME = "attachment;filename=" + format_res
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = info_MIME
+    response['Content-Disposition'] = info_MIME + '.csv'
     
     writer = csv.writer(response)
 
@@ -142,67 +137,109 @@ def importationProcess(request):
         if form.is_valid():
             f = request.FILES['fichier']
             if f.content_type == 'text/csv':
+            # les fichiers ici sont TOUS binaires d'où l'usage de io
+            #pour csv qui a besoin de fichiers textes
+                f = TextIOWrapper(f.file)
+                csvfile = csv.reader(f,delimiter=',')
 
-                import_f = csvToInventaire(request.FILES['fichier'])
                 premiere_ligne = True
                 ligne = 0
                 nbr_lignes_OK = 0
                 lignes_Not_OK = []
-                for colonne in import_f:
+
+                for colonne in csvfile:
                     ligne +=1
                     if premiere_ligne :
                         premiere_ligne = False
                         continue
+
+                    #Implantation
                     try:
                         implantation0 = Implantation.objects.get(\
-                                nom__icontains=colonne[1])
+                                nom__icontains=colonne[0])
                     except Implantation.DoesNotExist:
-                        implantation0 = Implantation(nom=colonne[1])
+                        implantation0 = Implantation(nom=colonne[0])
                         implantation0.save()
+
+                    #Salle
                     try:
                         salle0 = implantation0.salle_set.get(\
-                                nom__icontains=colonne[2])
+                                nom__icontains=colonne[1])
                     except Salle.DoesNotExist:
-                        salle0 = Salle(nom=colonne[2],site=implantation0)
+                        salle0 = Salle(nom=colonne[1],site=implantation0)
                         salle0.save()
 
+                    #Marque
                     try:
                         marque0 = Marque.objects.get(nom__icontains=\
-                                colonne[15])
+                                colonne[14])
+                    except Marque.MultipleObjectsReturned:
+                        m0 = Marque.objects.filter(nom__icontains=\
+                                colonne[14])
+                        for i in m0: #TODO on peut faire mieux
+                            break
+                        marque0 = i
                     except Marque.DoesNotExist:
-                        marque0 = Marque(nom=colonne[15])
+                        marque0 = Marque(nom=colonne[14])
                         marque0.save()
+
                     try:
                         produit0 = marque0.produit_set.get(\
-                                modele__icontains=colonne[16])
+                                modele__icontains=colonne[15])
                     except Produit.MultipleObjectsReturned :
-                        pass #TODO
+                        p0 = marque0.produit_set.filter(\
+                                modele__icontains=colonne[15])
+                        for p1 in p0:
+                            break
+                        produit0 = p1
+
                     except Produit.DoesNotExist:
-                        produit0 = Produit(modele=colonne[16],
+                        produit0 = Produit(modele=colonne[15],
                                 constructeur=marque0)
                         produit0.save()
 
                     try:
-                        piece = Piece(intitule = colonne[4],
-                                prix_achat = colonne[5],
-                            devise = colonne[6],
-                            date_acquisition = colonne[10],
-                            code_inventaire = colonne[11],
-                            emplacement = salle0,
-                            #on rappelle qu'on se sert par défaut de
-                            #la COM-INF 1
-                            commande_coda = \
-                                    Commande.objects.get(numero=1),
-                            modele = produit0,
-                            categorie = colonne[3],
-                            )
-                    except Piece.DoesNotExist:
-                        piece.save()
-                        nbr_lignes_OK += 1
+                        devise0 = Devise.objects.get(\
+                                identifiant=colonne[5])
+                    except Devise.DoesNotExist:
+                        devise0 = Devise.objects.get(identifiant='XAF')
 
-                    else:
+                    descr0 = ''
+                    comm0 = ''
+                    p_achat0 = 0
+
+                    if colonne[4] != '':
+                        p_achat0 = int(colonne[4])
+                    if colonne[16] != '':
+                        descr0 = colonne[16]
+                    if colonne[17] != '':
+                        comm0 = colonne[17]
+
+                    piece = Piece(intitule = colonne[3],
+                            prix_achat = p_achat0,
+                        devise = devise0,
+                        date_acquisition = date(year=int(colonne[9]),
+                            month=7,day=14),
+                        code_inventaire = colonne[10],
+                        description = descr0,
+                        commentaire = comm0,
+                        emplacement = salle0,
+                        #on rappelle qu'on se sert par défaut de
+                        #la COM-INF 1
+                        #Pour la démo, j'ai fixé à 89 
+                        #TODO à améliorer
+                        commande_coda = \
+                                Commande.objects.get(numero=89),
+                        modele = produit0,
+                        categorie = Categorie.objects.get(\
+                                nom=colonne[2]),
+                        )
+                    piece.save()
+                    nbr_lignes_OK += 1
+
+                    #else:
                         # cette pièce a déjà été inventoriée
-                        lignes_Not_OK.append(ligne)
+                    #    lignes_Not_OK.append(ligne)
 
                 contexte = {'lignes_Not_OK': lignes_Not_OK,
                         'nbr_lignes_OK': nbr_lignes_OK,
@@ -220,9 +257,20 @@ def importationProcess(request):
                         format CSV",
                         'form': form,
                         'f':f,
+                        'F':dir(f),
                         }
                 return render(request, 'inventaire2/importation-csv.html',
-                        contexte)
+                        contexte,status=302)
+        else:
+            form = inventaireLegacyForm()
+            contexte['message'] = "le formulaire n'est pas valide"
+
+            return HttpResponseRedirect(reverse('importation',
+                kwargs = contexte))
+            #return render(request,
+            #'inventaire2/importation-csv.html',
+            #contexte,
+            #)
     else:
         form = inventaireLegacyForm()
         contexte = {'message': 'Veuillez recommencer svp',
