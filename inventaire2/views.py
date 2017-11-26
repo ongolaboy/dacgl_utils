@@ -170,33 +170,35 @@ def importationProcess(request):
                         salle0.save()
 
                     #Marque
-                    try:
-                        marque0 = Marque.objects.get(nom__icontains=\
-                                colonne[14])
-                    except Marque.MultipleObjectsReturned:
-                        m0 = Marque.objects.filter(nom__icontains=\
-                                colonne[14])
-                        for i in m0: #TODO on peut faire mieux
-                            break
-                        marque0 = i
-                    except Marque.DoesNotExist:
-                        marque0 = Marque(nom=colonne[14])
-                        marque0.save()
+                    if colonne[14] == '':
+                        marque0,marque0_cree = Marque.objects.\
+                                get_or_create(nom='INCONNU')
+                    else:
+                        try:
+                            marque0 = Marque.objects.get(nom__icontains=\
+                                    colonne[14])
+                        except Marque.MultipleObjectsReturned:
+                            m0 = Marque.objects.filter(nom__icontains=\
+                                    colonne[14])[:1]
+                        except Marque.DoesNotExist:
+                            marque0 = Marque(nom=colonne[14])
+                            marque0.save()
 
-                    try:
-                        produit0 = marque0.produit_set.get(\
-                                modele__icontains=colonne[15])
-                    except Produit.MultipleObjectsReturned :
-                        p0 = marque0.produit_set.filter(\
-                                modele__icontains=colonne[15])
-                        for p1 in p0:
-                            break
-                        produit0 = p1
-
-                    except Produit.DoesNotExist:
-                        produit0 = Produit(modele=colonne[15],
-                                constructeur=marque0)
-                        produit0.save()
+                    #Produit
+                    if colonne[15] == '':
+                        produit0,produit0_cree = marque0.produit_set.\
+                                get_or_create(modele='INCONNU')
+                    else:
+                        try:
+                            produit0 = marque0.produit_set.get(\
+                                    modele__icontains=colonne[15])
+                        except Produit.MultipleObjectsReturned :
+                            p0 = marque0.produit_set.filter(\
+                                    modele__icontains=colonne[15])[:1]
+                        except Produit.DoesNotExist:
+                            produit0 = Produit(modele=colonne[15],
+                                    constructeur=marque0)
+                            produit0.save()
 
                     try:
                         devise0 = Devise.objects.get(\
