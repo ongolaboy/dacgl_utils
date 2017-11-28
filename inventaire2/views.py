@@ -1,10 +1,12 @@
 import csv
+import random
 
 from datetime import datetime,date
 from io import TextIOWrapper
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect,\
+        HttpResponsePermanentRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
@@ -12,6 +14,30 @@ from django.utils import timezone
 from .models import Piece,Implantation,Marque,Salle,Produit,Commande,\
         Devise,Categorie
 from .forms import inventaireLegacyForm, implantationForm
+
+def code_aleatoire(pas=5):
+    """Un code inventaire temporaire
+
+    Au cas où il n'existe pas de code d'inventaire,cette fonction
+    permet d'attribuer un code qui pourra éventuellement être changé
+    par la suite
+    """
+
+    alea = ('abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQUVW')
+    nbr_alea = 'X '
+    trouve = False
+    while trouve == False:
+
+        while pas != 0:
+            nbr_alea += random.choice(alea)
+            pas -=  1
+
+        try:
+            Piece.objects.get(code_inventaire=nbr_alea)
+        except:
+            trouve = True
+    return nbr_alea
+
 
 def index(request):
 
@@ -115,6 +141,9 @@ def extraction(request,perimetre):
 
     return response
 
+def extractionOld(request):
+    return HttpResponsePermanentRedirect('/inventaire2/extraction/csv/30')
+
 @login_required(login_url='/login/')
 def importation(request):
 
@@ -139,7 +168,7 @@ def importationProcess(request):
             if f.content_type == 'text/csv':
             # les fichiers ici sont TOUS binaires d'où l'usage de io
             #pour csv qui a besoin de fichiers textes
-                f = TextIOWrapper(f.file)
+                f = TextIOWrapper(f.file, encoding='UTF-8')
                 csvfile = csv.reader(f,delimiter=',')
 
                 premiere_ligne = True
@@ -178,8 +207,8 @@ def importationProcess(request):
                             marque0 = Marque.objects.get(nom__icontains=\
                                     colonne[14])
                         except Marque.MultipleObjectsReturned:
-                            m0 = Marque.objects.filter(nom__icontains=\
-                                    colonne[14])[:1]
+                            marque0 = Marque.objects.filter(\
+                                    nom__icontains=colonne[14]).first()
                         except Marque.DoesNotExist:
                             marque0 = Marque(nom=colonne[14])
                             marque0.save()
@@ -193,8 +222,8 @@ def importationProcess(request):
                             produit0 = marque0.produit_set.get(\
                                     modele__icontains=colonne[15])
                         except Produit.MultipleObjectsReturned :
-                            p0 = marque0.produit_set.filter(\
-                                    modele__icontains=colonne[15])[:1]
+                            produit0 = marque0.produit_set.filter(\
+                                    modele__icontains=colonne[15]).first()
                         except Produit.DoesNotExist:
                             produit0 = Produit(modele=colonne[15],
                                     constructeur=marque0)
@@ -212,6 +241,16 @@ def importationProcess(request):
 
                     if colonne[4] != '':
                         p_achat0 = int(colonne[4])
+                    usage0 = 'personnel'
+                    if colonne[8] != '':
+                        for u in Piece.USAGE:
+                            if colonne[8] == u[0]:
+                                usage0 = colonne[8]
+                                break
+                    if colonne[10] == '':
+                        code_inventaire0 = code_aleatoire()
+                    else:
+                        code_inventaire0 = colonne[10]
                     if colonne[16] != '':
                         descr0 = colonne[16]
                     if colonne[17] != '':
@@ -220,9 +259,9 @@ def importationProcess(request):
                     piece = Piece(intitule = colonne[3],
                             prix_achat = p_achat0,
                         devise = devise0,
-                        date_acquisition = date(year=int(colonne[9]),
-                            month=7,day=14),
-                        code_inventaire = colonne[10],
+                        usage = usage0,
+                        date_acquisition = date.today(),
+                        code_inventaire = code_inventaire0,
                         description = descr0,
                         commentaire = comm0,
                         emplacement = salle0,
