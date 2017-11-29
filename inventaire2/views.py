@@ -15,29 +15,7 @@ from .models import Piece,Implantation,Marque,Salle,Produit,Commande,\
         Devise,Categorie
 from .forms import inventaireLegacyForm, implantationForm
 
-def code_aleatoire(pas=5):
-    """Un code inventaire temporaire
-
-    Au cas où il n'existe pas de code d'inventaire,cette fonction
-    permet d'attribuer un code qui pourra éventuellement être changé
-    par la suite
-    """
-
-    alea = ('abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQUVW')
-    nbr_alea = 'X '
-    trouve = False
-    while trouve == False:
-
-        while pas != 0:
-            nbr_alea += random.choice(alea)
-            pas -=  1
-
-        try:
-            Piece.objects.get(code_inventaire=nbr_alea)
-        except:
-            trouve = True
-    return nbr_alea
-
+from .utils import code_aleatoire
 
 def index(request):
 
@@ -247,6 +225,19 @@ def importationProcess(request):
                             if colonne[8] == u[0]:
                                 usage0 = colonne[8]
                                 break
+                    if colonne[9] == '':
+                        date_acquisition0 = date(year=date.today().year-2,
+                                month=date.today().month,
+                                day=date.today().day
+                                ),
+                    else:
+                        #format colonne Tchad 2009-01-01
+                        moment = colonne[9]
+                        date_acquisition0 = date(
+                                year=int(moment[:4]),
+                                month=int(moment[5:7]),
+                                day=int(moment[8:]),
+                                )
                     if colonne[10] == '':
                         code_inventaire0 = code_aleatoire()
                     else:
@@ -260,7 +251,7 @@ def importationProcess(request):
                             prix_achat = p_achat0,
                         devise = devise0,
                         usage = usage0,
-                        date_acquisition = date.today(),
+                        date_acquisition = date_acquisition0,
                         code_inventaire = code_inventaire0,
                         description = descr0,
                         commentaire = comm0,
