@@ -1,4 +1,9 @@
+"""Fonctions utiles à la gestion des inventaires
+"""
 
+import random
+
+from .models import Piece
 
 def code_aleatoire(pas=5):
     """Un code inventaire temporaire

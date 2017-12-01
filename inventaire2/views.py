@@ -1,5 +1,4 @@
 import csv
-import random
 
 from datetime import datetime,date
 from io import TextIOWrapper
@@ -12,7 +11,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .models import Piece,Implantation,Marque,Salle,Produit,Commande,\
-        Devise,Categorie
+        Devise,Categorie,Societe
 from .forms import inventaireLegacyForm, implantationForm
 
 from .utils import code_aleatoire
@@ -136,6 +135,26 @@ def importationProcess(request):
     Certaines informations seront fournies par défaut.
     Commande CODA: COM-INF 1
     valeur : 0 XAF
+
+    Description des colonnes:
+    0: Site
+    1: Emplacement
+    2: Catégorie
+    3: Intitulé
+    4: Prix d'achat
+    5: Devise
+    6: Numéro de série
+    7: Fonctionnel
+    8: Usage
+    9: Date d'acquisition
+    10: Code d'inventaire
+    11: Code document
+    12: Numéro coda
+    13: Valeur Commande coda
+    14: Marque
+    15: Modèle
+    16: Description
+    17: Commentaire
     """
 
     contexte = {}
@@ -172,6 +191,9 @@ def importationProcess(request):
                     try:
                         salle0 = implantation0.salle_set.get(\
                                 nom__icontains=colonne[1])
+                    except Salle.MultipleObjectsReturned:
+                        salle0 = Salle.objects.filter(\
+                                nom__icontains=colonne[1]).first()
                     except Salle.DoesNotExist:
                         salle0 = Salle(nom=colonne[1],site=implantation0)
                         salle0.save()
@@ -190,6 +212,10 @@ def importationProcess(request):
                         except Marque.DoesNotExist:
                             marque0 = Marque(nom=colonne[14])
                             marque0.save()
+
+                    #Societe
+                    soc0 = Societe.objects.get(nom='Divers')
+
 
                     #Produit
                     if colonne[15] == '':
@@ -216,10 +242,18 @@ def importationProcess(request):
                     descr0 = ''
                     comm0 = ''
                     p_achat0 = 0
+                    usage0 = 'personnel'
 
                     if colonne[4] != '':
                         p_achat0 = int(colonne[4])
-                    usage0 = 'personnel'
+                    if colonne[6] != '':
+                        num_serie0 = colonne[6]
+                    else:
+                        num_serie0 = ''
+                    if colonne[7] == 'True':
+                        fonctionnel0 = True
+                    else:
+                        fonctionnel0 = False
                     if colonne[8] != '':
                         for u in Piece.USAGE:
                             if colonne[8] == u[0]:
@@ -229,15 +263,21 @@ def importationProcess(request):
                         date_acquisition0 = date(year=date.today().year-2,
                                 month=date.today().month,
                                 day=date.today().day
-                                ),
-                    else:
-                        #format colonne Tchad 2009-01-01
-                        moment = colonne[9]
-                        date_acquisition0 = date(
-                                year=int(moment[:4]),
-                                month=int(moment[5:7]),
-                                day=int(moment[8:]),
                                 )
+                    else:
+                        if len(colonne[9]) == 4:
+                            date_acquisition0 = date(
+                                    year=int(colonne[9]),
+                                    month=7,day=14
+                                    )
+                        else:
+                            #format colonne Buja 06-12-2009
+                            moment = colonne[9]
+                            date_acquisition0 = date(
+                                    year=int(moment[6:]),
+                                    month=int(moment[3:5]),
+                                    day=int(moment[:2]),
+                                    )
                     if colonne[10] == '':
                         code_inventaire0 = code_aleatoire()
                     else:
@@ -247,11 +287,46 @@ def importationProcess(request):
                     if colonne[17] != '':
                         comm0 = colonne[17]
 
+                    #Commande
+                    if colonne[11] == '':
+                        commande_coda0 = Commande.objects.get(numero=89)
+                    else:
+                        try:
+                            commande_coda0 = Commande.objects.get(\
+                                    section=colonne[11],
+                                    numero=int(colonne[12]))
+                        except Commande.DoesNotExist:
+                            if colonne[5] == '':
+                                devise0 = Devise.objects.get(\
+                                        identifiant='EUR')
+                            else:
+                                devise0 = Devise.objects.get(\
+                                        identifiant=colonne[5])
+
+                            try:
+                                commande_coda0 = Commande(\
+                                        valeur=p_achat0,
+                                        #section=colonne[11],
+                                        numero=int(colonne[12]),
+                                        devise=devise0,
+                                        livree_par=soc0,
+                                        )
+                                commande_coda0.save()
+                            except:
+                                comm0 = 'souci avec la comm coda'
+                                commande_coda0 = \
+                                        Commande.objects.get(numero=89)
+
                     piece = Piece(intitule = colonne[3],
                             prix_achat = p_achat0,
                         devise = devise0,
+                        num_serie = num_serie0,
+                        fonctionnel = fonctionnel0,
                         usage = usage0,
                         date_acquisition = date_acquisition0,
+                        #date_acquisition = date(year=date.today().year-2,
+                        #    month=date.today().month,
+                        #    day=date.today().day),
                         code_inventaire = code_inventaire0,
                         description = descr0,
                         commentaire = comm0,
@@ -260,11 +335,11 @@ def importationProcess(request):
                         #la COM-INF 1
                         #Pour la démo, j'ai fixé à 89 
                         #TODO à améliorer
-                        commande_coda = \
-                                Commande.objects.get(numero=89),
+                        commande_coda = commande_coda0,
+                               # pk=commande_coda0.id),
                         modele = produit0,
                         categorie = Categorie.objects.get(\
-                                nom=colonne[2]),
+                                nom__icontains=colonne[2]),
                         )
                     piece.save()
                     nbr_lignes_OK += 1
