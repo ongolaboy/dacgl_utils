@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
-from django.db import models
+from datetime import date
 
-# Create your models here.
+from django.db import models
 
 
 class Devise(models.Model):
@@ -161,6 +161,13 @@ class Piece(models.Model):
             help_text="Sortie d'inventaire ?")
     periode_amortissement = models.PositiveIntegerField(default=4,
             help_text=u"En nombre d'années")
+
+    def get_absolute_url(self):
+        return "/piece/{0}".format(self.id)
+
+    def est_amorti(self):
+        return (date.today() - self.date_acquisition).days / 360 > \
+                self.periode_amortissement
 
     def __str__(self):
         return "%s %s %s" % (self.num_serie,

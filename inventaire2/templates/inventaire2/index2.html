@@ -48,7 +48,7 @@
 
 		{% for p in pX %}
 		<tr>
-			<td> {{ p.intitule }} </td>
+			<td> <a href="{{ p.get_absolute_url }}">{{ p.intitule }}</a></td>
 		<td> {{ p.categorie }} </td>
 		<td> {{ p.usage }} </td>
 		<td> {{ p.date_acquisition }} </td>

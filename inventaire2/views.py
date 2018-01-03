@@ -274,9 +274,9 @@ def importationProcess(request):
                             #format colonne Buja 06-12-2009
                             moment = colonne[9]
                             date_acquisition0 = date(
-                                    year=int(moment[6:]),
-                                    month=int(moment[3:5]),
-                                    day=int(moment[:2]),
+                                    year=int(moment[:4]),
+                                    month=int(moment[5:7]),
+                                    day=int(moment[8:]),
                                     )
                     if colonne[10] == '':
                         code_inventaire0 = code_aleatoire()
