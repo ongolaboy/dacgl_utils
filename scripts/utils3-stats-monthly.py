@@ -57,19 +57,24 @@ def collecte():
 
     t_actuel = datetime.now(tz=timezone.get_current_timezone())
     if t_actuel.month == 1:
-        month=12
+        month0=12
+        year0 = t_actuel.year - 1
+        day0 = 31
+        tz=timezone.get_current_timezone()
+        t_fin_mois_prec = datetime(year=year0, month=month0,day=day0,tzinfo=tz)
     else :
-        month = t_actuel.month - 1
+        month0 = t_actuel.month - 1
+        #pour la fin , on cherche d'abord le dernier jour
+        #ensuite on va à 23h
+        t_fin_mois_prec = (t_actuel - timedelta(days=t_actuel.day)).\
+                replace(hour=23)
 
-    t_debut_mois_prec = t_actuel.replace(month,
+    t_debut_mois_prec = t_actuel.replace(month=month0,
+            year = year0,
             day = 1,
             hour = 0,
             minute = 0,
             )
-    #pour la fin , on cherche d'abord le dernier jour
-    #ensuite on va à 23h
-    t_fin_mois_prec = (t_actuel - timedelta(days=t_actuel.day)).\
-            replace(hour=23)
     visit_mois_prec = Visite.objects.filter(date_arrivee__range=\
             (t_debut_mois_prec,t_fin_mois_prec))
 
@@ -218,10 +223,9 @@ ossature =\
 
 s_smtp = "smtp.cm.auf.org"
 from_addr = u'technique@cm.auf.org'
-#to_addrs = 'diffusion-bureau@cm.auf.org'
 to_addrs = 'diffusion-bureau@cm.auf.org'
 sujet = 'Informations sur les visites a la DACGL: Mois de %s' % \
         infos[2].strftime('%B') #TODO t_debut_ pas encore défini
 msg_utils = ossature
 
-#envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils)
+envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils)
