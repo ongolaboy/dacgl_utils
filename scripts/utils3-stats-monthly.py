@@ -24,7 +24,7 @@ Récolter des informations suite à la saisie de toutes ces infos
 et les envoyer par courriel
 """
 
-BASE_DIR = '/home/willy/dacgl'
+BASE_DIR = '/home/devpy3/dacgl'
 sys.path.append(BASE_DIR)
 os.environ["DJANGO_SETTINGS_MODULE"] = "dacgl.settings"
 
@@ -33,7 +33,6 @@ django.setup()
 
 from dacgl.settings import TIME_ZONE
 from id2.models import Visite,Usager,Service
-
 
 def collecte():
     """
@@ -57,7 +56,12 @@ def collecte():
 
 
     t_actuel = datetime.now(tz=timezone.get_current_timezone())
-    t_debut_mois_prec = t_actuel.replace(month=t_actuel.month-1,
+    if t_actuel.month == 1:
+        month=12
+    else :
+        month = t_actuel.month - 1
+
+    t_debut_mois_prec = t_actuel.replace(month,
             day = 1,
             hour = 0,
             minute = 0,
@@ -179,8 +183,8 @@ infoUtiles +=\
 
 pageWeb=\
         """
-        <p>Details a l'adresse <a href="http://utils2.cm.auf.org/">
-                    http://utils2.cm.auf.org/</a>.</p>
+        <p>Details a l'adresse <a href="http://utils3.cm.auf.org/">
+                    http://utils3.cm.auf.org/</a>.</p>
 """
 
 ossature =\
@@ -214,9 +218,10 @@ ossature =\
 
 s_smtp = "smtp.cm.auf.org"
 from_addr = u'technique@cm.auf.org'
+#to_addrs = 'diffusion-bureau@cm.auf.org'
 to_addrs = 'diffusion-bureau@cm.auf.org'
 sujet = 'Informations sur les visites a la DACGL: Mois de %s' % \
         infos[2].strftime('%B') #TODO t_debut_ pas encore défini
 msg_utils = ossature
 
-envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils)
+#envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils)
