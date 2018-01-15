@@ -1,5 +1,16 @@
-#!/usr/bin/python3
 # -*- coding:utf-8 -*-
+"""
+Collecter des données issues des visites pour une année.
+
+Exemple d'usage
+"python3 visites-infos2.py <annee>"
+
+L'année peut être donnée en paramètre au si elle est absente
+le script considèrera l'année en cours.
+En sortie le script génère un fichier au format html contenant un
+tableau. Ce dernier pourra aussi être envoyé par courriel.
+"""
+
 
 import os
 import sys
@@ -7,19 +18,14 @@ import sys
 import django
 
 from datetime import timedelta,date,datetime
+from string import Template
 
 from django.utils import timezone
 
 
-"""
-Collecter des données issues de ces visites
-en fonction de la période indiquée
-
-Récolter des informations suite à la saisie de toutes ces infos
-et les envoyer par courriel
-"""
 
 BASE_DIR = '/home/willy/lab/django/dacgl_utils'
+SITE = 'Bureau régional'
 sys.path.append(BASE_DIR)
 os.environ["DJANGO_SETTINGS_MODULE"] = "dacgl.settings"
 
@@ -32,17 +38,19 @@ from id2.models import Visite,Usager,Service
 
 def collecte(annee):
     """
-    Récupération des infos
+    Collecte des données sur une année donnée
 
-     Pour chaque section
-     * total
-     * CNF
-     * Fablab
-     * Autres
+    La sortie est une liste contenant:
 
-    Nombre de visite ce mois
-    Nombre de nouveaux inscrits
+    * le nombre d'usagers enregistrées sur l'année
 
+    * les infos sur les visites
+     * elles sont présentées par service dans un dictionnaire
+       où les clés des tuples (service,mois)
+       ex: visite[('CNF',11)] renvoie un querySet correspondant
+       aux visites effectuées dans le CNF en Novembre
+
+    * la liste des services
     """
 
 
@@ -75,8 +83,9 @@ def collecte(annee):
 
     return dacgl_stats
 
-#Usagers enregistrés
+#Commençons donc à collecter les infos
 
+#on récupère l'année fournie en paramètre le cas échéant
 try :
     annee = int(sys.argv[1])
 except IndexError:
@@ -87,16 +96,6 @@ stats = collecte(annee)
 usager_Enregistre = stats[0].count()
 Visites = stats[1]
 
-from string import Template
-
-skel =\
-    """
-    <tr>
-     <td>${vTotal}</td><td>${vDistinct}</td>
-    </tr>
-    """
-t = Template(skel)
-# t.substitute(vTotal='',vDistinct='')
 
 lieu = stats[2]
 lieu.sort() #on trie par ordre alphabétique la liste des services
@@ -108,7 +107,7 @@ for m in range(1,13):
     vTotalMois = 0
     skel_service = ''
     cellules = nbrservice
-    premierTour = True
+    premierTour = True #pour distinguer la première colonne des autres
     for s in lieu:
         service = s
         v_par_service = Visites[s,m][0] #visite par service
@@ -154,6 +153,7 @@ for m in range(1,13):
     </tr>
     """.format(nbrservice,mois,skel_service)
 
+#Les ossatures
 tableau =\
 """
 <table border=1>
@@ -167,15 +167,26 @@ tableau =\
 </table>
 """.format(skel_ligne)
 
+skel0 =\
+    """
+<html>
 
-#il faut dessiner le tableau
+  <head>
+   <title> Stats sur la frequentation - {0}</title>
+  </head>
 
-#    nbr = infosUsager[m].count()
-#    skel +=\
-#    """
-#    <tr>
-#     <td>{0}</td><td>{1}</td>
-#    </tr>
-#    """.format(m,nbr)
+  <body>
+    <h2> Année {1} </h2>
+    <p>Nombre d'usagers enregistrés au total dans l'année: {2}
+    <br />
+    {3}
+  </body>
+</html>
+    """.format(SITE,annee,usager_Enregistre,tableau)
 
-print (tableau)
+#sortie = Template(skel0)
+#TODO à présenter ainsi plus tard quand ça sera ok
+#sortie.substitute(IMPLANTATION=SITE,
+#        STATISTIQUES=tableau)
+
+print (skel0)
