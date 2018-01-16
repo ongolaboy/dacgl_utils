@@ -70,7 +70,15 @@ def collecte(annee,mois=''):
         services.append(s.nom_serv)
 
     if mois in range(1,13):
-        pass
+        debut = p[mois][0]
+        fin = p[mois][1]
+        v_Total =\
+                Visite.objects.filter(date_arrivee__range=(debut,fin))
+        for v in services:
+            v0 = v_Total.filter(service__nom_serv=v)
+            visit[(v,mois)] = []
+            visit[(v,mois)].append(v0.filter(\
+                    date_arrivee__range=(debut,fin)))
     else:
         v_Total =\
                 Visite.objects.filter(date_arrivee__range=(p[1][0],p[12][1]))
@@ -81,8 +89,8 @@ def collecte(annee,mois=''):
                 visit[(v,m)].append(v0.filter(\
                         date_arrivee__range=(p[m][0],p[m][1])))
 
-        usagers_enreg = Usager.objects
+    usagers_enreg = Usager.objects
 
-        dacgl_stats = [usagers_enreg,visit,services]
+    dacgl_stats = [usagers_enreg,visit,services]
 
     return dacgl_stats
