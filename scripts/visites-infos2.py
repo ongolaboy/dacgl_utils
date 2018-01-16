@@ -36,7 +36,7 @@ from dacgl.settings import TIME_ZONE
 from id2.utils import periodes
 from id2.models import Visite,Usager,Service
 
-def collecte(annee):
+def collecte(annee,mois=''):
     """
     Collecte des données sur une année donnée
 
@@ -55,7 +55,7 @@ def collecte(annee):
 
 
     dacgl_stats = []
-    p = periodes(annee)
+    p = periodes(annee,mois)
 
 
     services = []
@@ -64,7 +64,6 @@ def collecte(annee):
     for s in Service.objects.all():
         services.append(s.nom_serv)
 
-    #Visite.objects.filter(date_arrivee__range=(mois[5][0],mois[5][1]))
     v_Total =\
             Visite.objects.filter(date_arrivee__range=(p[1][0],p[12][1]))
     for m in range(1,13):
@@ -75,9 +74,6 @@ def collecte(annee):
                     date_arrivee__range=(p[m][0],p[m][1])))
 
     usagers_enreg = Usager.objects
-        #visit[v] = (v0.count(),v0.values('usager').distinct().count())
-
-    #Usager.objects.filter(visite__date_arrivee__range=(debut,maintenant))
 
     dacgl_stats = [usagers_enreg,visit,services]
 
