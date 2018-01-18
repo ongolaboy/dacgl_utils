@@ -18,20 +18,23 @@ tableau. Ce dernier pourra aussi être envoyé par courriel.
 
 import os
 import sys
+import email
+import smtplib
 
 import django
 
 from datetime import timedelta,date,datetime
+from pytz import timezone as tzone
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from string import Template
 
 from django.utils import timezone
 
+from conf import *
 
 
-BASE_DIR = '/home/willy/lab/django/dacgl_utils'
-SITE = 'Bureau régional'
-ACCUEIL_URL = "https://utils3.cm.auf.org/ident/"
-ACCUEIL = "Page d'accueil {0}".format(ACCUEIL_URL)
+
 sys.path.append(BASE_DIR)
 os.environ["DJANGO_SETTINGS_MODULE"] = "dacgl.settings"
 
@@ -54,6 +57,48 @@ try :
 except IndexError:
     mois = ''
 
+
+def envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils):
+    """
+    Envoi des stats à une liste interne
+    """
+
+    moment = datetime.now(tzone(TIME_ZONE)).\
+        strftime('%a, %d %B %Y %H:%M:%S %z')
+    #create message container
+
+    msg =  MIMEMultipart('alternative')
+    msg['Subject'] = sujet
+    msg['From'] = from_addr
+    msg['To'] = to_addrs
+    msg['Date'] = moment
+
+    #create the body of the message
+    message = u"""
+    Veuillez activer l'affichage HTML svp
+    en attendant que nous formations correctement en
+    mode texte
+    """
+
+    message_html = msg_utils
+
+    #record the MIME types
+    part1 = MIMEText(message, 'plain')
+    part2 = MIMEText(message_html, 'html')
+
+    #attach parts into message container
+    msg.attach(part1)
+    msg.attach(part2)
+
+    #send
+    client = smtplib.SMTP(s_smtp)
+    try:
+            client.sendmail(from_addr,to_addrs,msg.as_string())
+            return 'stats fréquentations mensuelles envoyées'
+    except Exception:
+        return "Oups :-("
+
+
 stats = collecte(annee,mois)
 
 usager_Enregistre = stats[0].count()
@@ -66,8 +111,12 @@ nbrservice = len(lieu)
 skel_ligne = ''
 affichage_mois = ''
 premierTour = True #pour distinguer la première colonne des autres
+sujet = "Informations sur les visites au {0}: ".format(SITE)
+sujet_annuel = "{0} Annee {1}".format(sujet,annee)
+sujet_mensuel = "{0} Mois: {1}".format(sujet,mois)
 
 if mois != '':
+    sujet = sujet_mensuel
     affichage_mois = '<p>Mois:{0}</p>'.format(mois)
     vTotalMois = 0
     skel_service = ''
@@ -118,6 +167,7 @@ if mois != '':
     """.format(nbrservice,mois,skel_service)
 
 else :
+    sujet = sujet_annuel
     for m in range(1,13):
         mois = m
         vTotalMois = 0
@@ -211,3 +261,6 @@ skel0 =\
 #        STATISTIQUES=tableau)
 
 print (skel0)
+#envoi courriel
+
+#envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils)
