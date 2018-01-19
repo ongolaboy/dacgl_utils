@@ -1,3 +1,4 @@
+#renommer le fichier en conf.py pour l'exécution
 """
 Variables dépendant de chaque site
 

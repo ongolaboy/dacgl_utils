@@ -3,13 +3,15 @@
 Collecter des données issues des visites pour une année.
 
 Exemple d'usage
-"python3 visites-infos2.py [annee] [mois]"
+"python3 visites-infos2.py [annee] [mois] [courriel]"
 
 L'année peut être donnée en paramètre au si elle est absente
 le script considèrera l'année en cours.
 
 Le mois si fourni, le script ne ressortira que les infos du mois
 indiqué. Nombre entre 1-12
+
+'courriel' doit être  écrit tel quel.
 
 En sortie le script génère un fichier au format html contenant un
 tableau. Ce dernier pourra aussi être envoyé par courriel.
@@ -54,8 +56,20 @@ except IndexError:
 #éventuellement aussi le mois
 try :
     mois = int(sys.argv[2])
+    #pour le moment on appelle ce fichier via un script et par défaut
+    #on veut les infos sur le mois précédent
+    #TODO à améliorer
+    if mois == 1:
+        mois = 12
+        annee -= 1
+    else:
+        mois -= 1
 except IndexError:
     mois = ''
+try :
+    expedition = sys.argv[3]
+except IndexError:
+    expedition = None
 
 
 def envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils):
@@ -112,8 +126,8 @@ skel_ligne = ''
 affichage_mois = ''
 premierTour = True #pour distinguer la première colonne des autres
 sujet = "Informations sur les visites au {0}: ".format(SITE)
-sujet_annuel = "{0} Annee {1}".format(sujet,annee)
-sujet_mensuel = "{0} Mois: {1}".format(sujet,mois)
+sujet_annuel = "{0} Année {1}".format(sujet,annee)
+sujet_mensuel = "{0} période {1}/{2}".format(sujet,annee,mois)
 
 if mois != '':
     sujet = sujet_mensuel
@@ -240,12 +254,12 @@ skel0 =\
 
   <head>
    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   <title> Stats sur la frequentation - {0}</title>
+   <title> Stats sur la fréquentation - {0}</title>
   </head>
 
   <body>
     <h2> Année {1} </h2>
-    {4}
+     <a href="{4}">{4}</a>
     {5}
     <p>Nombre total d'usagers enregistrés toute période confondue: {2}
     <br />
@@ -255,12 +269,8 @@ skel0 =\
     """.format(SITE,annee,usager_Enregistre,tableau,
             ACCUEIL,affichage_mois)
 
-#sortie = Template(skel0)
-#TODO à présenter ainsi plus tard quand ça sera ok
-#sortie.substitute(IMPLANTATION=SITE,
-#        STATISTIQUES=tableau)
-
 print (skel0)
-#envoi courriel
-
-#envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils)
+#doit-on expédier,afficher les résultats ?
+if expedition == 'courriel':
+    msg_utils = skel0
+    envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils)
