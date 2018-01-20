@@ -15,6 +15,8 @@ from email.mime.multipart import MIMEMultipart
 
 from django.utils import timezone
 
+from conf import *
+
 
 """
 Collecter des données issues de ces visites
@@ -24,7 +26,6 @@ et les envoyer par courriel
 """
 
 #collecte des stats
-BASE_DIR = '/home/willy/dacgl'
 sys.path.append(BASE_DIR)
 os.environ["DJANGO_SETTINGS_MODULE"] = "dacgl.settings"
 
@@ -51,11 +52,9 @@ usager_total = Usager.objects.count()
 
 # section envoi courriel
 
-s_smtp = "smtp.cm.auf.org"
-from_addr = u'technique@cm.auf.org'
-to_addrs = 'cnfy@cm.auf.org'
-sujet = 'Informations sur les visites a la DACGL: semaine %s' % \
-        semaine_courante
+to_addrs = 'willy.manga@auf.org'
+sujet = 'Informations sur les visites à la DACGL: semaine {0}'.\
+        format(semaine_courante)
 
 moment = datetime.now(tzone(TIME_ZONE)).\
     strftime('%a, %d %B %Y %H:%M:%S %z')
@@ -68,42 +67,44 @@ msg['To'] = to_addrs
 msg['Date'] = moment
 
 #create the body of the message
-message = u"""
-Frequence des visites a la DACGL pour la semaine courante:\n
-Date du jour : %s \n
- * Total de visites : %s\n
-  * Visites au CNF : %s\n
-  * Visites au Fablab: %s\n
+message = """
+Fréquence des visites à la DACGL pour la semaine courante:\n
+Date du jour : {0} \n
+ * Total de visites pour tout le bureau: {1}\n
+  * Visites au CNF : {2}\n
+  * Visites au Fablab: {3}\n
 
- * Nombre d'usagers enregistres au total : %s\
+ * Nombre d'usagers enregistrés au total toute période: {4}\
 
-Details a l'adresse http://utils2.cm.auf.org/.
-         """ % (date_jour,visit_semaine.count(),
+Détails à l'adresse {5}.
+         """.format(date_jour,visit_semaine.count(),
                  visit_service['CNF'].count(),
                  visit_service['fablab'].count(),
                  usager_total,
+                 ACCUEIL_URL,
                  )
 
 message_html = """\
         <html>
-        <head><title>Test</title></head>
+        <head><title>STATS - Bureau régional</title></head>
         <body>
-         <h3>Frequence des visites a la DACGL pour la semaine courante</h3>
-          <p>Date du jour: %s </p>
+         <h3>Frequence des visites à la DACGL pour la semaine courante</h3>
+          <p>Date du jour: {0} </p>
         <ul>
-         <li>Total des visites: %s</li>
-             <li>Visites au CNF: %s</li>
-             <li>Visites au fablab: %s</li>
-         <li>Total des usagers enregistres: %s</li>
+         <li>Total des visites pour tout le bureau: {1}</li>
+             <li>Visites au CNF: {2}</li>
+             <li>Visites au fablab: {3}</li>
+         <li>Total des usagers enregistrés toute période: {4}</li>
         </ul>
-        <p>Details a l'adresse <a href="http://utils2.cm.auf.org/">
-        http://utils2.cm.auf.org/</a>.
+        <p>Details à l'adresse <a href="{5}">
+        {5}</a>.
         </body>
         </html>
-        """ % (date_jour,visit_semaine.count(),
+        """.format(date_jour,visit_semaine.count(),
                  visit_service['CNF'].count(),
                  visit_service['fablab'].count(),
                  usager_total,
+                 ACCUEIL_URL,
                  )
 
 #record the MIME types
