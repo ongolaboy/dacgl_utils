@@ -116,6 +116,8 @@ def envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils):
 stats = collecte(annee,mois)
 
 usager_Enregistre = stats[0].count()
+usager_Enregistre_H = stats[0].filter(sexe='H').count()
+usager_Enregistre_F = stats[0].filter(sexe='F').count()
 Visites = stats[1]
 
 
@@ -123,6 +125,18 @@ lieu = stats[2]
 lieu.sort() #on trie par ordre alphabétique la liste des services
 nbrservice = len(lieu)
 skel_ligne = ''
+tableau_brique1 =\
+            """
+    <td>{0}</td>
+        <td style="text-align:center">{1}</td>
+        <td style="text-align:center">{2} <br /><p style="font-size:smaller">Dont  <em>{3} Femmes et {4} Hommes</em></p></td>
+        </tr>
+                """
+tableau_brique2 =\
+"""
+    <tr>
+    {0}
+""".format(tableau_brique1)
 affichage_mois = ''
 premierTour = True #pour distinguer la première colonne des autres
 sujet = "Informations sur les visites au {0}: ".format(SITE)
@@ -141,35 +155,30 @@ if mois != '':
         try:
             vTotal = v_par_service.count()
             vDistinct = v_par_service.values('usager').distinct().count()
+            vDistinct_H = v_par_service.values('usager').distinct().\
+                    filter(usager__sexe='H').count()
+            vDistinct_F = v_par_service.values('usager').distinct().\
+                    filter(usager__sexe='F').count()
         except IndexError:
             vTotal = 0
             vDistinct = 0
 
         vTotalMois += vDistinct
         if premierTour == True:
-            skel_service =\
-                    """
-                    <td>{0}</td>
-                        <td>{1}</td>
-                        <td>{2}</td>
-                        </tr>
-                    """.format(service,
+            skel_service = tableau_brique1.format(service,
                         vTotal,
                         vDistinct,
+                        vDistinct_F,
+                        vDistinct_H,
                         )
             premierTour = False
         else :
 
-            skel_service +=\
-                    """
-                    <tr>
-                    <td>{0}</td>
-                        <td>{1}</td>
-                        <td>{2}</td>
-                        </tr>
-                    """.format(service,
+            skel_service += tableau_brique2.format(service,
                         vTotal,
                         vDistinct,
+                        vDistinct_F,
+                        vDistinct_H,
                         )
 
     skel_ligne += \
@@ -193,36 +202,32 @@ else :
             v_par_service = Visites[s,m][0] #visite par service
             try:
                 vTotal = v_par_service.count()
-                vDistinct = v_par_service.values('usager').distinct().count()
+                vDistinct = v_par_service.values('usager').distinct().\
+                        count()
+                vDistinct_H = v_par_service.values('usager').distinct().\
+                        filter(usager__sexe='H').count()
+                vDistinct_F = v_par_service.values('usager').distinct().\
+                        filter(usager__sexe='F').count()
             except IndexError:
                 vTotal = 0
                 vDistinct = 0
 
             vTotalMois += vDistinct
             if premierTour == True:
-                skel_service =\
-                        """
-                        <td>{0}</td>
-                            <td>{1}</td>
-                            <td>{2}</td>
-                            </tr>
-                        """.format(service,
+                skel_service = tableau_brique1.format(service,
                             vTotal,
                             vDistinct,
+                            vDistinct_F,
+                            vDistinct_H,
                             )
                 premierTour = False
             else :
 
-                skel_service +=\
-                        """
-                        <tr>
-                        <td>{0}</td>
-                            <td>{1}</td>
-                            <td>{2}</td>
-                            </tr>
-                        """.format(service,
+                skel_service +=tableau_brique2.format(service,
                             vTotal,
                             vDistinct,
+                            vDistinct_F,
+                            vDistinct_H,
                             )
 
         skel_ligne += \
@@ -261,13 +266,20 @@ skel0 =\
     <h2> Année {1} </h2>
      <a href="{4}">{4}</a>
     {5}
-    <p>Nombre total d'usagers enregistrés toute période confondue: {2}
+    <p>Nombre total d'usagers enregistrés toute période confondue: {2}.
+    <br />Dont:
+    <ul>
+     <li>{6} Femmes</li>
+     <li>{7} Hommes</li>
+    </ul>
     <br />
     {3}
   </body>
 </html>
     """.format(SITE,annee,usager_Enregistre,tableau,
-            ACCUEIL,affichage_mois)
+            ACCUEIL,affichage_mois,
+            usager_Enregistre_F,
+            usager_Enregistre_H)
 
 print (skel0)
 #doit-on expédier,afficher les résultats ?
