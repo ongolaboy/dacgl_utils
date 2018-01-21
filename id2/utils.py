@@ -94,3 +94,29 @@ def collecte(annee,mois=''):
     dacgl_stats = [usagers_enreg,visit,services]
 
     return dacgl_stats
+
+def mois_int_to_str():
+    """Pour un mois donné en chiffre, son nom en français."""
+
+    mois_int = [x for x in range(1,13)]
+    mois_str = [
+            'Janvier',
+            'Février',
+            'Mars',
+            'Avril',
+            'Mai',
+            'Juin',
+            'Juillet',
+            'Août',
+            'Septembre',
+            'Octobre',
+            'Novembre',
+            'Décembre',
+            ]
+    mois_str.reverse()
+    resultat = {}
+
+    for i in mois_int:
+        resultat[i] = mois_str.pop()
+
+    return resultat

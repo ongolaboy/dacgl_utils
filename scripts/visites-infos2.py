@@ -8,8 +8,10 @@ Exemple d'usage
 L'année peut être donnée en paramètre au si elle est absente
 le script considèrera l'année en cours.
 
-Le mois si fourni, le script ne ressortira que les infos du mois
-indiqué. Nombre entre 1-12
+Attention, si le mois est fourni, le script ne ressortira que
+les infos du mois PRECEDENT indiqué. Nombre entre 1-12
+Exemple : Si on veut les infos de Décembre 2018, il faut saisir
+"python3 visites-infos2.py Janvier 2019 1 [courriel]"
 
 'courriel' doit être  écrit tel quel.
 
@@ -20,7 +22,6 @@ tableau. Ce dernier pourra aussi être envoyé par courriel.
 
 import os
 import sys
-import email
 import smtplib
 
 import django
@@ -44,7 +45,7 @@ os.environ["DJANGO_SETTINGS_MODULE"] = "dacgl.settings"
 django.setup()
 
 from dacgl.settings import TIME_ZONE
-from id2.utils import periodes,collecte
+from id2.utils import periodes, collecte, mois_int_to_str
 from id2.models import Visite,Usager,Service
 
 #on récupère l'année fournie en paramètre le cas échéant
@@ -113,6 +114,7 @@ def envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils):
         return "Oups :-("
 
 
+m_i_s = mois_int_to_str()
 stats = collecte(annee,mois)
 
 usager_Enregistre = stats[0].count()
@@ -141,11 +143,12 @@ affichage_mois = ''
 premierTour = True #pour distinguer la première colonne des autres
 sujet = "Informations sur les visites au {0}: ".format(SITE)
 sujet_annuel = "{0} Année {1}".format(sujet,annee)
-sujet_mensuel = "{0} période {1}/{2}".format(sujet,annee,mois)
+sujet_mensuel = "{0} période {1} {2}".format(sujet,mois,
+        annee)
 
 if mois != '':
     sujet = sujet_mensuel
-    affichage_mois = '<p>Mois:{0}</p>'.format(mois)
+    affichage_mois = '<p>Mois:{0}</p>'.format(m_i_s[mois])
     vTotalMois = 0
     skel_service = ''
     cellules = nbrservice
@@ -187,7 +190,7 @@ if mois != '':
     <td rowspan="{0}">{1}</td>
     {2}
     </tr>
-    """.format(nbrservice,mois,skel_service)
+    """.format(nbrservice,m_i_s[mois],skel_service)
 
 else :
     sujet = sujet_annuel
@@ -236,7 +239,7 @@ else :
         <td rowspan="{0}">{1}</td>
         {2}
         </tr>
-        """.format(nbrservice,mois,skel_service)
+        """.format(nbrservice,m_i_s[mois],skel_service)
 
 #Les ossatures
 tableau =\
