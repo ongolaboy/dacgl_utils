@@ -69,6 +69,8 @@ class Usager(models.Model):
             blank=True)
     email = models.EmailField(blank=True)
     telephone = models.IntegerField(blank=True,null=True)
+    d_inscription = models.DateTimeField('Date inscription',\
+            default=timezone.now,null=True)
 
     services = models.ManyToManyField(Service, through='Visite')
 
