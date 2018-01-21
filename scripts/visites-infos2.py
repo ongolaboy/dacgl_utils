@@ -74,7 +74,7 @@ except IndexError:
 
 def envoiStats(s_smtp,from_addr,to_addrs,sujet,TIME_ZONE,msg_utils):
     """
-    Envoi des stats à une liste interne
+    Envoi des stats à une liste interne.
     """
 
     moment = datetime.now(tzone(TIME_ZONE)).\

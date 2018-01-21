@@ -10,7 +10,7 @@ from id2.models import Visite,Usager,Service
 
 def periodes(annee,mois=''):
     """
-    1er et dernier jour d'une période
+    Premier et dernier jour d'une période.
 
     m1 est le premier jour du mois
     m2 est le dernier jour du mois
@@ -44,7 +44,7 @@ def periodes(annee,mois=''):
 
 def collecte(annee,mois=''):
     """
-    Collecte des données sur une année donnée
+    Collecte des données sur une année donnée.
 
     La sortie est une liste contenant:
 

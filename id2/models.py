@@ -9,6 +9,8 @@ from django.utils.encoding import python_2_unicode_compatible
 @python_2_unicode_compatible
 class Societe(models.Model):
     """
+    Organisme travaillant avec l'AUF.
+
     L'AUF reçoit régulièrement des employés d'autres structures.
     Il est souhaitable de classer ces personnes suivant leur boîte.
     """
@@ -52,6 +54,8 @@ class PieceId(models.Model):
 @python_2_unicode_compatible
 class Usager(models.Model):
     """
+    Personne qui se présente à la guérite.
+
     Il s'agit ici de toute personne se présentant à la guérite
     indiféremment du fait qu'il soit abonné ou pas à un service
     de la maison
@@ -76,6 +80,8 @@ class Usager(models.Model):
 @python_2_unicode_compatible
 class Employe(models.Model):
     """
+    Personne appartenant à une Société.
+
     Catégorie de personnes se présentant dans nos services de la part
     d'une structure et pour des besoins comme: dépôt de courrier,
     maintenance de clim, maintenance groupe,...

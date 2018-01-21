@@ -19,10 +19,10 @@ from conf import *
 
 
 """
-Collecter des données issues de ces visites
+Collecter des données issues des visites.
 
 Récolter des informations suite à la saisie de toutes ces infos
-et les envoyer par courriel
+et les envoyer par courriel.
 """
 
 #collecte des stats

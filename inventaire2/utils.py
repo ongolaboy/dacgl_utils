@@ -2,18 +2,19 @@
 """
 
 import random
+from string import ascii_uppercase, digits
 
 from .models import Piece
 
 def code_aleatoire(pas=5):
-    """Un code inventaire temporaire
+    """Un code inventaire temporaire.
 
     Au cas où il n'existe pas de code d'inventaire,cette fonction
     permet d'attribuer un code qui pourra éventuellement être changé
     par la suite
     """
 
-    alea = ('abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQUVW')
+    aleas = ascii_uppercase + digits
     nbr_alea = 'X '
     trouve = False
     while trouve == False:

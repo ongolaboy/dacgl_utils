@@ -68,6 +68,8 @@ class Categorie(models.Model):
 
 class Societe(models.Model):
     """
+    Fournisseurs de l'AUF.
+
     Fournisseurs, prestataires, entreprises avec lesquelles
     on a déjà eu à effectuer des achats.
     """
@@ -88,8 +90,7 @@ class Societe(models.Model):
 
 class Commande(models.Model):
     """
-    Informations relatives aux commandes issues
-    de CODA
+    Commandes relatives à CODA.
     """
 
     SECTION = (
@@ -123,8 +124,9 @@ class Commande(models.Model):
 
 class Piece(models.Model):
     """
-    Identification de la plus petite unité:
-    une caméra, un disque,.. ou d'une pièce unique ex:
+    Identification de la plus petite unité.
+
+    Une caméra, un disque,.. ou d'une pièce unique ex:
     ordinateur portable
     """
 

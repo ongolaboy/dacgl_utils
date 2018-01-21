@@ -130,7 +130,7 @@ def importation(request):
             contexte)
 
 def importationProcess(request):
-    """Importation des données des autres sites
+    """Importation des données des autres sites.
 
     Certaines informations seront fournies par défaut.
     Commande CODA: COM-INF 1

@@ -1,6 +1,6 @@
 #renommer le fichier en conf.py pour l'exécution
 """
-Variables dépendant de chaque site
+Variables dépendant de chaque site.
 
 BASE_DIR: repertoire contenant le projet django
 

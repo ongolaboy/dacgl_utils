@@ -11,6 +11,8 @@ Objectifs
   dépôt courrier, maintenance clim,...
 * Confectionner de petites stats
 * Enregistrement de participants à un évènement
+* Inventaire du matériel; aussi bien le matériel informatique,électrique
+que le mobilier
 
 
 Scripts
@@ -22,3 +24,6 @@ ou éventuellement le déployer (mais ce n'est pas la procédure conséillée)
 Pour faciliter l'usage, il faudrait intégrer ce script dans un repertoire
 de binaire (~HOME/bin, /usr/local/bin, ...) et configurer son lancement
 au démarrage.
+
+ * visites-info2 qui permet d'avoir des infos sur les visites à une
+période donnée

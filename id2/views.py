@@ -77,7 +77,7 @@ def entreeVerification(request):
 
 def inscription(request):
     """
-    Saisie des informations relatives au passage d'un NOUVEL usager
+    Saisie des informations relatives au passage d'un NOUVEL usager.
     """
 
     form = InscriptionForm()
@@ -271,6 +271,8 @@ def visiteProfTraitement(request):
 @login_required(login_url='/login')
 def visite(request,cat_visiteur,visiteur_id):
     """
+    Consigne heure d'arrivée.
+
     A travers cette vue on va consigner automatiquement
     l'heure d'arrivée d'un usager ou d'un employé.
     """
@@ -515,7 +517,7 @@ def serviceAbonnement(request):
         return HttpResponseRedirect('/ident/')
 
 def serviceAbonneAjout(request,service_id,usager_id):
-    """Nouvel abonnement ou mise à jour
+    """Nouvel abonnement ou mise à jour.
     """
 
     u = Usager.objects.get(pk=usager_id)
