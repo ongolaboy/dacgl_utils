@@ -106,6 +106,7 @@ def inscriptionTraitement(request):
             n = form.cleaned_data['nom']
             p = form.cleaned_data['prenom']
             s = form.cleaned_data['sexe']
+            t_age = form.cleaned_data['tranche_age']
             piece = form.cleaned_data['typePiece']
             cod = form.cleaned_data['code']
             date_expiration = form.cleaned_data['date_expiration']
@@ -132,7 +133,8 @@ def inscriptionTraitement(request):
                     u = Usager(nom=n,sexe=s,prenom=p,
                             piece=piece0,
                             email=em,
-                            telephone=tel)
+                            telephone=tel,
+                            en_dessous=t_age,)
                     u.save()
                     contexte = {'message': 'Inscription effectuée'}
 

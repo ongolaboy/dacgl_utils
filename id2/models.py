@@ -69,6 +69,8 @@ class Usager(models.Model):
             blank=True)
     email = models.EmailField(blank=True)
     telephone = models.IntegerField(blank=True,null=True)
+    en_dessous = models.BooleanField(help_text="Moins de 35 ans?",
+            default=True)
     d_inscription = models.DateTimeField('Date inscription',\
             default=timezone.now,null=True)
 

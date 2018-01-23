@@ -24,6 +24,11 @@ class InscriptionForm(forms.Form):
     prenom = forms.CharField(max_length=150,required=False)
     sexe = forms.ChoiceField(choices=SEXE)
     typePiece = forms.ChoiceField(label='Type de piece',choices=PIECE)
+    tranche_age = forms.BooleanField(\
+            label="Tranche d'age",
+            required=False,
+            help_text="L'usager est-il en dessous de 35 ans?",
+            )
     categorie = forms.ChoiceField(label='Type de visiteur',\
             choices=CATEGORIE)
     code = forms.CharField(max_length=60,
