@@ -5,8 +5,7 @@ from bureautique.models import Personnel, Imprimante, Consommable
 from bureautique.models import RetraitConsommable
 
 class ConsommableAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',
-            'couleur',
+    list_display = ('couleur',
             'date_expiration','disponible','date_retrait')
     list_filter = ['disponible','date_expiration','modele']
     ordering = ['-disponible','couleur','date_expiration']

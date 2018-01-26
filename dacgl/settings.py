@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'id2.apps.Id2Config',
     'inventaire2.apps.Inventaire2Config',
     'manif.apps.ManifConfig',
-    'bureautique.apps.ManifConfig',
+    'bureautique.apps.BureautiqueConfig',
 ]
 
 MIDDLEWARE = [
