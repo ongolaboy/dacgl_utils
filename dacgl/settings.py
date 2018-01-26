@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'id2.apps.Id2Config',
     'inventaire2.apps.Inventaire2Config',
     'manif.apps.ManifConfig',
+    'bureautique.apps.ManifConfig',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.dacgllite'),
-    }
+    },
+
+#    'bacgl0': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'django_bureautique0',
+#        'USER': 'methodman',
+#        'PASSWORD': 'tr3Kl0i&Q41' ,
+#    },
 }
 
 # Password validation
