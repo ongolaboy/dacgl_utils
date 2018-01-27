@@ -1,0 +1,72 @@
+<h2><a name="debut">Sommaire</a></h2>
+<ul>
+ <li><a href="#un">Les 5 derniers retraits</a></li>
+ <li><a href="#deux">Imprimantes</a></li>
+ <li><a href="#trois">Fréquence remplacement cartouches</a></li>
+ <li><a href="#quatre">Demandes de changements par employés</a></li>
+ <li><a href="#cinq">Détails</a></li>
+</ul>
+<h3> <a name="un">Les 5 derniers retraits</a> </h3>
+
+<ul>
+  {% for retrait in derniers_retraits %}
+  <li>{{ retrait }}</li>
+  {% endfor %}
+</ul>
+<h3> En stock </h3>
+<table border=1>
+  <tr>
+    <th>Type de consommable</th>
+    <th>Quantité</th>
+  </tr>
+{% for k,v in stock.items %}
+<tr>
+  <td>{{k }}</td>
+  <td>{{v }}</td>
+</tr>
+
+{% endfor %}
+</table>
+<h3> <a name="deux">Imprimantes</a> </h3>
+<h4> Listing </h4>
+<ul>
+{% for imp in imprimantes %}
+<li> {{imp.marque }} {{imp.modele}} ( {{imp.emplacement}})</li>
+{% endfor %}
+</ul>
+
+<h4> <a name="trois">Fréquence de remplacement des cartouches des
+    imprimantes</a> </h4>
+<table border=1>
+  <tr>
+    <th>Imprimante</th>
+    <th>Nombre de changements</th>
+  </tr>
+  {% for k,v in usage_imprimante.items %}
+  <tr>
+    <td>{{k}}</td>
+    <td>{{v}}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h3><a name="quatre"> Demandes de changements par employés</a> </h3>
+<table border=1>
+  <tr>
+    <th>Nom</th>
+    <th>Fréquence</th>
+  </tr>
+  {% for k,v in employer.items %}
+  <tr>
+    <td>{{k}}</td>
+    <td>{{v}}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h3><a name="cinq">Détails</a></h3>
+<p>Consultez tous les <a href="/bureautique/retrait"> retraits</a></p>
+<p>Consultez les <a href="/bureautique/consommable/"> consommables
+    disponibles</a></p>
+
+<p><a href="#debut">Haut de la page</a>

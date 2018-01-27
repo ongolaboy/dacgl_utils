@@ -1,7 +1,10 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
+from . import views
 
-urlpatterns = patterns('bureautique.views',
-     url(r'^retrait/$', 'retrait'),
-     url(r'^consommable/$', 'consommable'),
-     url(r'^$', 'home'),
-)
+app_name = "bureautique"
+
+urlpatterns = [
+     url(r'^retrait/$', views.retrait, name='retrait'),
+     url(r'^consommable/$', views.consommable, name='consommable'),
+     url(r'^$', views.home, name='index'),
+]

@@ -1,0 +1,8 @@
+<h2> Consommables dispo  </h2>
+<p> Total: {{consommable_dispo|length}} </p>
+<ul>
+    {% for consomm in consommable_dispo %}
+    <li> {{consomm.modele}} {{consomm.num_serie}}. 
+    Fin de garantie: {{consomm.date_expiration }} </li>
+    {% endfor %}
+</ul>

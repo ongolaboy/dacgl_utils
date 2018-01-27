@@ -20,8 +20,8 @@ def home(request):
             composant = "%s %s" % (i,j[0])
             v =\
             Consommable.objects.filter(modele=i).filter(couleur=j[0]).filter(disponible=True).count()
-            if v > 0 :
-                stock[composant] = v
+            #if v > 0 :
+            stock[composant] = v
 
     imprimantes = Imprimante.objects.order_by(\
             'modele','emplacement').all()

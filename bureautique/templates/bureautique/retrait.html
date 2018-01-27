@@ -1,0 +1,20 @@
+<h2> Liste des retraits </h2>
+<ul>
+{% for ret in retrait_p %}
+<li> {{ret.demandeur}} le {{ret.date_retrait}} : {{ret.code_consommable}} </li>
+{% endfor %}
+</ul>
+
+<div class="pagination">
+  <span class="step-link">
+    {% if retrait_p.has_previous %}
+    <a href="?page={{ retrait_p.previous_page_number}}">Précédent</a>
+    {% endif %}
+    <span class="current">
+      Page {{retrait_p.number }} de {{ retrait_p.paginator.num_pages }}
+    </span>
+    {% if retrait_p.has_next %}
+    <a href="?page= {{retrait_p.next_page_number}}">Suivant</a>
+    {% endif %}
+  </span>
+</div>
