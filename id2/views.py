@@ -20,6 +20,7 @@ from id2.utils import extraction_to_csv
 def index(request):
     
     contexte = {}
+    SERVICE_A_EXTRAIRE = 9999999999 #pour désigner tous les services
     svce = Service.objects.all().order_by('nom_serv')
     u = Usager.objects.count()
     last_visit = Visite.objects.all().order_by('-date_arrivee')[:20]
@@ -53,6 +54,7 @@ def index(request):
             'dernierInscrit': last_inscrit,
             'visitCeMois' : visitCeMois,
             'visitSemaine': visitSemaine,
+            'SERVICE_A_EXTRAIRE': SERVICE_A_EXTRAIRE,
             }
 
     return render(request,'id2/index.html',contexte)

@@ -147,29 +147,48 @@ def extraction_to_csv(reponse,*args):
             ]
     writer.writerow(entete)
 
-    try:
-        s = Service.objects.get(id=args[0])
-    except:
-        return None
+    if args[0] == 9999999999:
+        v = Visite.objects.all()
+        for visit in v:
 
-    visite_a_extraire = \
-            Visite.objects.filter(service=s.id)
+            ligne_fichier = [
+                    AUF_SITE,
+                    visit.service,
+                    visit.service_id,
+                    visit.date_arrivee,
+                    visit.date_deprt,
+                    visit.type_visit,
+                    visit.usager.nom,
+                    visit.usager.prenom,
+                    visit.usager.sexe,
+                    visit.usager.en_dessous,
+                    visit.usager.d_inscription,
+                    ]
+            writer.writerow(ligne_fichier)
+    else:
+        try:
+            s = Service.objects.get(id=args[0])
+        except:
+            return None
 
-    for visit in visite_a_extraire:
+        visite_a_extraire = \
+                Visite.objects.filter(service=s.id)
 
-        ligne_fichier = [
-                AUF_SITE,
-                s.nom_serv,
-                s.id,
-                visit.date_arrivee,
-                visit.date_deprt,
-                visit.type_visit,
-                visit.usager.nom,
-                visit.usager.prenom,
-                visit.usager.sexe,
-                visit.usager.en_dessous,
-                visit.usager.d_inscription,
-                ]
-        writer.writerow(ligne_fichier)
+        for visit in visite_a_extraire:
+
+            ligne_fichier = [
+                    AUF_SITE,
+                    s.nom_serv,
+                    s.id,
+                    visit.date_arrivee,
+                    visit.date_deprt,
+                    visit.type_visit,
+                    visit.usager.nom,
+                    visit.usager.prenom,
+                    visit.usager.sexe,
+                    visit.usager.en_dessous,
+                    visit.usager.d_inscription,
+                    ]
+            writer.writerow(ligne_fichier)
 
     return writer
