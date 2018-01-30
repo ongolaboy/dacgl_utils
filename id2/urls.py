@@ -13,6 +13,8 @@ urlpatterns = [
         url(r'login/verification/$',views.entreeVerification,
             name='entreeVerification'),
 
+        url(r'^extraction/csv/(?P<service_id>\d+)/',
+            views.extraction, name='extraction'),
         url(r'inscription/$',views.inscription, name='inscription'),
         url(r'inscription/traitement/$',views.inscriptionTraitement,
             name='inscriptionTraitement'),

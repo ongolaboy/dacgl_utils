@@ -3,9 +3,14 @@
 """Fonctions utiles
 """
 
+import csv
+
 from datetime import datetime,timedelta
+
+from django.http import HttpResponse
 from django.utils import timezone
 
+from dacgl.settings import AUF_SITE
 from id2.models import Visite,Usager,Service
 
 def periodes(annee,mois=''):
@@ -120,3 +125,51 @@ def mois_int_to_str():
         resultat[i] = mois_str.pop()
 
     return resultat
+
+def extraction_to_csv(reponse,*args):
+    """Extraction des visites au format CSV."""
+
+    
+    writer = csv.writer(reponse)
+
+    #TODO : laisser le choix à l'utilisateur
+    entete = ['Site',
+            'Service (nom)',
+            "Service (id)",
+            'Date arrivée',
+            "Date départ",
+            "Objet visite",
+            'Nom usager',
+            'Prénom usager',
+            'Sexe usager',
+            "En dessous de 35 ans ?",
+            "Date d'inscription usager",
+            ]
+    writer.writerow(entete)
+
+    try:
+        s = Service.objects.get(id=args[0])
+    except:
+        return None
+
+    visite_a_extraire = \
+            Visite.objects.filter(service=s.id)
+
+    for visit in visite_a_extraire:
+
+        ligne_fichier = [
+                AUF_SITE,
+                s.nom_serv,
+                s.id,
+                visit.date_arrivee,
+                visit.date_deprt,
+                visit.type_visit,
+                visit.usager.nom,
+                visit.usager.prenom,
+                visit.usager.sexe,
+                visit.usager.en_dessous,
+                visit.usager.d_inscription,
+                ]
+        writer.writerow(ligne_fichier)
+
+    return writer

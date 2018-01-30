@@ -14,6 +14,7 @@ from id2.forms import InscriptionForm,VisiteForm,RechercheForm
 from id2.forms import AbonnementForm
 from id2.models import Usager,PieceId,Visite,Service,Abonne,Employe,\
         VisiteProf
+from id2.utils import extraction_to_csv
 
 
 def index(request):
@@ -590,6 +591,24 @@ def serviceAbonnementTraitement(request):
                     )
     else:
         return HttpResponseRedirect(reverse('index'))
+
+def extraction(request,service_id):
+
+    fuseau = timezone.get_current_timezone()
+    moment = datetime.now(fuseau)
+
+    detail_nom_fichier = 'visites_recueil_'+ str(moment.year) +\
+            str(moment.month) + str(moment.day) +\
+            str(moment.hour) + str(moment.second)
+
+    info_MIME = "attachment;filename=" + detail_nom_fichier
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = info_MIME + '.csv'
+
+    contenu = extraction_to_csv(response,int(service_id))
+
+    return response
 
 def sortie(request):
     logout(request)

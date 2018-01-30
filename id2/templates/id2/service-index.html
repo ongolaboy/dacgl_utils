@@ -6,39 +6,11 @@
 	{% if message_erreur %}
 	<p><strong> {{ message_erreur }} </strong></p>
 	{% endif %}
-	<p> Recherchez une personne à abonner ou <br/>dont il faut mettre à jour les infos d'abonnement </p>
-	<form action="{% url 'id2:service-index-traitement' %}" method="GET">
-	    {% csrf_token %}
-	    {{ form.as_p }}
-    	    <input type="hidden" name="service_id" value="{{service_id}}">
-	    <input type="submit" value="Rechercher" />
-	</form>
+	<p> <a href="{% url 'id2:extraction' service_id %}">Extraire au format CSV</a> les différentes visites</p>
 	<br />
 </div>
 <hr />
 <div>
-	{% if abonne %}
-	<h2>Etat des abonnements</h2>
-	<p> Au total {{abonne.count}}</p>
-	<table>
-		<tr>
-			<th>NOM</th>
-			<th>MATRICULE</th>
-			<th>Date d'inscription</th>
-			<th>Expiration</th>
-			<th>Dernière modification</th>
-		</tr>
-		{% for a in abonne %}
-		<tr>
-			<td><a href="/ident/service/{{service_id}}/abonne/{{a.id}}/">{{a.usager}}</a></td>
-			<td>{{a.matricule}}</td>
-			<td>{{a.inscription}}</td>
-			<td>{{a.expiration}}</td>
-			<td>{{a.derniere_modif}}</td>
-		</tr>
-		{% endfor %}
-	</table>
-	{% endif %}
 	{% if visite %}
 	<h2>Etat des visites</h2>
 	<p> Au total {{ visite.count }} visite(s) pour le {{ service_nom }}.
