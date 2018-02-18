@@ -15,7 +15,7 @@ class CommandeAdmin(admin.ModelAdmin):
     search_fields = ['numero','description']
 
 class PieceAdmin(admin.ModelAdmin):
-    date_hierarchy = 'date_acquisition'
+#    date_hierarchy = 'date_acquisition'
     list_display = ('intitule',
             'date_acquisition',
             'code_inventaire','commande_coda',

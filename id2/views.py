@@ -10,6 +10,7 @@ from django.shortcuts import render,get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 
+from dacgl.settings import AUF_SITE
 from id2.forms import InscriptionForm,VisiteForm,RechercheForm
 from id2.forms import AbonnementForm
 from id2.models import Usager,PieceId,Visite,Service,Abonne,Employe,\
@@ -599,9 +600,16 @@ def extraction(request,service_id):
     fuseau = timezone.get_current_timezone()
     moment = datetime.now(fuseau)
 
-    detail_nom_fichier = 'visites_recueil_'+ str(moment.year) +\
-            str(moment.month) + str(moment.day) +\
-            str(moment.hour) + str(moment.second)
+    terme = "visites_recueil__{0}__{1}__{2}_{3}_{4}_{5}h_{6}min"
+    detail_nom_fichier = terme.\
+            format(AUF_SITE,
+                    str(service_id),
+                    str(moment.year),
+                    str(moment.month),
+                    str(moment.day),
+                    str(moment.hour),
+                    str(moment.minute),
+                    )
 
     info_MIME = "attachment;filename=" + detail_nom_fichier
 
