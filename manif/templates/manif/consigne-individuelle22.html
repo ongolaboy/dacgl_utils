@@ -1,0 +1,16 @@
+{% extends "manif/base.html" %}
+
+{% block content %}
+ <h3> Formulaire d'enregistrement à une activité</h3>
+ {{ message }}
+ <p> Votre nom figure-t-il dans cette liste ?</p>
+
+ <div align="left">
+	 <ul>
+		  {% for u in resultat %}
+		  <li><a href="/manif/consigne/usager/{{ u.id }}">{{ u.nom }} {{ u.prenom }}</li>
+		  {% endfor %}
+	 </ul>
+ </div>
+
+{% endblock %}

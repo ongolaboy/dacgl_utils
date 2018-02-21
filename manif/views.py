@@ -1,7 +1,7 @@
 from django.forms import formset_factory, modelformset_factory
 from django.shortcuts import render,HttpResponseRedirect
 from id2.models import Usager,PieceId
-from .forms import ParticipationForm
+from .forms import ParticipationForm,NomForm
 from .models import Participation
 
 from .models import Evenement, Participation
@@ -17,6 +17,45 @@ def index(request):
 def consigne(request):
     formulaire_participation = ParticipationForm()
     contexte = {'formulaire_participation': formulaire_participation,}
+    return render(request,'manif/consigne-individuelle.html',contexte)
+
+def consigne21(request):
+    formulaire_participation = NomForm()
+    contexte = {'formulaire_participation': formulaire_participation,}
+    return render(request,'manif/consigne-individuelle21.html',contexte)
+
+def rechercheTraitement(request):
+    contexte = {}
+    if request.method == 'GET':
+        form = NomForm(request.GET)
+        if form.is_valid():
+            nom = form.cleaned_data['nom']
+            prenom = form.cleaned_data['prenom']
+            s = form.cleaned_data['sexe']
+
+            resultat = Usager.objects.filter(nom__icontains=nom).\
+                    order_by('nom')
+            if resultat.count() == 0:
+                data = {'nom':nom, 'prenom':prenom,'sexe':s,}
+                form = ParticipationForm(data)
+                contexte = {'form': form,}
+                return render(request,
+                        'manif/consigne-individuelle23.html',
+                        contexte)
+            else:
+                contexte = {'resultat': resultat,}
+                return render(request,
+                        'manif/consigne-individuelle22.html',
+                        contexte)
+
+def consigneUsager(request,user_id):
+    visiteur = Usager.objects.get(pk=int(user_id))
+    data = {'nom':visiteur.nom,
+            'prenom':visiteur.prenom,
+            'sexe':visiteur.sexe,
+            }
+    formulaire_participation = ParticipationForm(data)
+    contexte = {'formulaire_participation':formulaire_participation,}
     return render(request,'manif/consigne-individuelle.html',contexte)
 
 def consigneTraitement(request):

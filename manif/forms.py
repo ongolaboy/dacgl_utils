@@ -4,6 +4,11 @@ from .models import Participation, Evenement
 
 SEXE = (('H',u'homme'),('F',u'femme'),)
 
+class NomForm(forms.Form):
+    nom = forms.CharField()
+    prenom = forms.CharField(required=False)
+    sexe = forms.ChoiceField(choices=SEXE)
+
 class ParticipationForm(forms.Form):
     evenement = forms.ModelChoiceField(help_text="Quel évènement?",
             queryset=Evenement.objects.filter(ouvert=True))

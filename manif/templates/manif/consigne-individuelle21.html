@@ -1,0 +1,21 @@
+{% extends "manif/base.html" %}
+
+{% block content %}
+ <h3> Formulaire d'enregistrement à une activité</h3>
+ {{ message }}
+
+ <div align="center">
+	 <form action="{% url 'manif:recherche-traitement' %}" autocomplete="on" method="get">
+		  <table>
+		  {% csrf_token %}
+			  {{ formulaire_participation.as_table }}
+			  <tr>
+				  <td></td>
+				  <td><input type="submit" value="Enregistrer"/></td>
+			  </tr>
+		  </table>
+	  </form>
+ </div>
+
+
+{% endblock %}
