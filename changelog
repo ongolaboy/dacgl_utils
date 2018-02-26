@@ -1,3 +1,19 @@
+lundi 26 février 2018, 18:56:50 (UTC+0100)
+
+ * pour le commit 424b0fb10ba9dc3f293fc99eded87217736410a5
+ j'ai du  en prod faire une bidouille dans la BD MySQL.
+ Désactiver les contraintes liés aux clés étrangères
+ SET foreign_key_checks = 0;
+ puis appliquer cette modif
+ ALTER TABLE `manif_evenement` ADD CONSTRAINT
+ `manif_evenement_lieu_id_5b9f7a14_fk_id2_service_id` FOREIGN KEY (`lieu_id`)
+ REFERENCES `id2_service` (`id`);
+ et remettre 
+ SET foreign_key_checks = 1;
+ et manuellement changer les lieux des manifs depuis le shell django
+ pour que ça corresponde à des services existants.
+ Désolé si ça parait difficile à comprendre :)
+
 samedi 20 janvier 2018, 20:59:14 (UTC+0100)
 
  * un script permet d'obtenir des stats sur les visites
