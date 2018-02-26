@@ -8,8 +8,9 @@
  <div align="left">
 	 <ul>
 		  {% for u in resultat %}
-		  <li><a href="/manif/consigne/usager/{{ u.id }}">{{ u.nom }} {{ u.prenom }}</li>
+		  <li><a href="/manif/consigne/usager/{{ u.id }}">{{ u.nom }} {{ u.prenom }}</a></li>
 		  {% endfor %}
+		  <li><a href="/manif/consigne">Aucun des noms</li>
 	 </ul>
  </div>
 

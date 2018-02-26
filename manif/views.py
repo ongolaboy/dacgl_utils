@@ -34,16 +34,17 @@ def rechercheTraitement(request):
             s = form.cleaned_data['sexe']
 
             resultat = Usager.objects.filter(nom__icontains=nom).\
-                    order_by('nom')
+                    filter(sexe=s).order_by('nom')
+            data = {'nom':nom, 'prenom':prenom,'sexe':s,}
             if resultat.count() == 0:
-                data = {'nom':nom, 'prenom':prenom,'sexe':s,}
                 form = ParticipationForm(data)
                 contexte = {'form': form,}
                 return render(request,
                         'manif/consigne-individuelle23.html',
                         contexte)
             else:
-                contexte = {'resultat': resultat,}
+                contexte = {'resultat': resultat,
+                        'data': data,}
                 return render(request,
                         'manif/consigne-individuelle22.html',
                         contexte)
