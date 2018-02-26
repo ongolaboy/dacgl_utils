@@ -1,6 +1,6 @@
-from django.forms import formset_factory, modelformset_factory
 from django.shortcuts import render,HttpResponseRedirect
-from id2.models import Usager,PieceId
+from django.utils import timezone
+from id2.models import Usager,PieceId,Visite,Service
 from .forms import ParticipationForm,NomForm
 from .models import Participation
 
@@ -86,6 +86,11 @@ def consigneTraitement(request):
             particip = Participation(usager=u,evenement=e,
                     commentaire=comm)
             particip.save()
+            v = Visite(usager=u,
+                    service=Service.objects.get(nom_serv=e.lieu),
+                    type_visit=e.intitule,
+                    date_arrivee=timezone.now())
+            v.save()
             message = "Merci %s de vous être enregistré" % (u.nom)
 
             return HttpResponseRedirect('/manif/')
