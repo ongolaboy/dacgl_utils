@@ -118,7 +118,7 @@ input
 /************************* Le corps de la page **************************/
 #corpage
 {
-		margin: 1em 3em 0em 3em;
+		
 }
 /************************* FIn Le corps de la page **************************/
 
@@ -128,5 +128,19 @@ input
 	display:inline-block;
 	width:15%;
 	vertical-align:top;
-	padding:15px;
+	padding:5px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+#sommaire li
+{
+	list-style-type: none; 
+	padding: 5px;
+	margin:1px;
+	border-bottom: 1px solid #f2d813;
+}
+
+#sommaire li:hover
+{
+	border-left: 5px solid #f2d813;
 }
