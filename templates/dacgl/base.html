@@ -1,58 +1,77 @@
 <!DOCTYPE html>
-
 {% load staticfiles %}
 <html>
 	<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>{% block title %} DRACGL {% endblock %}</title>
-  <link rel="stylesheet"  type="text/css" href="{% static 'dacgl/css/base.css' %}">
+        <link rel="stylesheet"  type="text/css" href="{% static 'dacgl/css/resset.css' %}">
+		<link rel="stylesheet"  type="text/css" href="{% static 'dacgl/css/base.css' %}">
 	</head>
-
-  <body>
-	  <div>
-	  <div id="menu0" float="left">
-	   <p>
-	   <a href="{% url 'home' %}">Accueil</a> |
-	     <a href="{% url 'manif:index' %}">Manifestations organisées</a>
-	   </p><br />
-	  </div>
-          <div id="side" align="right">
-                  {% block sidebar %}
-
-                  <ul>
-                          {% if not user.is_authenticated %}
-			  <p>Ouvrir <a href="{% url 'entree' %}">une session</a></p>
-                          {% else %}
-				  Bienvenue {{ user.username }}
-				  <li><a href="{% url 'home' %}">Accueil</li>
-                                  {% if user.is_staff %}
-					  <li><a href="/admin" target="_blank">Interface d'administration</li>
-                                  {% endif %}
-                          <li>
-				  <a href="{% url 'sortie' %}">Se déconnecter</a> <br />
-                            {% endif %}
-                        </ul>
-
-		{% endblock %}
-                </div>
-	  </div>
-
-          <div id="content">
-                  {% block content %}{% endblock %}
-          </div>
-          {% block piedDePage %}
-
-	  <div align="center" id="piedDePage">
-	   <hr>
-	   <p>
-	   <a href="{% url 'home' %}">Accueil</a> |<a
-       href="{% url 'id2:index' %}">Gestion des visites</a> |
-	     <a href="{% url 'manif:index' %}">Bilan des manifestations organisées</a>
-	     | <a href ="{% url 'inventaire2:index' %}">Inventaire </a>
-	   </p>
-	  </div>
-	 
-	  {% endblock %}
-  </body>
+	<body>
+		<div>
+			<header>
+				<div class="header">
+					<span id="logo" class="logo">
+						<img src="{% static 'dacgl/img/logo_AUF_RVB.png' %}" alt="Logo AUF"/>
+					</span>
+					<div id="sitename">
+						DRACGL - {% block sitename %}Petit Outil de gestion{% endblock%}
+					</div>
+					<div id="cmember">
+						<p>
+							{% if not user.is_authenticated %}
+								<a href="{% url 'entree' %}">Ouvrir une session</a>
+							{% else %}
+								<a href="{% url 'sortie' %}">
+									Bienvenue {{ user.username }}
+									<br />Se déconnecter
+								</a>
+							{% endif %}
+						</p>
+					</div>
+				</div>
+				<div id="menu">
+					<div>
+						<ul >
+							<li><a href="{% url 'home' %}">Accueil</a></li>
+							<li><a href="{% url 'id2:index' %}">Gestion des visites</a></li>
+							<li><a href="{% url 'manif:index' %}">Manifestations organisées</a></li>
+							<li>Inventaire</li>
+							<li><a href="/admin" target="_blank">Interface d'administration</a></li>
+						</ul>
+					</div>
+					<form name="recherche" method="POST" action="">
+						<input name="nom" type="text" placeholder="Effectuer une recherche"  required=""/>
+						<input name= "recherche" type="submit" value="Rechercher" />
+					</form>
+				</div>
+			</header>
+			<div id="corpage">
+				<div id="sommaire">
+					<ul>
+						 <li><a href="#lastvisit">Les dernières visites</a></li>
+						 <li><a href="#lastsubscribed">Les dernières inscriptions</a></li>
+						 <li><a href="#lastvisitpresta">Les dernières visites de prestataire</a></li>
+						 <li><a href="#récap">Récapitulatif</a></li>
+					 </ul>
+				</div>
+				<div  id="content">
+					 {% block content %}
+					 {% endblock %}
+				</div>
+			</div>
+			{% block piedDePage %}
+				<div align="center" id="piedDePage">
+					<hr>
+					<p>
+					<a href="{% url 'home' %}">Accueil</a> |<a
+					href="{% url 'id2:index' %}">Gestion des visites</a> |
+					<a href="{% url 'manif:index' %}">Bilan des manifestations organisées</a>
+					| <a href ="{% url 'inventaire2:index' %}">Inventaire </a>
+					</p>
+				</div>
+			{% endblock %}
+		</div>
+	</body>
 
 </html>
