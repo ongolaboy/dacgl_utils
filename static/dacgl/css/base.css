@@ -118,7 +118,7 @@ input
 /************************* Le corps de la page **************************/
 #corpage
 {
-		
+		margin-top:30px;
 }
 /************************* FIn Le corps de la page **************************/
 
@@ -151,9 +151,10 @@ input
 #content
 {
 	display: inline-block;
-	width: 83%;
+	width: 82%;
 	vertical-align: top;
 	padding: 10px;
+	margin-left: 10px;
 }
 /*************************** Fin Contenu de la page  ***********************/
 
@@ -182,4 +183,3 @@ input
 {
 	border-bottom: 5px solid #2370ed;
 }
-/********************** Fin pied de page ************************************/
