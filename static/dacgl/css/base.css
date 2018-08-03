@@ -122,20 +122,21 @@ input
 }
 /************************* FIn Le corps de la page **************************/
 
-/*****************pour la partie presentant les recapitulatifs***************/
+/*********************** partie presentant les recapitulatifs ***************/
 #sommaire
 {
-	display:inline-block;
-	width:15%;
-	vertical-align:top;
-	padding:5px;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	display: inline-block;
+	//float: left;
+	width: 15%;
+	vertical-align: top;
+	padding: 5px;
 }
 #sommaire li
 {
 	list-style-type: none; 
 	padding: 5px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 	margin:1px;
 	border-bottom: 1px solid #f2d813;
 }
@@ -144,3 +145,41 @@ input
 {
 	border-left: 5px solid #f2d813;
 }
+/********************Fin  partie presentant les recapitulatifs **************/
+
+/*************************** Contenu de la page  ***************************/
+#content
+{
+	display: inline-block;
+	width: 83%;
+	vertical-align: top;
+	padding: 10px;
+}
+/*************************** Fin Contenu de la page  ***********************/
+
+/*********************** Pied  de page ***************************************/
+#pied
+{
+	height:80px;
+	background: #dbdde0;
+	text-align: center;
+	margin-top: 10px;
+}
+
+#pied p
+{
+	padding-top: 25px;
+}
+
+#pied a
+{
+	display:inline;
+	padding:5px;
+	margin-left:5px;
+	border-left: 1px solid #2370ed;
+}
+#pied a:hover
+{
+	border-bottom: 5px solid #2370ed;
+}
+/********************** Fin pied de page ************************************/

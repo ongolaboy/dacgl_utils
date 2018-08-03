@@ -3,8 +3,8 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>{% block title %} DRACGL {% endblock %}</title>
-        <link rel="stylesheet"  type="text/css" href="{% static 'dacgl/css/resset.css' %}">
+		<title>{% block title %} DRACGL {% endblock %}</title>
+		<link rel="stylesheet"  type="text/css" href="{% static 'dacgl/css/resset.css' %}">
 		<link rel="stylesheet"  type="text/css" href="{% static 'dacgl/css/base.css' %}">
 	</head>
 	<body>
@@ -34,8 +34,8 @@
 					<div>
 						<ul >
 							<li><a href="{% url 'home' %}">Accueil</a></li>
-							<li><a href="{% url 'id2:index' %}">Gestion des visites</a></li>
-							<li><a href="{% url 'manif:index' %}">Manifestations organisées</a></li>
+							<li><a href="{% url 'id2:index' %}">Visites</a></li>
+							<li><a href="{% url 'manif:index' %}">Manifestations</a></li>
 							<li>Inventaire</li>
 							<li><a href="/admin" target="_blank">Interface d'administration</a></li>
 						</ul>
@@ -51,23 +51,23 @@
 					<ul>
 						 <li><a href="#lastvisit">Les dernières visites</a></li>
 						 <li><a href="#lastsubscribed">Les dernières inscriptions</a></li>
-						 <li><a href="#lastvisitpresta">Les dernières visites de prestataire</a></li>
-						 <li><a href="#récap">Récapitulatif</a></li>
+						 <li><a href="#lastvisitpresta">Manifestations organisées</a></li>
 					 </ul>
 				</div>
 				<div  id="content">
 					 {% block content %}
+					 
 					 {% endblock %}
 				</div>
 			</div>
 			{% block piedDePage %}
-				<div align="center" id="piedDePage">
-					<hr>
-					<p>
-					<a href="{% url 'home' %}">Accueil</a> |<a
-					href="{% url 'id2:index' %}">Gestion des visites</a> |
-					<a href="{% url 'manif:index' %}">Bilan des manifestations organisées</a>
-					| <a href ="{% url 'inventaire2:index' %}">Inventaire </a>
+				<div id="pied">
+					<p >
+						<a href="{% url 'home' %}">Accueil</a>
+						<a href="{% url 'id2:index' %}">Visites</a>
+						<a href="{% url 'manif:index' %}">Manifestations</a>
+						<a href="{% url 'manif:index' %}">Inventaire</a>
+						<a href="/admin" target="_blank">Interface d'administration</a>
 					</p>
 				</div>
 			{% endblock %}
