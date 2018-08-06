@@ -1,7 +1,7 @@
 {% extends "id2/base.html" %}
 
 {% block content %}
-
+<!--
  <h2>Sommaire</h2>
  <ul>
 	 <li><a href="#lastvisit">Les dernières visites</a></li>
@@ -9,7 +9,7 @@
 	 <li><a href="#lastvisitpresta">Les dernières visites de prestataire</a></li>
 	 <li><a href="#récap">Récapitulatif</a></li>
  </ul>
-
+-->
 	 {% if derniereVisite %}
 	 <p> <a href="{% url 'id2:extraction' SERVICE_A_EXTRAIRE %}">Extraire au format CSV</a> la <em>totalité</em> des différentes visites.</p>
 	 <br />
