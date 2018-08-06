@@ -1,7 +1,4 @@
-/***********************************************************************************************************
- * ****************** Modification sur le comportement general des balises**********************************
- **********************************************************************************************************/
-/****balise Body ***/
+/***************************balise Body ******************************/
 body 
 {
     padding: 0px;
@@ -66,8 +63,43 @@ a
 {
 	text-decoration:none;
 }
+a:link, a:visited {
+    color: #5b80b2;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #036;
+}
+
+a img {
+    border: none;
+}
+
+a.section:link, a.section:visited {
+    color: #fff;
+    text-decoration: none;
+}
 /****************Fin Configuration des liens****************************/
 
+/*************** Configuration des tableau *****************************/
+
+table 
+{
+    border-collapse: collapse;
+    border-color: #ccc;
+}
+
+td, th 
+{
+    //font-size: 11px;
+    line-height: 13px;
+    border: 1px solid #eee;
+    vertical-align: top;
+    padding: 20px;
+    font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+}
+/**************Fin Configuration des tableaux *************************/
 /********************* Elements du menu *******************************/
 #menu
 {
@@ -83,6 +115,7 @@ a
 {
 	width:69%;
 	display:inline-block;
+	text-align: center;
 }
 /*** Pour le formulaire de recherche qui est dan le menu ***/
 #menu form
