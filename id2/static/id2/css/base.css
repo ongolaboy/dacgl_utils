@@ -112,24 +112,6 @@ td, th
 	text-align: center;
 }
 
-/*** Pour l'espace du menu en lui meme***/
-/*
-#menu div
-{
-	width:69%;
-	display:inline-block;
-	text-align: center;
-}
-* */
-/*** Pour le formulaire de recherche qui est dan le menu ***/
-/*
-#menu form
-{
-	display: inline-block;
-	width: 30%;
-	text-align: right;
-}
-*/
 #menu li
 {
 	display:inline;
@@ -230,3 +212,46 @@ input
 {
 	border-bottom: 5px solid #2370ed;
 }
+
+/****************** Paramettrage de la page de connexion ***************/
+.form
+{
+	width: 30%;
+	margin-left: 25%;
+	line-height: 25px;
+	//padding: 20px;
+	border: 1px solid #3333;
+	background-color: #F2F2F2;
+	text-align: center;
+}
+.form > h3
+{
+	
+	border-bottom: 1px solid #3333;
+	padding-bottom: 10px;
+	//background-color: #F2F2F2;
+}
+.form > p 
+{
+	border-bottom: 1px solid #FE2E2E ;
+	padding-bottom: 10px;
+	background-color: #F5A9A9;
+	color: #FE2E2E;
+}
+ .form > form> label
+ {
+	display: block;
+	margin-top: 10px;
+	padding-left: 30px;
+	text-align: left;
+ }
+ 
+ .form > form > input
+ {
+	margin: 10px;
+	padding : 10px;
+	font-weight: bold;
+	font-size : 20px;
+	text-align: center;
+	width: 80%;
+ }

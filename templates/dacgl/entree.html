@@ -1,33 +1,28 @@
 {% extends "dacgl/base.html" %}
 
+{%  block sitename %}
+	Connexion 
+{% endblock %}
 {% block content %}
-<div align="center">
+<div class="form">
 	<h3> Connexion aux outils de la DRACGL</h3>
 	{% if form.errors %}
-	<p>Les informations saisies ne correspondent pas! </p>
+		<p>
+			Les informations saisies ne correspondent pas! 
+		</p>
 	{% endif %}
-
-	<table>
-		<form action="{% url 'id2:entreeVerification' %}" method="post">
-			{% comment %}<form action="{% url 'connexion-check' %}" method="post"> {% endcomment %}
-	  {% csrf_token %}
-	  <tr>
-		  <th><label for="id_identifiant">Identifiant:</label></th>
-		  <td><input id="id_identifiant" maxlength="40" name="identifiant" type="text" required />
-		  </td>
-	  </tr>
-	  <tr>
-		  <th><label for="id_password">Mot de passe:</label></th>
-		  <td>
-			  <input id="id_password" maxlength="90" name="password" type="password" required />
-		  </td>
-	  </tr>
-
-	  <tr><td></td>
-		  <td><input value="Connexion" type="submit" /></td>
-	  </tr>
-  </form>
-	</table> ;)
+	<form action="{% url 'id2:entreeVerification' %}" method="post">
+		{% comment %}<form action="{% url 'connexion-check' %}" method="post"> {% endcomment %}
+		{% csrf_token %}
+		
+		<label for="id_identifiant">Identifiant:</label>
+		<input id="id_identifiant" maxlength="40" name="identifiant" type="text" required/>
+		
+		<label for="id_password">Mot de passe:</label>
+		<input id="id_password" maxlength="90" name="password" type="password" required />
+		
+		<input value="Connexion " type="submit" />
+	</form>
 </div>
 
 {% endblock %}
