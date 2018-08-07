@@ -31,23 +31,18 @@
 					</div>
 				</div>
 				<div id="menu">
-					<div>
-						<ul >
-							<li><a href="{% url 'home' %}">Accueil</a></li>
-							<li><a href="{% url 'id2:index' %}">Visites</a></li>
-							<li><a href="{% url 'manif:index' %}">Manifestations</a></li>
-							<li><a href="{% url 'inventaire2:index' %}">Inventaire</a></li>
-							{% if user.is_authenticated %}
-								{% if user.is_staff %}
-									<li><a href="/admin" target="_blank">Interface d'administration</a></li>
-								{% endif%}
+					<ul >
+						<li><a href="{% url 'home' %}">Accueil</a></li>
+						<li><a href="{% url 'id2:index' %}">Visites</a></li>
+						<li><a href="{% url 'manif:index' %}">Manifestations</a></li>
+						<li><a href="{% url 'inventaire2:index' %}">Inventaire</a></li>
+						<li><a href="{% url 'id2:recherche' %}">Recherche</a></li>
+						{% if user.is_authenticated %}
+							{% if user.is_staff %}
+								<li><a href="/admin" target="_blank">Interface d'administration</a></li>
 							{% endif%}
-						</ul>
-					</div>
-					<form name="recherche" method="POST" action="">
-						<input name="nom" type="text" placeholder="Effectuer une recherche"  required=""/>
-						<input name= "recherche" type="submit" value="Rechercher" />
-					</form>
+						{% endif%}
+					</ul>
 				</div>
 			</header>
 			<div id="corpage">

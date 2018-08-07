@@ -109,21 +109,27 @@ td, th
 	margin:0;
 	padding: 5px;
 	padding-bottom: 10px;
+	text-align: center;
 }
+
 /*** Pour l'espace du menu en lui meme***/
+/*
 #menu div
 {
 	width:69%;
 	display:inline-block;
 	text-align: center;
 }
+* */
 /*** Pour le formulaire de recherche qui est dan le menu ***/
+/*
 #menu form
 {
 	display: inline-block;
 	width: 30%;
 	text-align: right;
 }
+*/
 #menu li
 {
 	display:inline;
