@@ -190,6 +190,14 @@ input
 	padding: 10px;
 	margin-left: 10px;
 }
+
+.inscription
+{
+	display: inline-block;
+	padding : 15px;
+	margin-bottom:15px;
+	border: 2px solid #81F781;
+}
 /*************************** Fin Contenu de la page  ***********************/
 
 /*********************** Pied  de page ***************************************/
