@@ -42,7 +42,9 @@
 								<li><a href="/admin" target="_blank">Interface d'administration</a></li>
 							{% endif%}
 						{% endif%}
+						<li><a href="{% url 'id2:inscription' %}"> Inscription d'un nouvel usager</a></li>
 					</ul>
+					
 				</div>
 			</header>
 			<div id="corpage">
@@ -54,9 +56,9 @@
 						 <li><a href="#lastvisitpresta">Les dernières visites de prestataire</a></li>
 						 <li><a href="#récap">Récapitulatif</a></li>
 					 </ul>
+					 
 				</div>
 				<div  id="content">
-					<a class="boutoncontourvert" href="{% url 'id2:inscription' %}"> Inscription d'un nouvel usager</a>
 					 {% block content %}
 						
 					 {% endblock %}
