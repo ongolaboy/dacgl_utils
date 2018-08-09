@@ -49,14 +49,9 @@
 			</header>
 			<div id="corpage">
 				<div id="sommaire">
-					<ul>
-						<h2>Sommaire</h2>
-						 <li><a href="#lastvisit">Les dernières visites</a></li>
-						 <li><a href="#lastsubscribed">Les dernières inscriptions</a></li>
-						 <li><a href="#lastvisitpresta">Les dernières visites de prestataire</a></li>
-						 <li><a href="#récap">Récapitulatif</a></li>
-					 </ul>
-					 
+					{% block sommaire %}
+					
+					{% endblock%}
 				</div>
 				<div  id="content">
 					 {% block content %}
