@@ -37,12 +37,13 @@
 						<li><a href="{% url 'manif:index' %}">Manifestations</a></li>
 						<li><a href="{% url 'inventaire2:index' %}">Inventaire</a></li>
 						<li><a href="{% url 'id2:recherche' %}">Recherche</a></li>
+						<li><a href="{% url 'id2:inscription' %}"> Inscription</a></li>
 						{% if user.is_authenticated %}
 							{% if user.is_staff %}
 								<li><a href="/admin" target="_blank">Interface d'administration</a></li>
 							{% endif%}
 						{% endif%}
-						<li><a href="{% url 'id2:inscription' %}"> Inscription</a></li>
+						
 					</ul>
 					
 				</div>
