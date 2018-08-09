@@ -8,7 +8,7 @@ body
     /*font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif; */
     font-family: "Open Sans", sans-serif;
     color: #333;
-    //background: #fad687 no-repeat top/6% url("../img/logo_AUF_RVB.png");
+    background: #fad687; /*no-repeat top/6% url("../img/logo_AUF_RVB.png");*/
 }
 /************************* FIN Balise body ******************************/
 
@@ -223,6 +223,7 @@ input
 	line-height: 25px;
 	//padding: 20px;
 	border: 1px solid #3333;
+	border-radius: 15px 50px 30px;
 	background-color: #F2F2F2;
 	text-align: center;
 }
