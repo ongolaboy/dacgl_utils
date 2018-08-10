@@ -1,31 +1,36 @@
 <!DOCTYPE html>
-
 {% load staticfiles %}
 <html>
 	<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>{% block title %} DRACGL - Manifestations {% endblock %}</title>
-  <link rel="stylesheet"  type="text/css" href="{% static 'manif/css/base.css' %}">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>{% block title %} DRACGL - Manifestations {% endblock %}</title>
+		<link rel="stylesheet"  type="text/css" href="{% static 'dacgl/css/resset.css' %}" />
+		<link rel="stylesheet"  type="text/css" href="{% static 'manif/css/base.css' %}" />
 	</head>
-
-  <body>
-	  <div id="menu">
-
-		  <div id="menu-gauche" float="left">
-			  <p><a href="{%url 'manif:index' %}">Accueil</a>
-		  </div>
-
-		  <div id="menu-droite" float="right">
-		  </div>
-	  </div>
-
-	  <div id="contenu">
-		  {% block content %}{% endblock %}
-	  </div>
-
-	  <div id="piedDePage">
-		  {% block pideDePage %}{% endblock %}
-	  </div>
-  </body>
-
+	<body>
+		<header>
+			<div class="header">
+				<span id="logo" class="logo">
+					<a href="{% url 'home' %}"><img src="{% static 'dacgl/img/logo_AUF_RVB.png' %}" alt="Logo AUF"/></a>
+				</span>
+				<div id="sitename">
+					DRACGL - {% block sitename %}Manifestations{% endblock%}
+				</div>
+			</div>
+			<div id="menu">
+				<p><a href="{%url 'manif:index' %}">Accueil</a> </p>
+			</div>
+		</header>
+		<div id="contenu">
+			{% block content %}
+			{% endblock %}
+		</div>
+		{% block piedDePage %}
+			<div id="pied">
+				<p >
+					<a href="{% url 'home' %}">Accueil</a>
+				</p>
+			</div>
+		{% endblock %}
+	</body>
 </html>
