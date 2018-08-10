@@ -9,6 +9,7 @@
 	 </ul>
 {% endblock %}
 {% block content %}
+<div class="contentback">
 	 {% if derniereVisite %}
 	 <p class="boutoncontourvert"> <a  href="{% url 'id2:extraction' SERVICE_A_EXTRAIRE %}">Extraire au format CSV</a> la <em>totalité</em> des différentes visites.</p>
 	 <br />
@@ -25,8 +26,8 @@
 		 {% endfor %}
 	 </table>
 	 {% endif %}
- <br />
- <br />
+	 <br />
+	 <br />
 
 	 {% if derniereVisitePresta %}
 	 <h3> <a name="lastvisitpresta">Les 20 dernières visites de prestataires</a> </h3>
@@ -42,8 +43,9 @@
 		 {% endfor %}
 	 </table>
 	 {% endif %}
- <br />
- <br />
+	 
+	 <br />
+	 <br />
 	 {% if dernierInscrit %}
 	 <h3> <a name="lastsubscribed">Les 10 derniers usagers enregistrés</a> </h3>
 	 <table>
@@ -59,5 +61,5 @@
                  <tr><td>Nombre de visite ce mois</td><td>{{ visitCeMois | length }}</td></tr>
 		 <tr><td>Nombre de visite cette semaine</td><td>{{ visitSemaine | length }}</td></tr>
 	 </table>
-
+</div>
 {% endblock %}

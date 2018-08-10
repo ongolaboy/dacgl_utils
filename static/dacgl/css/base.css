@@ -8,7 +8,8 @@ body
     /*font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif; */
     font-family: "Open Sans", sans-serif;
     color: #333;
-    background: #fad687; /*no-repeat top/6% url("../img/logo_AUF_RVB.png");*/
+    background-color: #F2F2F2;
+    //background: #fad687; /*no-repeat top/6% url("../img/logo_AUF_RVB.png");*/
 }
 /************************* FIN Balise body ******************************/
 
@@ -177,6 +178,12 @@ input
 	padding: 10px;
 	margin-left: 10px;
 }
+.contentback
+{
+	padding: 15px;
+	border-radius: 15px 15px 0px 0px;
+	background-color: #FFFFF2;
+}
 
 .boutoncontourvert
 {
@@ -220,11 +227,14 @@ input
 {
 	width: 30%;
 	margin-left: 25%;
+	margin-top: 5% ;
+	margin-bottom: 5% ;
 	line-height: 25px;
 	//padding: 20px;
 	border: 1px solid #3333;
 	border-radius: 15px 50px 30px;
-	background-color: #F2F2F2;
+	background-color: #FFFFF2;
+	//background-color: #F2F2F2;
 	text-align: center;
 }
 .form > h3
@@ -258,3 +268,4 @@ input
 	text-align: center;
 	width: 80%;
  }
+
