@@ -1,21 +1,17 @@
 {% extends "manif/base.html" %}
 
 {% block content %}
+<div class="cform">
+<div class="formconsigne">
  <h3> Formulaire d'enregistrement à une activité</h3>
  {{ message }}
 
- <div align="center">
 	 <form action="{% url 'manif:consigne-traitement' %}" autocomplete="on" method="post">
-		  <table>
 		  {% csrf_token %}
-			  {{ form.as_table }}
-			  <tr>
-				  <td></td>
-				  <td><input type="submit" value="Enregistrer"/></td>
-			  </tr>
-		  </table>
+		  {{ form.as_p }}
+		  <input type="submit" value="Enregistrer"/>
 	  </form>
+ 
  </div>
-
-
+</div>
 {% endblock %}

@@ -279,3 +279,42 @@ input
 	margin: auto;
 }
 /**********Fin Paramettrage de la page index manifestations************/
+
+/************ Paramettrage des pages consignes manifestations*************/
+.cform
+{
+	width: 80%;
+	margin: auto;
+	border: 1px solid #3333;
+	border-radius: 15px 15px 0px 0px;
+	background-color: #FFFFF2;
+}
+.formconsigne
+{
+	width: 40%;
+	margin:auto;
+}
+
+.formconsigne  h3
+{
+	border-bottom: 1px solid #3333;
+	padding-bottom: 10px;
+	text-align: center;
+}
+.formconsigne  label
+{
+	display: block;
+	padding-left:10px;
+}
+/**/
+.formconsigne input, .formconsigne select
+ {
+	display: block;	
+	margin: 10px;
+	padding : 10px;
+	font-weight: bold;
+	font-size : 20px;
+	text-align: center;
+	width:90%;
+ }
+/**********Fin Paramettrage de la page consigne manifestations************/
