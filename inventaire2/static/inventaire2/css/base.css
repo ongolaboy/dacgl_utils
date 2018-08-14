@@ -64,20 +64,27 @@ a
 {
 	text-decoration:none;
 }
-a:link, a:visited {
+a:link, a:visited 
+{
     color: #5b80b2;
     text-decoration: none;
 }
 
-a:hover {
+a:hover 
+{
     color: #036;
 }
-
-a img {
+a:active 
+{
+    color: #036;
+}
+a img 
+{
     border: none;
 }
 
-a.section:link, a.section:visited {
+a.section:link, a.section:visited 
+{
     color: #fff;
     text-decoration: none;
 }
@@ -132,7 +139,7 @@ td, th
 /*************************Fin elements de menu ***********************/
 
 /** Grossir la valeur des elements  du formulaire **/
-input
+input, select
 {
 	font-size: 20px;
 }
@@ -144,44 +151,21 @@ input
 }
 /************************* FIn Le corps de la page **************************/
 
-/*********************** partie presentant les recapitulatifs ***************/
-#sommaire
-{
-	display: inline-block;
-	//float: left;
-	width: 15%;
-	vertical-align: top;
-	padding: 5px;
-}
-#sommaire li
-{
-	list-style-type: none; 
-	padding: 5px;
-	padding-top: 15px;
-	padding-bottom: 15px;
-	margin:1px;
-	border-bottom: 1px solid #f2d813;
-}
-
-#sommaire li:hover
-{
-	border-left: 5px solid #f2d813;
-}
-/********************Fin  partie presentant les recapitulatifs **************/
-
 /*************************** Contenu de la page  ***************************/
-#content
+#contentinv
 {
 	display: inline-block;
-	width: 81%;
+	width: 98%;
 	vertical-align: top;
 	padding: 10px;
 	margin-left: 10px;
 }
 .contentback
 {
+	width:80%;
 	padding: 15px;
 	border-radius: 15px 15px 0px 0px;
+	//background-color: #FFFFF2;
 	background-color: #FFFFF2;
 }
 

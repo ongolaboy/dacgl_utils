@@ -1,116 +1,100 @@
 {% extends "inventaire2/base.html" %}
-
 {% block content %}
- 
-
-<h1> Inventaire du matériel dans la région </h1>
-
-<h2><a name="#top">Sommaire</a></h2>
-<ul>
-	<li><a href="{% url 'inventaire2:extraction' perimetre0  %}">Extraire la totalité pour la région au format CSV</a></li>
-</ul>
-
-<h3> Affichez l'inventaire d'un site en particulier</h3>
-
-<form action = "{% url 'inventaire2:index' %}" method="GET">
-  {% csrf_token %}
-  {{ form.as_table }}
-	<input type=submit value="Affichez" />
-</form>
-
-
-{% if message %}
-<p> {{ message }} </p>
-{% else %}
-
-	{% if pX %}
-	<h4><a name="dernieresEntreesSiteX">Les 40 dernières acquisitions du site 
-			{{ implantationX.nom }}</a></h4>
-
-	<ul>
-		<li>Extraire l'inventaire de {{ implantationX.nom }} au <a href="{% url 'inventaire2:extraction' implantationX.id %}">format CSV</a></li>
-		<li>Nombre de pièces comptabilisées au total: {{ pX_T | length }}</li>
-	</ul>
-
-	<table border="1">
-		<tr>
-			<th>Intitulé</th>
-			<th>Catégorie</th>
-			<th>Usage</th>
-			<th>Date d'acquisition</th>
-			<th>code inventaire</th>
-			<th>Commande Coda</th>
-			<th>Prix d'achat</th>
-			<th>Devise</th>
-			<th>Modèle</th>
-			<th>Emplacement</th>
-		</tr>
-
-		{% for p in pX %}
-		<tr>
-			<td> <a href="{{ p.get_absolute_url }}">{{ p.intitule }}</a></td>
-		<td> {{ p.categorie }} </td>
-		<td> {{ p.usage }} </td>
-		<td> {{ p.date_acquisition }} </td>
-		<td> {{ p.code_inventaire }} </td>
-		<td> {{ p.commande_coda }} </td>
-		<td> {{ p.prix_achat }} </td>
-		<td> {{ p.devise }} </td>
-		<td> {{ p.modele }} </td>
-		<td> {{ p.emplacement }} </td>
-	</tr>
-	{% endfor %}
-
-</table>
-
+	<h1> Inventaire du matériel dans la région </h1>
+	<a class="boutoncontourvert" href="{% url 'inventaire2:extraction' perimetre0  %}">Extraire la totalité pour la région au format CSV</a>
+	<h3> Affichez l'inventaire d'un site en particulier</h3>
+	<form action = "{% url 'inventaire2:index' %}" method="GET">
+		{% csrf_token %}
+		{{ form.as_table }}
+		<input type=submit value="Affichez" />
+	</form>
+	{% if message %}
+		<p> 
+			{{ message }} 
+		</p>
 	{% else %}
-
-<h4><a name="dernieresEntrees">Les 40 dernières acquisitions dans la région</a></h4>
-<ul>
-	<li>Nombre total d'articles inventoriés: {{ pT | length}}</li>
-</ul>
-<table border="1">
-	<tr>
-		<th>Intitulé</th>
-		<th>Catégorie</th>
-		<th>Usage</th>
-		<th>Date d'acquisition</th>
-		<th>code inventaire</th>
-		<th>Commande Coda</th>
-		<th>Prix d'achat</th>
-		<th>Devise</th>
-		<th>Modèle</th>
-		<th>Emplacement</th>
-	</tr>
-
-	{% for p in piece %}
-	<tr>
-		<td> {{ p.intitule }} </td>
-		<td> {{ p.categorie }} </td>
-		<td> {{ p.usage }} </td>
-		<td> {{ p.date_acquisition }} </td>
-		<td> {{ p.code_inventaire }} </td>
-		<td> {{ p.commande_coda }} </td>
-		<td> {{ p.prix_achat }} </td>
-		<td> {{ p.devise }} </td>
-		<td> {{ p.modele }} </td>
-		<td> {{ p.emplacement }} </td>
-	</tr>
-	{% endfor %}
-
-</table>
+		{% if pX %}
+			<h4>
+				<a name="dernieresEntreesSiteX">Les 40 dernières acquisitions du site {{ implantationX.nom }}</a>
+			</h4>
+			<span class="boutoncontourvert">Nombre de pièces comptabilisées au total: {{ pX_T | length }}</span><br />
+			<span class="boutoncontourvert">Extraire l'inventaire de {{ implantationX.nom }} au <a href="{% url 'inventaire2:extraction' implantationX.id %}">format CSV</a></span>
+			
+			<table>
+				<tr>
+					<th>Intitulé</th>
+					<th>Catégorie</th>
+					<th>Usage</th>
+					<th>Date d'acquisition</th>
+					<th>code inventaire</th>
+					<th>Commande Coda</th>
+					<th>Prix d'achat</th>
+					<th>Devise</th>
+					<th>Modèle</th>
+					<th>Emplacement</th>
+				</tr>
+				{% for p in pX %}
+				<tr>
+					<td> <a href="{{ p.get_absolute_url }}">{{ p.intitule }}</a></td>
+					<td> {{ p.categorie }} </td>
+					<td> {{ p.usage }} </td>
+					<td> {{ p.date_acquisition }} </td>
+					<td> {{ p.code_inventaire }} </td>
+					<td> {{ p.commande_coda }} </td>
+					<td> {{ p.prix_achat }} </td>
+					<td> {{ p.devise }} </td>
+					<td> {{ p.modele }} </td>
+					<td> {{ p.emplacement }} </td>
+				</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<h4>
+				<a name="dernieresEntrees">Les 40 dernières acquisitions dans la région</a>
+			</h4>
+			<ul>
+				<li>Nombre total d'articles inventoriés: {{ pT | length}}</li>
+			</ul>
+			<table>
+				<tr>
+					<th>Intitulé</th>
+					<th>Catégorie</th>
+					<th>Usage</th>
+					<th>Date d'acquisition</th>
+					<th>code inventaire</th>
+					<th>Commande Coda</th>
+					<th>Prix d'achat</th>
+					<th>Devise</th>
+					<th>Modèle</th>
+					<th>Emplacement</th>
+				</tr>
+				{% for p in piece %}
+				<tr>
+					<td> {{ p.intitule }} </td>
+					<td> {{ p.categorie }} </td>
+					<td> {{ p.usage }} </td>
+					<td> {{ p.date_acquisition }} </td>
+					<td> {{ p.code_inventaire }} </td>
+					<td> {{ p.commande_coda }} </td>
+					<td> {{ p.prix_achat }} </td>
+					<td> {{ p.devise }} </td>
+					<td> {{ p.modele }} </td>
+					<td> {{ p.emplacement }} </td>
+				</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
 	{% endif %}
-{% endif %}
-
-<p><a href="#top">Haut de la page</a></p>
-
+	<p>
+		<a href="#top">Haut de la page</a>
+	</p>
 {% endblock %}
-
 {% block piedDePage %}
-<div align="center">
-	<hr />
-	 {% if user.is_staff %}
-	 <a href="{% url 'inventaire2:importation' %}">Importer un fichier au format CSV</a>
-	 {% endif %}
-</div>
+	<div id="pied">
+		{% if user.is_staff %}
+			<p>
+				<a class="boutoncontourvert" href="{% url 'inventaire2:importation' %}">Importer un fichier au format CSV</a>
+			</p>
+		{% endif %}
+	</div>
 {% endblock %}
