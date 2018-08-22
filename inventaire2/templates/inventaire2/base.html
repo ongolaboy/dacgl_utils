@@ -33,16 +33,17 @@
 				<div id="menu">
 					<ul >
 						<li><a href="{% url 'home' %}">Accueil</a></li>
-						<li><a href="{% url 'id2:index' %}">Gestion des visites</a></li>
-						<li><a href="{% url 'manif:index' %}">Manifestations organisées</a></li>
+						<li><a href="{% url 'id2:index' %}">Visites</a></li>
+						<li><a href="{% url 'manif:index' %}">Manifestations</a></li>
 						<li><a href="{% url 'inventaire2:index' %}">Inventaire</a></li>
 						<li><a href="{% url 'id2:recherche' %}">Recherche</a></li>
+						<li><a href="{% url 'id2:inscription' %}"> Inscription</a></li>
 						{% if user.is_authenticated %}
 							{% if user.is_staff %}
 								<li><a href="/admin" target="_blank">Interface d'administration</a></li>
 							{% endif%}
 						{% endif%}
-						<li><a href="{% url 'id2:inscription' %}"> Inscription</a></li>
+						
 					</ul>
 				</div>
 			</header>
@@ -57,8 +58,8 @@
 				<div id="pied">
 					<p >
 						<a href="{% url 'home' %}">Accueil</a>
-						<a href="{% url 'id2:index' %}">Gestion des visites</a>
-						<a href="{% url 'manif:index' %}">Manifestations organisées</a>
+						<a href="{% url 'id2:index' %}">Visites</a>
+						<a href="{% url 'manif:index' %}">Manifestations</a>
 						<a href="{% url 'inventaire2:index' %}">Inventaire</a>
 					</p>
 				</div>
