@@ -4,7 +4,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>{% block title %} DRACGL - Manifestations {% endblock %}</title>
-		<link rel="stylesheet"  type="text/css" href="{% static 'dacgl/css/resset.css' %}" />
+		<link rel="stylesheet"  type="text/css" href="{% static 'manif/css/resset.css' %}" />
 		<link rel="stylesheet"  type="text/css" href="{% static 'manif/css/base.css' %}" />
 	</head>
 	<body>
@@ -16,19 +16,48 @@
 				<div id="sitename">
 					DRACGL - {% block sitename %}Manifestations{% endblock%}
 				</div>
+				<div id="cmember">
+					<p>
+						{% if not user.is_authenticated %}
+							<a href="{% url 'entree' %}">Ouvrir une session</a>
+						{% else %}
+							<a href="{% url 'sortie' %}">
+								Bienvenue {{ user.username }}
+								<br />Se déconnecter
+							</a>
+						{% endif %}
+					</p>
+				</div>
 			</div>
 			<div id="menu">
-				<p><a href="{%url 'manif:index' %}">Accueil</a> </p>
+				<ul >
+					<li><a href="{% url 'manif:index' %}">Accueil</a></li>
+					<li><a href="{% url 'manif:bilan' %}">Bilan des manifestations</a></li>
+					{% if user.is_authenticated %}
+						{% if user.is_staff %}
+							<li><a href="/admin" target="_blank">Interface d'administration</a></li>
+						{% endif%}
+					{% endif%}
+				</ul>
 			</div>
 		</header>
-		<div id="contenu">
-			{% block content %}
-			{% endblock %}
+		<div id="corpage">
+			<div id="sommaire">
+				
+			</div>
+			<div id="content">
+				{% block content %}
+				{% endblock %}
+			</div>
+			<div id="menudroit">
+				
+			</div>
 		</div>
 		{% block piedDePage %}
 			<div id="pied">
 				<p >
 					<a href="{% url 'home' %}">Accueil</a>
+					<a href="{% url 'manif:bilan' %}">Bilan des manifestations</a>
 				</p>
 			</div>
 		{% endblock %}

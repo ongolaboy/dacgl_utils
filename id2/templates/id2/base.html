@@ -32,10 +32,7 @@
 				</div>
 				<div id="menu">
 					<ul >
-						<li><a href="{% url 'home' %}">Accueil</a></li>
-						<li><a href="{% url 'id2:index' %}">Visites</a></li>
-						<li><a href="{% url 'manif:index' %}">Manifestations</a></li>
-						<li><a href="{% url 'inventaire2:index' %}">Inventaire</a></li>
+						<li><a href="{% url 'id2:index' %}">Accueil</a></li>
 						<li><a href="{% url 'id2:recherche' %}">Recherche</a></li>
 						<li><a href="{% url 'id2:inscription' %}"> Inscription</a></li>
 						{% if user.is_authenticated %}
@@ -59,14 +56,15 @@
 						
 					 {% endblock %}
 				</div>
+				<div id="menudroit">
+				</div>
 			</div>
 			{% block piedDePage %}
 				<div id="pied">
 					<p >
 						<a href="{% url 'home' %}">Accueil</a>
-						<a href="{% url 'id2:index' %}">Visites</a>
-						<a href="{% url 'manif:index' %}">Manifestations</a>
-						<a href="{% url 'inventaire2:index' %}">Inventaire</a>
+						<a href="{% url 'id2:recherche' %}">Recherche</a>
+						<a href="{% url 'id2:inscription' %}"> Inscription</a>
 					</p>
 				</div>
 			{% endblock %}

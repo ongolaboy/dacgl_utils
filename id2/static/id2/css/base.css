@@ -3,13 +3,9 @@ body
 {
     padding: 0px;
     margin:0px;
-    //font-size: 12px;
-    //line-height:3; 
-    /*font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif; */
     font-family: "Open Sans", sans-serif;
     color: #333;
     background-color: #F2F2F2;
-    //background: #fad687; /*no-repeat top/6% url("../img/logo_AUF_RVB.png");*/
 }
 /************************* FIN Balise body ******************************/
 
@@ -97,7 +93,6 @@ table
 
 td, th 
 {
-    //font-size: 11px;
     line-height: 13px;
     border: 1px solid #eee;
     vertical-align: top;
@@ -134,13 +129,6 @@ td, th
 	text-align: center;
 }
 /*************************Fin elements de menu ***********************/
-
-/** Grossir la valeur des elements  du formulaire **/
-input
-{
-	font-size: 20px;
-}
-
 /************************* Le corps de la page **************************/
 #corpage
 {
@@ -152,7 +140,6 @@ input
 #sommaire
 {
 	display: inline-block;
-	//float: left;
 	width: 15%;
 	vertical-align: top;
 	padding: 5px;
@@ -173,21 +160,28 @@ input
 }
 /********************Fin  partie presentant les recapitulatifs **************/
 
+/********************* partie presentant le menu de droite  ***************/
+#menudroit
+{
+	display: inline-block;
+	width: 15%;
+	vertical-align: top;
+	padding: 5px;
+}
+/********************Fin  partie presentant le menu de droite************/
+
 /*************************** Contenu de la page  ***************************/
 #content
 {
 	display: inline-block;
-	width: 81%;
+	width: 70%;
 	vertical-align: top;
-	padding: 10px;
+	padding: 20px;
 	margin-left: 10px;
-}
-.contentback
-{
-	padding: 15px;
 	border-radius: 15px 15px 0px 0px;
 	background-color: #FFFFF2;
 }
+
 .boutoncontourvert
 {
 	display: inline-block;
@@ -231,7 +225,6 @@ input
 	width: 30%;
 	margin-left: 25%;
 	line-height: 25px;
-	//padding: 20px;
 	border: 1px solid #3333;
 	border-radius: 15px 50px 30px;
 	background-color: #F2F2F2;
@@ -242,7 +235,6 @@ input
 	
 	border-bottom: 1px solid #3333;
 	padding-bottom: 10px;
-	//background-color: #F2F2F2;
 }
 .form > p 
 {
@@ -274,12 +266,8 @@ input
 .forminscription
 {
 	width: 60%;
-	margin-left:10%;
+	margin: auto;
 	line-height: 25px;
-	border: 1px solid #3333;
-	border-radius: 15px 15px 0px 0px;
-	background-color: #FFFFF2;
-	//text-align: center;
 }
 .forminscription  h3
 {
@@ -306,28 +294,23 @@ input
 	font-weight: bold;
 	font-size : 20px;
 	text-align: center;
-	//border: none;
-	//border-bottom: 5px solid #ddd;
 	width: 90%;
  }
- /**/
 .forminscription input[type="submit"]
  {
 	margin: 10px;
 	padding : 10px;
 	font-weight: bold;
 	text-align: center;
- }/**/
+ }
+ 
 /****Fin Paramettrage de la page incription d'un nouvel usager****/
 /************    Paramettrage de la page de recherche *****************/
 .formrecherche
 {
-	margin-right:15%;
+	margin: auto;
 	line-height: 25px;
-	border: 1px solid #3333;
-	border-radius: 15px 15px 0px 0px;
-	background-color: #FFFFF2;
-	//text-align: center;
+	width: 60%;
 }
 
 .formrecherche  h3
@@ -345,7 +328,7 @@ input
 {
 	display: block;
 }
-/**/
+
 .formrecherche input
  {
 	display: block;	
@@ -370,6 +353,4 @@ input
 	margin:auto;
 	margin-bottom: 25px;
  }
- 
- /**/
 /************ Fin Paramettrage de la page de recherche **************/

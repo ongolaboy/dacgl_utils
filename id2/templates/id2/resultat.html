@@ -1,7 +1,5 @@
 {% extends  "id2/base.html" %}
-
 {% block content %}
-<div class="contentback">
 <p>Le terme recherché était {{ terme }}.</p>
 {% if resultat %}
 	{% if travailleur %}
@@ -21,7 +19,6 @@
 			</tr>
 				{% endfor %}
 		</table>
-
 	{% else %}
 
 	<h3>Usagers dont on peut consigner l'entrée dans le bâtiment</h3>
@@ -94,5 +91,4 @@
 <br />
 <br />
 <p>Effectuez une <a href="{%url 'id2:recherche' %}">nouvelle recherche</a>
-</div>
 {% endblock %}

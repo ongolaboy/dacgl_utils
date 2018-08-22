@@ -130,12 +130,6 @@ td, th
 }
 /*************************Fin elements de menu ***********************/
 
-/** Grossir la valeur des elements  du formulaire **/
-input
-{
-	font-size: 20px;
-}
-
 /************************* Le corps de la page **************************/
 #corpage
 {
@@ -183,16 +177,11 @@ input
 	display: inline-block;
 	width: 70%;
 	vertical-align: top;
-	padding: 10px;
-	margin-left: 10px;
-}
-.contentback
-{
-	padding: 15px;
+	padding: 20px;
+	margin: auto;
 	border-radius: 15px 15px 0px 0px;
 	background-color: #FFFFF2;
 }
-
 .boutoncontourvert
 {
 	display: inline-block;
@@ -233,8 +222,8 @@ input
 /****************** Paramettrage de la page de connexion ***************/
 .form
 {
-	width: 30%;
-	margin-left: 25%;
+	width: 35%;
+	margin: auto;
 	margin-top: 5% ;
 	margin-bottom: 5% ;
 	line-height: 25px;

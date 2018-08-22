@@ -3,13 +3,9 @@ body
 {
     padding: 0px;
     margin:0px;
-    //font-size: 12px;
-    //line-height:3; 
-    /*font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif; */
     font-family: "Open Sans", sans-serif;
     color: #333;
     background-color: #F2F2F2;
-    //background: #fad687; /*no-repeat top/6% url("../img/logo_AUF_RVB.png");*/
 }
 /************************* FIN Balise body ******************************/
 
@@ -64,20 +60,24 @@ a
 {
 	text-decoration:none;
 }
-a:link, a:visited {
+a:link, a:visited 
+{
     color: #5b80b2;
     text-decoration: none;
 }
 
-a:hover {
+a:hover 
+{
     color: #036;
 }
 
-a img {
+a img 
+{
     border: none;
 }
 
-a.section:link, a.section:visited {
+a.section:link, a.section:visited 
+{
     color: #fff;
     text-decoration: none;
 }
@@ -93,7 +93,6 @@ table
 
 td, th 
 {
-    //font-size: 11px;
     line-height: 13px;
     border: 1px solid #eee;
     vertical-align: top;
@@ -131,12 +130,6 @@ td, th
 }
 /*************************Fin elements de menu ***********************/
 
-/** Grossir la valeur des elements  du formulaire **/
-input
-{
-	font-size: 20px;
-}
-
 /************************* Le corps de la page **************************/
 #corpage
 {
@@ -148,7 +141,6 @@ input
 #sommaire
 {
 	display: inline-block;
-	//float: left;
 	width: 15%;
 	vertical-align: top;
 	padding: 5px;
@@ -169,23 +161,27 @@ input
 }
 /********************Fin  partie presentant les recapitulatifs **************/
 
+/********************* partie presentant le menu de droite  ***************/
+#menudroit
+{
+	display: inline-block;
+	width: 15%;
+	vertical-align: top;
+	padding: 5px;
+}
+/********************Fin  partie presentant le menu de droite************/
+
 /*************************** Contenu de la page  ***************************/
 #content
 {
 	display: inline-block;
-	width: 81%;
+	width: 70%;
 	vertical-align: top;
-	padding: 10px;
+	padding: 20px;
 	margin-left: 10px;
-}
-
-.contentback
-{
-	padding: 15px;
 	border-radius: 15px 15px 0px 0px;
 	background-color: #FFFFF2;
 }
-
 .boutoncontourvert
 {
 	display: inline-block;
@@ -231,11 +227,9 @@ input
 	margin-top: 5% ;
 	margin-bottom: 5% ;
 	line-height: 25px;
-	//padding: 20px;
 	border: 1px solid #3333;
 	border-radius: 15px 50px 30px;
 	background-color: #FFFFF2;
-	//background-color: #F2F2F2;
 	text-align: center;
 }
 .form > h3
@@ -243,7 +237,6 @@ input
 	
 	border-bottom: 1px solid #3333;
 	padding-bottom: 10px;
-	//background-color: #F2F2F2;
 }
 .form > p 
 {
@@ -291,14 +284,13 @@ input
 }
 .formconsigne
 {
-	width: 40%;
-	margin:auto;
+	margin: auto;
+	width: 50%;
 }
 
 .formconsigne  h3
 {
-	border-bottom: 1px solid #3333;
-	padding-bottom: 10px;
+	padding-bottom: 20px;
 	text-align: center;
 }
 .formconsigne  label
@@ -306,15 +298,16 @@ input
 	display: block;
 	padding-left:10px;
 }
-/**/
+
 .formconsigne input, .formconsigne select
  {
-	display: block;	
+	display: block;
 	margin: 10px;
+	margin-left: 30px;
 	padding : 10px;
 	font-weight: bold;
 	font-size : 20px;
 	text-align: center;
-	width:90%;
+	width:100%;
  }
 /**********Fin Paramettrage de la page consigne manifestations************/
