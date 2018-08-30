@@ -1,20 +1,18 @@
 {% extends "manif/base.html" %}
-
 {% block content %}
 
- {% if manifs %}
- <h2>Manifestation(s) en cours</h2>
-  {% for manif in manifs %}
-  <ul>
-	  <li>{{ manif.intitule }}<br />Objectif: {{ manif.description }}</li>
-  </ul>
-  {% endfor %}
-
-   <p> <a href="{% url 'manif:consigne21' %}">Enregistrer sa participation</a> </p>
- {% else %}
-  <p> Aucune manifestation repertoriée en ce moment</p>
- {% endif %}
-
- <hr />
- <p> Consultez <a href="{% url 'manif:bilan' %}">le bilan des activités</a>
+	{% if manifs %}
+		<h2>Manifestation(s) en cours</h2>
+		{% for manif in manifs %}
+		<ul>
+		<li>{{ manif.intitule }}<br />Objectif: {{ manif.description }}</li>
+		</ul>
+		{% endfor %}
+		<p><br /> <a class="boutoncontourvert" href="{% url 'manif:consigne21' %}">Enregistrer sa participation</a> </p>
+	{% else %}
+		<p> Aucune manifestation repertoriée en ce moment</p>
+	{% endif %}
+	<!--
+	<p > Consultez <a href="{% url 'manif:bilan' %}">le bilan des activités</a>
+	-->
 {% endblock %}

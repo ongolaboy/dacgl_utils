@@ -1,0 +1,23 @@
+                        + une zone centrale contenant le titre(nom) de l'applica
+tion
+                        + Une zone de connexion et deconnexion da l'extreme droi
+te
+                * Une barre de menu, contenant le menu de l'application. Le cont
+enu de cette barre change selon le lieu ou on se trouve dans l'application. Pour
+ les modules identification et manifestation, ce menu au lieu d'etre un menu gen
+eral comme au lancement de l'application, devient un menu propre au module (son
+contenu ne s'applique qu'au module en cours d'utilisation)
+        - Un corp de page divise en trois parties:
+                *Un menu de gauche a gauche de la page. Il n'est utilisé que dan
+s le module d'identification et a sa page d'accueil. Dans tout le reste de l'app
+lication , cet espace reste vide
+                *Un menu de droite a droite de la page. Vide dans tous les modul
+es de l'application     
+                *L'espace principale pour le contenu de la page. c'est l'endroit
+ ou s'affiche les information de chaque page.
+        - Un pied de page. Dependant de la position où ont se trouve dans l'appl
+ication, contien un menu local au module ou general a toute l'application. Mais
+son lien Accueil ramene toujours a la page d'accueil de l'application utils
+
+Seul le module inventaire echape a ce formatage et contient une page plate pour
+le rendu des informations traités par le module

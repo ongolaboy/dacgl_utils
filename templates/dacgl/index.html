@@ -1,10 +1,8 @@
 {% extends "dacgl/base.html" %}
 
 {% block content %}
-
- <h2>Activités récentes</h2>
- <ul>
-	 <li><a href="{% url 'manif:consigne21' %}">Enregistrer sa participation à un évènement</a></li>
- </ul>
-
-{% endblock %}
+<div class="contentback">
+	<h2>Activités récentes</h2>
+	<a class="boutoncontourvert" href="{% url 'manif:consigne21' %}">Enregistrer sa participation à un évènement</a>
+</div>
+ {% endblock %}

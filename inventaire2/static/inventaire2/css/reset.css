@@ -1,0 +1,60 @@
+/* 
+inspired by 
+Tantek Celik : http://tantek.com/map.html
+Eric Meyer : http://meyerweb.com/
+Andy clarke : http://www.stuffandnonsense.co.uk/            
+*/
+
+:link, :visited 
+{
+    text-decoration:none;
+}
+ul, ol 
+{
+    list-style:none;
+}
+h1, h2, h3, h4, h5, h6, pre, code 
+{
+    //font-size:100%;
+}
+ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, body, html, p, blockquote, fieldset, input, div, dl, dt, dd, th, td 
+{
+    margin:0;
+    padding:0;
+}
+a img, :link img, :visited img 
+{
+    border:none;
+}
+address, caption, cite, code, dfn, em, strong, th, var 
+{
+    font-style:normal;
+    font-weight:normal;
+}
+table 
+{
+    border-collapse:collapse;
+    border-spacing:0;
+}
+fieldset, img 
+{
+    border:0;
+}
+caption, th 
+{
+    text-align:left;
+}
+q:before, q:after 
+{
+    content:'';
+}
+ul ul, ul ol, ul dir, ul menu, ul dl, ol ul, ol ol, ol dir, ol menu, ol dl, dir ul, dir ol, dir dir, dir menu, dir dl, menu ul, menu ol, menu dir, menu menu, menu dl, dl ul, dl ol, dl dir, dl menu, dl dl 
+{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+area, base, basefont, head, meta, script, style, title, noembed, noscript, param 
+{
+    display: none;
+}

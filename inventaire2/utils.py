@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Fonctions utiles à la gestion des inventaires
 """
 

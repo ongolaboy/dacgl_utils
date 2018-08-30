@@ -1,33 +1,31 @@
 {% extends  "id2/base.html" %}
-
 {% block content %}
-
-{% if user.is_authenticated %}
-
- {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<h3> Formulaire d'inscription de nouveaux usagers</h3>
-Dernière inscription :  <br />
-{% if dernier_usager %}
-<p>Consignez la visite de l'usager<a href="/ident/visite/usager/{{ dernier_usager.id }}"><strong>
-        {{  dernier_usager.nom }}</strong> {{dernier_usager.prenom}}</a> ? </p> <br />
-{% endif %}
-{% if dernier_employe %}
-<p>Consignez la visite de l'employé <a href="/ident/visite/employer/{{ dernier_employe.id }}"><strong>
-        {{  dernier_employe.nom }}</strong> {{dernier_employe.prenom}}</a> ? </p> <br />
-{% endif %}
-<form action="{% url 'id2:inscriptionTraitement' %}" method="post">
-
-  <table>
-  {%  csrf_token %}
-   {{ form.as_table }}
-
-   <tr>
-     <td></td>
-     <td><input type="submit" value="Ajouter" /></td>
-   </tr>
-  </table>
-</form>
-{% else %}
-<p>Il faut disposer d'un compte pour effectuer ces traitements</p>
-{% endif %}
+	<div class="forminscription">
+		{% if user.is_authenticated %}
+			{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+			<h3> Formulaire d'inscription de nouveaux usagers</h3>
+			<p>Dernière inscription :  </p>
+			{% if dernier_usager %}
+				<p>
+					Consignez la visite de l'usager<a href="/ident/visite/usager/{{ dernier_usager.id }}">
+					<strong>{{  dernier_usager.nom }}</strong> {{dernier_usager.prenom}}</a> ? 
+				</p> <br />
+			{% endif %}
+			{% if dernier_employe %}
+				<p>
+					Consignez la visite de l'employé <a href="/ident/visite/employer/{{ dernier_employe.id }}">
+					<strong>{{  dernier_employe.nom }}</strong> {{dernier_employe.prenom}}</a> ? 
+				</p> <br />
+			{% endif %}
+			<form action="{% url 'id2:inscriptionTraitement' %}" method="post">
+				{%  csrf_token %}
+				{{ form.as_p }}
+				<p>
+					<input type="submit" value="Ajouter" />
+				</p>
+			</form>
+		{% else %}
+			<p>Il faut disposer d'un compte pour effectuer ces traitements</p>
+		{% endif %}
+	</div>
 {% endblock %}

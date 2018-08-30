@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render,HttpResponseRedirect
 from django.utils import timezone
 from id2.models import Usager,PieceId,Visite,Service
